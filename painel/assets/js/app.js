@@ -23406,7 +23406,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-protocolo
     data: data,
     success: function success(response) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
-      alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero);
+
+      if (!alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero)) {
+        window.location.href = window.location.href;
+      }
     },
     complete: function complete(response) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("tr[data-contrato-id=" + contratoid + "]").trigger("click");
@@ -23469,7 +23472,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-boleto").
     data: data,
     success: function success(response) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
-      alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero);
+
+      if (!alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero)) {
+        window.location.href = window.location.href;
+      }
     },
     complete: function complete(response) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("tr[data-contrato-id=" + contratoid + "]").trigger("click");
