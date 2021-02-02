@@ -22839,7 +22839,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
             data: data,
             dataType: "json",
             success: function success(response) {
-              var html = "\n                <div class=\"card\">\n                  <div class=\"card-divider header\">\n                    <h6>\n                      <p><b>Cliente</b>: ".concat(response[0].cliente_id, "<br>\n                      <b>CPF/CNPJ</b>: ").concat(response[0].cpfcnpj, "<br>\n                      <b>Nome</b>: ").concat(response[0].nome, "<br>\n                      <b>Endere\xE7o principal</b>: ").concat(response[0].logradouro).concat(response[0].numero ? ", " + response[0].numero : "", " - ").concat(response[0].bairro, ", ").concat(response[0].cidade, " - ").concat(response[0].uf).concat(response[0].complemento ? ", " + response[0].complemento : "", "</p>\n                    </h6>\n                  </div>\n                  <div class=\"card-divider header\"><h6>\n              ");
+              var html = "\n                <div class=\"card\">\n                  <div class=\"card-divider header\">\n                    <h6>\n                      <p><b>Cliente</b>: <span id=\"cliente-id\">".concat(response[0].cliente_id, "</span><br>\n                      <b>CPF/CNPJ</b>: ").concat(response[0].cpfcnpj, "<br>\n                      <b>Nome</b>: ").concat(response[0].nome, "<br>\n                      <b>Endere\xE7o principal</b>: ").concat(response[0].logradouro).concat(response[0].numero ? ", " + response[0].numero : "", " - ").concat(response[0].bairro, ", ").concat(response[0].cidade, " - ").concat(response[0].uf).concat(response[0].complemento ? ", " + response[0].complemento : "", "</p>\n                    </h6>\n                  </div>\n                  <div class=\"card-divider header\"><h6>\n              ");
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-cliente").html("");
 
               try {
@@ -23337,20 +23337,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-suporte")
     success: function success(response) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
       data = {};
-      contratoid = null;
-
-      if (!alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero)) {
-        window.location.href = window.location.href;
-      }
+      alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero);
     },
     complete: function complete(response) {
+      var clienteid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("span#cliente-id").html();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.criar-chamado-form').trigger("reset");
       jquery__WEBPACK_IMPORTED_MODULE_0___default()(".criar-chamado-input-contrato").val(contratoid + " - " + jquery__WEBPACK_IMPORTED_MODULE_0___default()("#servico-internet-" + contratoid).html());
       jquery__WEBPACK_IMPORTED_MODULE_0___default()(".criar-chamado-input-contrato-hidden").val(contratoid);
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.criar-chamado-form').trigger("reset");
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()("tr[data-contrato-id=" + contratoid + "]").trigger("click");
-      var clienteid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("tr[data-contrato-id=" + contratoid + "]").data('cliente-id');
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + clienteid + "]").trigger("click");
       $this.prop('disabled', false);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#criar-chamado-modal-suporte').foundation('close');
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + clienteid + "]").trigger("click");
     }
   });
 });
@@ -23407,8 +23403,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-protocolo
     success: function success(response) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
 
-      if (!alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero)) {
-        window.location.href = window.location.href;
+      if (!alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero)) {//window.location.href = window.location.href;
       }
     },
     complete: function complete(response) {
@@ -23473,8 +23468,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-boleto").
     success: function success(response) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
 
-      if (!alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero)) {
-        window.location.href = window.location.href;
+      if (!alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero)) {//window.location.href = window.location.href;
       }
     },
     complete: function complete(response) {
@@ -23510,6 +23504,26 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").on("click", "#criar-chamad
 });
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-conteudo, #criar-os-problema").on("change keyup", function () {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-os-problema").not(jquery__WEBPACK_IMPORTED_MODULE_0___default()(this)).val(jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val());
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#buscar-cliente-mumo").on("click", function (e) {
+  e.preventDefault();
+  var user = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente-mumo").val();
+  var token = '5c4d958c-a5fb-4bb2-ad7f-e9c3dda3fccf';
+  var data = {
+    user: user,
+    token: token
+  };
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+    url: 'api/v1/mumo',
+    data: JSON.stringify(data),
+    type: 'POST',
+    processData: false,
+    contentType: 'application/json',
+    success: function success(response) {
+      console.log(response);
+      console.log(user);
+    }
+  });
 });
 /*
  verifica_cpf_cnpj

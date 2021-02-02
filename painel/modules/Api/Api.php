@@ -24,6 +24,10 @@ class Api {
     return $result[0]['cliente_id'] ?? NULL;
   }
 
+  public function testarMumo($celular) {
+    return true;
+  }
+
   public function getUserID($user) {
     $qry = 'SELECT id
             FROM "auth_user"
