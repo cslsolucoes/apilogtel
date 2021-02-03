@@ -23290,10 +23290,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-suporte")
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
   e.preventDefault();
   var status = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-status").val();
-  var contratoid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data("contratoid");
+  var contratoid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-contratoid");
   var dataagendamento = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#data-ag").val();
   var setor = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#setor-ocorrencia").val();
-  var userid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data("userid");
+  var userid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-userid");
   var origem = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#origem-ocorrencia").val();
   var tipo = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#tipo-ocorrencia").val();
   var conteudo = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-conteudo").val();
@@ -23335,9 +23335,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-suporte")
     dataType: "json",
     data: data,
     success: function success(response) {
+      console.log(data);
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
-      data = {};
-      alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero);
+      data = null;
+      console.log(data);
+
+      if (!alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero)) {//window.location.href = window.location.href;
+      }
     },
     complete: function complete(response) {
       var clienteid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("span#cliente-id").html();
@@ -23356,10 +23360,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-protocolo
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
   e.preventDefault();
   var status = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-status-protocolo").val();
-  var contratoid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data("contratoid");
+  var contratoid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-contratoid");
   var dataagendamento = '';
   var setor = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#setor-ocorrencia-protocolo").val();
-  var userid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data("userid");
+  var userid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-userid");
   var origem = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#origem-ocorrencia-protocolo").val();
   var tipo = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#tipo-ocorrencia-protocolo").val();
   var conteudo = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-conteudo-protocolo").val();
@@ -23421,10 +23425,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-boleto").
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
   e.preventDefault();
   var status = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-status-boleto").val();
-  var contratoid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data("contratoid");
+  var contratoid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-contratoid");
   var dataagendamento = '';
   var setor = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#setor-ocorrencia-boleto").val();
-  var userid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data("userid");
+  var userid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-userid");
   var origem = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#origem-ocorrencia-boleto").val();
   var tipo = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#tipo-ocorrencia-boleto").val();
   var conteudo = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-conteudo-boleto").val();
