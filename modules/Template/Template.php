@@ -15,14 +15,11 @@ class Template {
       require 'api/' . $template . '.php';
       return $data;
     }
-    if(isset($_SESSION['user']) && $_SESSION['user']) {
-      if(file_exists('templates/' . $template . '.php')) {
-        require 'templates/' . $template . '.php';
-      } else {
-        echo json_encode(array('msg' => '404', 'path' => 'templates/' . $template . '.php'));
-      }
+    if(file_exists('templates/' . $template . '.php')) {
+      require 'templates/' . $template . '.php';
+      return $data;
     } else {
-      require 'templates/login.php';
+      echo json_encode(array('msg' => '404', 'path' => 'templates/' . $template . '.php'));
     }
   }
 }
