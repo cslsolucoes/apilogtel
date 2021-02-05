@@ -83,7 +83,7 @@ class Curl {
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    if($client_id = $this->checkToken($token)) {
+    //if($client_id = $this->checkToken($token)) {
       $masterHeader = array(
         'Content-Type: application/json'
         //'Authorization: Bearer ' . $masterToken
@@ -96,7 +96,7 @@ class Curl {
       VALUES ('$client_id', '$address_local', '{$final_address}', '$body', '$masterToken', '$data', '$data', '{$_SERVER['SERVER_ADDR']}', '{$_SERVER['REMOTE_ADDR']}')";
       $this->db->queryLocal($query);
       return $data;
-    }
+    //}
     curl_close($ch);
     return json_encode(array('msg' => 'Unauthorized: invalid token', 'code' => 403));
   }
