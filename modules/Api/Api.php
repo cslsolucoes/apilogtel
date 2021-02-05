@@ -17,6 +17,8 @@ class Api {
     $query = "SELECT cliente_id FROM adm_token WHERE token = '$token' AND app_id = 3";
     $sql = $this->db->queryLocal($query);
     $result = $sql->fetchAll();
+    echo $query;
+    print_r($result);
     return $result[0]['cliente_id'] ?? false;
   }
 
