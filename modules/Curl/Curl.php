@@ -63,6 +63,7 @@ class Curl {
       break;
       case 'POST':
         $token = $_POST['token'] ?? 1;
+        $_POST['token'] = $masterToken;
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($_POST));
         $body = json_encode($_POST);
