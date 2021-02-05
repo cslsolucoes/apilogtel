@@ -17,11 +17,7 @@ class Api {
     $query = "SELECT cliente_id FROM adm_token WHERE token = '$token' AND app_id = 3";
     $sql = $this->db->queryLocal($query);
     $result = $sql->fetchAll();
-    if(count($result) > 0) {
-      return $result[0]['cliente_id'];
-    } else {
-      return false;
-    }
+    return $result[0]['cliente_id'] ?? false;
   }
 
   public function checkUser($user, $token, $body) {
