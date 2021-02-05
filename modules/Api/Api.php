@@ -34,6 +34,7 @@ class Api {
       ";
       $sql = $this->db->queryErp($qry);
       $result = $sql->fetchAll();
+      echo $qry;
       print_r($result);
       $id = $result[0]['cliente_id'] ?? 'NULL';
       $cpf = $result[0]['cpf'] ?? 'NULL';
