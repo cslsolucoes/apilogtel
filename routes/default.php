@@ -1,6 +1,6 @@
 <?php
 
-$this->get('', function () {
+/* $this->get('', function () {
   $response = array(
     'msg' => 'file not found',
     'error' => 'true',
@@ -9,6 +9,26 @@ $this->get('', function () {
   );
   header('X-PHP-Response-Code: 404', true, 404);
   echo json_encode($response);
+}); */
+
+$this->get('{uri}', function ($data) {
+  $this->core->loadModule('template')->render('api', $data);
+});
+
+$this->get('{uri}/{data}', function ($data) {
+  $this->core->loadModule('template')->render('api', $data);
+});
+
+$this->get('', function ($data) {
+  $this->core->loadModule('template')->render('api', $data);
+});
+
+$this->post('{uri}', function ($data) {
+  $this->core->loadModule('template')->render('api', $data);
+});
+
+$this->post('{uri}/{data}', function ($data) {
+  $this->core->loadModule('template')->render('api', $data);
 });
 
 $this->post('', function () {

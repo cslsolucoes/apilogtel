@@ -19,5 +19,11 @@ $config = array(
     'user' => 'postgres',
     'pass' => '1q2w3e4r5T@',
     'dbname' => 'logtel'
+  ),
+  'apiSGP' => array(
+    'ip' => '201.87.240.202',
+    'port' => '8000',
+    'app' => 'ura',
+    'token' => '7789c183-98c1-4667-b31f-b20931376f6f'
   )
 );
