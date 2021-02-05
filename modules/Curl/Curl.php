@@ -95,6 +95,7 @@ class Curl {
       $final_address = $address_dest_array[0] ?? $address_dest;
       $query = "INSERT INTO adm_api_log (cliente_id, uri_origem, uri_destino, body_origem, body_destino, response_origem, response_destino, ip_origem, ip_destino)
       VALUES ('$client_id', '$address_local', '{$final_address}', '$body', '$masterToken', '$data', '$data', '{$_SERVER['SERVER_ADDR']}', '{$_SERVER['REMOTE_ADDR']}')";
+      return $query;
       $this->db->queryLocal($query);
       return $data;
     //}
