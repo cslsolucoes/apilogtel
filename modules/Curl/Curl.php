@@ -42,10 +42,6 @@ class Curl {
     }
 
     $uri = $_SERVER['REQUEST_URI'];
-    $uri = substr($uri, 4);
-    if($uri == '') {
-      $uri = 'testConnection';
-    }
 
     $masterToken = $this->api['token'];
     $address = "http://{$this->api['ip']}:{$this->api['port']}/api/ura/" . $uri;
