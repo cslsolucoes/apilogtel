@@ -21,7 +21,7 @@ class Curl {
   }
 
   public function checkToken($token) {
-    $query = "SELECT cliente_id FROM adm_token WHERE token = '$token' AND app_id = 3";
+    $query = "SELECT cliente_id FROM adm_token WHERE token = '$token' AND (app_id = 3 OR app_id = 2)";
     $sql = $this->db->queryLocal($query);
     $result = $sql->fetchAll();
     if(count($result) > 0) {
