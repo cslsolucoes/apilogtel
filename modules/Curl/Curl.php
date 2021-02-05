@@ -84,6 +84,7 @@ class Curl {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
     //if($client_id = $this->checkToken($token)) {
+      $client_id = 3;
       $masterHeader = array(
         'Content-Type: application/json'
         //'Authorization: Bearer ' . $masterToken
