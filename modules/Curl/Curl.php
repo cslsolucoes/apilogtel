@@ -64,7 +64,7 @@ class Curl {
       case 'POST':
         $token = $_POST['token'] ?? 1;
         $params = $_POST;
-        $app = $_POST['app'];
+        $app = $_POST['app'] ?? NULL;
         $params['token'] = $masterToken;
         $params['app'] = 'ura';
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
