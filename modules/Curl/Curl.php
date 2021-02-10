@@ -2,7 +2,6 @@
 
 class Curl {
   
-
   private $api;
   private $db;
 
@@ -20,14 +19,15 @@ class Curl {
       return $inst;
   }
 
-  public function checkToken($token) {
-    $query = "SELECT cliente_id FROM adm_token WHERE token = '$token' AND (app_id = 3 OR app_id = 2)";
+  public function checkToken($token, $app = NULL) {
+    $query = "SELECT cliente_id FROM adm_token WHERE token = '$token' AND description = '$app'";
     $sql = $this->db->queryLocal($query);
     $result = $sql->fetchAll();
     if(count($result) > 0) {
       return true;
+    } else {
+      return NULL;
     }
-    return $result[0]['cliente_id'] ?? NULL;
   }
 
   public function sendRequest() {
@@ -63,10 +63,12 @@ class Curl {
       break;
       case 'POST':
         $token = $_POST['token'] ?? 1;
+        $params = $_POST;
+        $app = $_POST['app'];
         $_POST['token'] = $masterToken;
         $_POST['app'] = 'ura';
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($_POST));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
         $body = json_encode($_POST);
       break;
       case 'PUT':
@@ -85,7 +87,7 @@ class Curl {
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    if($client_id = $this->checkToken($token)) {
+    if($client_id = $this->checkToken($token, $app)) {
       $masterHeader = array(
         'Content-Type: application/json'
         //'Authorization: Bearer ' . $masterToken
