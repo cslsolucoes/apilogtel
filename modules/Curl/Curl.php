@@ -65,8 +65,8 @@ class Curl {
         $token = $_POST['token'] ?? 1;
         $params = $_POST;
         $app = $_POST['app'];
-        $_POST['token'] = $masterToken;
-        $_POST['app'] = 'ura';
+        $params['token'] = $masterToken;
+        $params['app'] = 'ura';
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
         $body = json_encode($_POST);
