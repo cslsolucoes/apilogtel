@@ -22774,6 +22774,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
   }
 
   busca = $this.val().toUpperCase().replace(/[^a-zA-Z0-9 çÇáÁéÉíÍóÓúÚãÃõÕ]/g, "");
+  console.log(busca);
+  console.log($this.val());
+  console.log(busca.length);
 
   if (busca.length > 3) {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
@@ -23281,8 +23284,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").on("click", "#tabela-
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
   var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
   var numeroOcorrencia = $this.find('td.protocolo-chamado div.protocolo p').html();
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-numero-chamado").html(numeroOcorrencia);
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado").foundation('toggle');
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-numero-chamado").html(numeroOcorrencia); //$("#editar-chamado").foundation('toggle');
+
   jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
     method: "GET",
     url: "api/v1/consultar_ocorrencia",

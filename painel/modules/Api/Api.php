@@ -62,6 +62,9 @@ class Api {
   public function consultarCliente($busca, $tipo = "todos") {
     if(is_numeric($busca['busca']) && (strlen($busca['busca']) == 11 || strlen($busca['busca']) == 14)) {
       $busca['busca'] = $this->validator->formata($busca['busca']);
+      if(!$busca['busca']) {
+        return array();
+      }
     }
     if($busca['tipo'] == "internet" && is_numeric($busca['busca'])) {
       $qry = "
