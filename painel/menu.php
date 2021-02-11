@@ -6,7 +6,7 @@
 <div class="top-bar elevation-4dp" id="menu">
   <div class="top-bar-left">
     <ul class="dropdown menu" data-dropdown-menu>
-      <li class="menu-text"><a href="<?= $uri ?>">LogDesk</a></li>
+      <li class="menu-text"><a href="" id="menu-principal">LogDesk</a></li>
       <li>
         <a href="">Cadastro</a>
         <ul class="menu vertical">
@@ -28,6 +28,7 @@
       <li><a href="http://cslsolucoes.com.br/logtel/paineis">Auditoria</a></li>
       <li><a href="http://cslsolucoes.com.br/logtel/paineis">Comissão</a></li>
       <?= ($isAdmin ? "<li><a href='{$uri}logtelchip'>Logtel Chip</a></li>" : "") ?>
+      <li><a href='<?= $uri ?>testar_mumo'>Testar MUMO</a></li>
     </ul>
   </div>
   <div class="top-bar-right">
