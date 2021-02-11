@@ -11,6 +11,6 @@ $this->post('api/v1/consultar_sinal_onu', function () {
   }
 });
 
-$this->get('api/v1/consultar_ocorrencias', function () {
+$this->get('api/v1/consultar_sinal_onu', function () {
   $this->core->loadModule('template')->render('403');
 });

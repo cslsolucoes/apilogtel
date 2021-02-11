@@ -7,6 +7,14 @@ $this->get('', function ($data) {
   }
 });
 
+$this->get('{clientid}/{contratoid}', function ($data) {
+  if(not_logged_in()) {
+    $this->core->loadModule('template')->render('login', $data);
+  } else {
+    $this->core->loadModule('template')->render('home', $data);
+  }
+});
+
 $this->get('login', function ($data) {
   $this->core->loadModule('template')->render('login', $data);
 });

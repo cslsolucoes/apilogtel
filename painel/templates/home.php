@@ -134,8 +134,8 @@
                 <option value="3">Pendente</option>
               </select>
             </label>
-            <label>Conteúdo: <textarea class="criar-chamado-input-conteudo" id="criar-chamado-conteudo" rows="3">Cliente com lentidão na conexão</textarea></label>
-            <label>Observações Internas: <textarea class="criar-chamado-input-obs" id="obs-ocorrencia" rows="3">Reiniciado equipamentos</textarea></label>
+            <label>Conteúdo: <textarea class="criar-chamado-input-conteudo" id="criar-chamado-conteudo" rows="3"></textarea></label>
+            <label>Observações Internas: <textarea class="criar-chamado-input-obs" id="obs-ocorrencia" rows="3"></textarea></label>
             <div class="grid-x">
               <div class="medium-4 cell">
                 <button class="button primary" id="criar-chamado-contrato-suporte" data-close data-clienteid data-contratoid data-userid="<?= $_SESSION['userid'] ?>">Abrir chamado</button>
@@ -408,7 +408,7 @@
                 <option value="3">Pendente</option>
               </select>
             </label>
-            <label>Conteúdo: <textarea class="criar-chamado-input-conteudo" id="criar-chamado-conteudo-protocolo" rows="3">Cliente entrou em contato para </textarea></label>
+            <label>Conteúdo: <textarea class="criar-chamado-input-conteudo" id="criar-chamado-conteudo-protocolo" rows="3"></textarea></label>
             <div class="grid-x">
               <div class="medium-4 cell">
                 <button class="button primary" id="criar-chamado-contrato-protocolo" data-close data-clienteid data-contratoid data-userid="<?= $_SESSION['userid'] ?>">Abrir chamado</button>
@@ -479,7 +479,7 @@
                 <option value="3">Pendente</option>
               </select>
             </label>
-            <label>Conteúdo: <textarea class="criar-chamado-input-conteudo" id="criar-chamado-conteudo-boleto" rows="3">Enviado para o e-mail do cadastro o boleto com vencimento em XX/XX/XXXX.</textarea></label>
+            <label>Conteúdo: <textarea class="criar-chamado-input-conteudo" id="criar-chamado-conteudo-boleto" rows="3">Enviado para o e-mail do cadastro o boleto com vencimento em </textarea></label>
             <div class="grid-x">
               <div class="medium-4 cell">
                 <button class="button primary" id="criar-chamado-contrato-boleto" data-close data-clienteid data-contratoid data-userid="<?= $_SESSION['userid'] ?>">Abrir chamado</button>

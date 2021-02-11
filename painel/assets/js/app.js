@@ -22679,11 +22679,25 @@ var preventClick = new Array(),
     interval = null,
     xhrContrato,
     onuId = 0;
-/* function disableF5(e) { if ((e.which || e.keyCode) == 116) e.preventDefault(); };
-$(document).bind("keydown", disableF5);
-$(document).on("keydown", disableF5);
-$(document).unbind("keydown", disableF5);
-$(document).off("keydown", disableF5); */
+var lastClient = getCookie('lastClient');
+
+function disableF5(e) {
+  if ((e.which || e.keyCode) == 116) {
+    e.preventDefault();
+    lastClient = getCookie('lastClient');
+    window.location.reload();
+  } else if ((e.which || e.keyCode) == 117) {
+    e.preventDefault();
+    lastClient = null;
+    eraseCookie("lastClient");
+    window.location.reload();
+  }
+}
+
+;
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).bind("keydown", disableF5);
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", disableF5); //$(document).unbind("keydown", disableF5);
+//$(document).off("keydown", disableF5);
 
 var capitalize = function capitalize(str) {
   var lower = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
@@ -22833,13 +22847,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
             busca: $this.data("contratoid"),
             tipo: "unico"
           };
+          lastClient = null;
+          setCookie('lastClient', $this.data("contratoid"), 1);
+          lastClient = $this.data("contratoid");
+          console.log(lastClient);
           xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
             method: "POST",
             url: "api/v1/consultar_cliente",
             data: data,
             dataType: "json",
             success: function success(response) {
-              var html = "\n                <div class=\"card\">\n                  <div class=\"card-divider header\">\n                    <h6>\n                      <p><b>Cliente</b>: <span id=\"cliente-id\">".concat(response[0].cliente_id, "</span><br>\n                      <b>CPF/CNPJ</b>: ").concat(response[0].cpfcnpj, "<br>\n                      <b>Nome</b>: ").concat(response[0].nome, "<br>\n                      <b>Endere\xE7o principal</b>: ").concat(response[0].logradouro).concat(response[0].numero ? ", " + response[0].numero : "", " - ").concat(response[0].bairro, ", ").concat(response[0].cidade, " - ").concat(response[0].uf).concat(response[0].complemento ? ", " + response[0].complemento : "", "</p>\n                    </h6>\n                  </div>\n                  <div class=\"card-divider header\"><h6>\n              ");
+              var html = "\n                <div class=\"card\">\n                  <div class=\"card-divider header\">\n                    <h6>\n                      <p><b>Cliente</b>: <span id=\"cliente-id\">".concat(response[0].cliente_id, "</span><br>\n                      <b>CPF/CNPJ</b>: ").concat(response[0].cpfcnpj, "\n                      <button class=\"button copy_button copy_button_primary\" title=\"Copiar CPF/CNPJ\" data-copy=\"").concat(response[0].cpfcnpj, "\">\n                        <i class=\"fi fi-page-copy\"></i>\n                      </button>\n                      <br>\n                      <b>Nome</b>: ").concat(response[0].nome, "<br>\n                      <b>Endere\xE7o principal</b>: ").concat(response[0].logradouro).concat(response[0].numero ? ", " + response[0].numero : "", " - ").concat(response[0].bairro, ", ").concat(response[0].cidade, " - ").concat(response[0].uf).concat(response[0].complemento ? ", " + response[0].complemento : "", "</p>\n                    </h6>\n                  </div>\n                  <div class=\"card-divider header\"><h6>\n              ");
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-cliente").html("");
 
               try {
@@ -23236,6 +23254,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
         });
         jquery__WEBPACK_IMPORTED_MODULE_0___default()("#resultado-busca").foundation("open");
         jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
+      },
+      complete: function complete() {
+        if (lastClient) {
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + lastClient + "]").trigger("click");
+          lastClient = null;
+        }
       }
     });
   }
@@ -23257,8 +23281,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").on("click", "#tabela-
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
   var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
   var numeroOcorrencia = $this.find('td.protocolo-chamado div.protocolo p').html();
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-numero-chamado").html(numeroOcorrencia); //$("#editar-chamado").foundation('toggle');
-
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-numero-chamado").html(numeroOcorrencia);
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado").foundation('toggle');
   jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
     method: "GET",
     url: "api/v1/consultar_ocorrencia",
@@ -23411,11 +23435,18 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-protocolo
       }
     },
     complete: function complete(response) {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()("tr[data-contrato-id=" + contratoid + "]").trigger("click");
-      var clienteid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("tr[data-contrato-id=" + contratoid + "]").data('cliente-id');
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + clienteid + "]").trigger("click");
+      /*       $("tr[data-contrato-id=" + contratoid + "]").trigger("click");
+            var clienteid = $("tr[data-contrato-id=" + contratoid + "]").data('cliente-id');
+            $(".carregar_dados_cliente[data-contratoid=" + clienteid + "]").trigger("click");
+            $('.criar-chamado-form').trigger("reset");
+            $this.prop('disabled', false); */
+      var clienteid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("span#cliente-id").html();
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.criar-chamado-form').trigger("reset");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".criar-chamado-input-contrato").val(contratoid + " - " + jquery__WEBPACK_IMPORTED_MODULE_0___default()("#servico-internet-" + contratoid).html());
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".criar-chamado-input-contrato-hidden").val(contratoid);
       $this.prop('disabled', false);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#criar-chamado-modal-protocolo').foundation('close');
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + clienteid + "]").trigger("click");
     }
   });
 });
@@ -23476,11 +23507,18 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-boleto").
       }
     },
     complete: function complete(response) {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()("tr[data-contrato-id=" + contratoid + "]").trigger("click");
-      var clienteid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("tr[data-contrato-id=" + contratoid + "]").data('cliente-id');
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + clienteid + "]").trigger("click");
+      /*       $("tr[data-contrato-id=" + contratoid + "]").trigger("click");
+            var clienteid = $("tr[data-contrato-id=" + contratoid + "]").data('cliente-id');
+            $(".carregar_dados_cliente[data-contratoid=" + clienteid + "]").trigger("click");
+            $('.criar-chamado-form').trigger("reset");
+            $this.prop('disabled', false); */
+      var clienteid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("span#cliente-id").html();
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.criar-chamado-form').trigger("reset");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".criar-chamado-input-contrato").val(contratoid + " - " + jquery__WEBPACK_IMPORTED_MODULE_0___default()("#servico-internet-" + contratoid).html());
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".criar-chamado-input-contrato-hidden").val(contratoid);
       $this.prop('disabled', false);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#criar-chamado-modal-boleto').foundation('close');
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + clienteid + "]").trigger("click");
     }
   });
 });
@@ -23818,6 +23856,52 @@ function formatarTelefone(telefone) {
   if (mostrar_ddd) return ddd + telefone_;
   return telefone_;
 }
+
+function setCookie(name, value, days) {
+  var expires = "";
+
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    expires = "; expires=" + date.toUTCString();
+  }
+
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1, c.length);
+    }
+
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+
+  return null;
+}
+
+function eraseCookie(name) {
+  document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+if (lastClient) {
+  eraseCookie("lastClient");
+  setCookie("lastClient", lastClient, 1);
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").val(lastClient);
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").trigger("change");
+}
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#menu-principal").on("click", function (e) {
+  eraseCookie('lastClient');
+  lastClient = null;
+  window.location.reload();
+});
 
 /***/ }),
 
