@@ -4,7 +4,23 @@ $this->get('equipamentos', function ($data) {
   $this->core->loadModule('template')->render('equipamentos', $data);
 });
 
+$this->get('servicos', function ($data) {
+  $this->core->loadModule('template')->render('servicos', $data);
+});
+
+$this->get('testes', function ($data) {
+  $this->core->loadModule('template')->render('testes', $data);
+});
+
+$this->get('tipoequipamento', function ($data) {
+  $this->core->loadModule('template')->render('tipoequipamento', $data);
+});
+
 $this->get('pontuacao', function ($data) {
+  $this->core->loadModule('template')->render('pontuacao', $data);
+});
+
+$this->get('pontuacao/{id}', function ($data) {
   $this->core->loadModule('template')->render('pontuacao', $data);
 });
 
@@ -124,18 +140,3 @@ $this->post('pontuacao/delete', function ($data) {
   $this->core->loadModule('template')->render('pontuacao', $data, $post, 'delete');
 });
 
-$this->get('pontuacao/{id}', function ($data) {
-  $this->core->loadModule('template')->render('pontuacao', $data);
-});
-
-$this->get('servicos', function ($data) {
-  $this->core->loadModule('template')->render('servicos', $data);
-});
-
-$this->get('testes', function ($data) {
-  $this->core->loadModule('template')->render('testes', $data);
-});
-
-$this->get('tipoequipamento', function ($data) {
-  $this->core->loadModule('template')->render('tipoequipamento', $data);
-});

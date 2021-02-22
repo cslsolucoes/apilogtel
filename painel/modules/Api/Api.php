@@ -29,9 +29,7 @@ class Api {
   }
 
   public function getUserID($user) {
-    $qry = 'SELECT id
-            FROM "auth_user"
-            WHERE username = \'' . $user . '\' LIMIT 1';
+    $qry = "SELECT id FROM \"auth_user\" WHERE username = '$user' LIMIT 1";
     $sql = $this->db->query($qry);
     return $sql->fetchAll();
   }
@@ -44,17 +42,13 @@ class Api {
   }
 
   public function getUsernameByID($user_id) {
-      $qry = 'SELECT name
-              FROM "auth_user"
-              WHERE id = ' . $user_id . ' LIMIT 1';
+    $qry = "SELECT name FROM \"auth_user\" WHERE id = $user_id LIMIT 1";
     $sql = $this->db->query($qry);
     return $sql->fetchAll();
   }
 
   public function getUserByID($user_id) {
-      $qry = 'SELECT username
-              FROM "auth_user"
-              WHERE id = ' . $user_id . ' LIMIT 1';
+    $qry = "SELECT username FROM \"auth_user\" WHERE id = $user_id LIMIT 1";
     $sql = $this->db->query($qry);
     return $sql->fetchAll();
   }
@@ -67,11 +61,7 @@ class Api {
       }
     }
     if($busca['tipo'] == "internet" && is_numeric($busca['busca'])) {
-      $qry = "
-        SELECT * FROM \"dbsgp\".\"public\".\"ConsultaClienteView\"
-        WHERE cliente_id = {$busca['busca']} AND servico_internet_id IS NOT NULL
-        ORDER BY nome ASC LIMIT 10
-      ";
+      $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ConsultaClienteView\" WHERE cliente_id = {$busca['busca']} AND servico_internet_id IS NOT NULL ORDER BY nome ASC LIMIT 10";
     } else if($busca['tipo'] == 'unico' && is_numeric($busca['busca'])) {
       $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ConsultaClienteView\" WHERE cliente_id = {$busca['busca']} ORDER BY nome ASC LIMIT 10";
     } else {
@@ -89,11 +79,7 @@ class Api {
   }
 
   public function consultarOcorrencias($contrato) {
-    $qry = "
-      SELECT * FROM \"dbsgp\".\"public\".\"SuporteOcorrencias\"
-      WHERE clientecontrato_id = $contrato
-      ORDER BY data_cadastro DESC LIMIT 20
-    ";
+    $qry = "SELECT * FROM \"dbsgp\".\"public\".\"SuporteOcorrencias\" WHERE clientecontrato_id = $contrato ORDER BY data_cadastro DESC LIMIT 20";
     $sql = $this->db->query($qry);
     return $sql->fetchAll();
   }
@@ -105,9 +91,7 @@ class Api {
   }
 
   public function consultarOcorrencia($numero) {
-    $qry = "SELECT *
-    FROM \"dbsgp\".\"public\".\"SuporteOcorrencias\"
-    WHERE numero = '$numero' LIMIT 1";
+    $qry = "SELECT * FROM \"dbsgp\".\"public\".\"SuporteOcorrencias\" WHERE id = '$numero' LIMIT 1";
     $sql = $this->db->query($qry);
     return $sql->fetchAll();
   }

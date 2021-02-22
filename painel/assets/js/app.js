@@ -22673,40 +22673,24 @@ __webpack_require__(/*! ./jplist-es6.min */ "./src/assets/js/jplist-es6.min.js")
 
 __webpack_require__(/*! ./sort-table */ "./src/assets/js/sort-table.js");
 
-__webpack_require__(/*! ./color-replace.js */ "./src/assets/js/color-replace.js");
-
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).foundation();
 var preventClick = new Array(),
     interval = null,
     xhrContrato,
-    onuId = 0;
-var lastClient = getCookie('lastClient');
-
-function disableF5(e) {
-  if ((e.which || e.keyCode) == 116) {
-    e.preventDefault();
-    lastClient = getCookie('lastClient');
-    window.location.reload();
-  } else if ((e.which || e.keyCode) == 117) {
-    e.preventDefault();
-    lastClient = null;
-    eraseCookie("lastClient");
-    window.location.reload();
-  }
-}
-
-;
+    onuId = 0,
+    lastClient,
+    fttx = new Array(),
+    pppoe,
+    senhaPppoe,
+    senhaCentral;
+var busca = "";
+var xhr;
+var token = "7789c183-98c1-4667-b31f-b20931376f6f";
+var app = "ura";
+lastClient = getCookie('lastClient');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).bind("keydown", disableF5);
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", disableF5); //$(document).unbind("keydown", disableF5);
-//$(document).off("keydown", disableF5);
-
-var capitalize = function capitalize(str) {
-  var lower = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-  return (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, function (match) {
-    return match.toUpperCase();
-  });
-};
-
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).foundation();
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", disableF5);
+setTimeoutReturnMessage();
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#setor").on("change", function (e) {
   var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
@@ -22738,22 +22722,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(".edit-form .tratativa_nivel").on(
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-form-" + jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data("id") + " .tipo_os_edit").show();
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-form-" + jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data("id") + " .tipo_ocorrencia_edit").hide();
   }
-});
-setTimeout(function () {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".return-msg").show(500);
-}, 200);
-setTimeout(function () {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".return-msg").hide(500);
-}, 5000); // Pagination
+}); // Pagination
 
 jplist.init();
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(".pagination").show();
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#tabela-chamados").show();
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
-var busca = "";
-var xhr;
-var token = "7789c183-98c1-4667-b31f-b20931376f6f";
-var app = "ura";
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("click", function (e) {
   e.stopPropagation();
 
@@ -22761,11 +22735,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("click", function (
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#resultado-busca").foundation("open");
   }
 });
-
-function openModal(id) {
-  return jquery__WEBPACK_IMPORTED_MODULE_0___default()(id).foundation('open');
-}
-
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input", function (e) {
   var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
 
@@ -22774,9 +22743,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
   }
 
   busca = $this.val().toUpperCase().replace(/[^a-zA-Z0-9 çÇáÁéÉíÍóÓúÚãÃõÕ]/g, "");
-  console.log(busca);
-  console.log($this.val());
-  console.log(busca.length);
 
   if (busca.length > 3) {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
@@ -22853,7 +22819,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
           lastClient = null;
           setCookie('lastClient', $this.data("contratoid"), 1);
           lastClient = $this.data("contratoid");
-          console.log(lastClient);
           xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
             method: "POST",
             url: "api/v1/consultar_cliente",
@@ -22929,6 +22894,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
               for (var i = 0; i < response.length; i++) {
                 try {
                   var servico_internet = JSON.parse(response[i].servico_internet);
+                  pppoe = servico_internet[0].login;
+                  senhaPppoe = servico_internet[0].login_password;
+                  senhaCentral = servico_internet[0].central_password;
                   html += "\n                        <tr class=\"contrato-linha servico-internet ".concat(response[i].contrato_status, "\"\n                            data-cliente-id=\"").concat(response[i].cliente_id, "\"\n                            data-contrato-id=\"").concat(response[i].contrato_id, "\"\n                            data-internet-id=\"").concat(servico_internet[0].id, "\">\n                          <td>").concat(response[i].contrato_id, "</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: <span id=\"servico-internet-").concat(response[i].contrato_id, "\">").concat(servico_internet[0].plano, "</span> / <b>Valor</b>: ").concat(servico_internet[0].valor, "<br><b>PPPoE</b>: ").concat(servico_internet[0].login, " / <b>Senha</b>: ").concat(servico_internet[0].login_password, " / <b>Senha Central</b>: ").concat(servico_internet[0].central_password, "</td>\n                          <td><button id=\"").concat(response[i].contrato_id, "\" class=\"button small no-margin contrato_status\"></button></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td>").concat(response[i].logradouro).concat(response[i].numero ? ", " + response[i].numero : "", "<br><b>").concat(response[i].bairro, ", ").concat(response[i].cidade, "</b> - ").concat(response[i].uf).concat(response[i].complemento ? ", " + response[i].complemento : "", "</td>\n                  ");
                   xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
                     method: "POST",
@@ -22938,13 +22906,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
                     },
                     dataType: "json",
                     success: function success(chamados) {
-                      var chamadosHTML = "\n                        <table class='hover tabela-chamados' id='tabela-chamados'>\n                          <thead>\n                            <tr>\n                              <th>Protocolo</th>\n                              <th>Status</th>\n                              <th>Contrato</th>\n                              <th>Tipo</th>\n                              <th>Conte\xFAdo</th>\n                              <th>Observa\xE7\xF5es</th>\n                              <th>Cria\xE7\xE3o</th>\n                              <th>Agendado</th>\n                              <th>Encerrado</th>\n                              <th>Respons\xE1vel</th>\n                              <th>Usu\xE1rio</th>\n                              <th>OS</th>\n                            </tr>\n                          </thead>\n                          <tbody>\n                      ";
+                      var chamadosHTML = "\n                        <table class='hover tabela-chamados' id='tabela-chamados'>\n                          <thead>\n                            <tr>\n                              <th>ID</th>\n                              <th>Protocolo</th>\n                              <th>Status</th>\n                              <th>Contrato</th>\n                              <th>Tipo</th>\n                              <th>Conte\xFAdo</th>\n                              <th>Observa\xE7\xF5es</th>\n                              <th>Cria\xE7\xE3o</th>\n                              <th>Agendado</th>\n                              <th>Encerrado</th>\n                              <th>Respons\xE1vel</th>\n                              <th>Usu\xE1rio</th>\n                              <th>OS</th>\n                            </tr>\n                          </thead>\n                          <tbody>\n                      ";
 
                       for (var k = 0; k < chamados.length; k++) {
                         var data_cadastro = new Date(chamados[k].data_cadastro);
                         var data_finalizacao = new Date(chamados[k].data_finalizacao);
                         var data_agendamento = new Date(chamados[k].data_agendamento);
-                        chamadosHTML += "\n                        <tr>\n                          <td class=\"protocolo-chamado\">\n                            <div style=\"position:relative\" class=\"protocolo\">\n                              <p class=\"button no-margin primary small copy_button_no_style\" data-copy=\"".concat(chamados[k].numero, "\">").concat(chamados[k].numero, "</p>\n                            </div>\n                          </td>\n                        ");
+                        chamadosHTML += "\n                        <tr>\n                          <td class=\"chamado-id\">\n                            <div style=\"position:relative\" class=\"chamado_id\">\n                              <p class=\"button no-margin alert small copy_button_no_style\" data-copy=\"".concat(chamados[k].id, "\">").concat(chamados[k].id, "</p>\n                            </div>\n                          </td>\n                          <td class=\"protocolo-chamado\">\n                            <div style=\"position:relative\" class=\"protocolo\">\n                              <p class=\"button no-margin primary small copy_button_no_style\" data-copy=\"").concat(chamados[k].numero, "\">").concat(chamados[k].numero, "</p>\n                            </div>\n                          </td>\n                        ");
 
                         if (chamados[k].situacao == "Encerrada") {
                           chamadosHTML += "\n                            <td>".concat(chamados[k].situacao ? '<b class="ocorrencia-encerrada">' + chamados[k].situacao + "</b>" : "", "</td>\n                          ");
@@ -23088,9 +23056,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
               for (var i = 0; i < response.length; i++) {
                 if (response[i].contrato_id == contratoId) {
                   try {
-                    var fttx = JSON.parse(response[i].fttx);
+                    fttx = JSON.parse(response[i].fttx);
                     onuId = fttx[0].onu_id;
-                    var fttxHTML = "\n                      <p><b>ID</b>: ".concat(fttx[0].onu_id, "</p>\n                      <p><b>OLT</b>: ").concat(fttx[0].name, "</p>\n                      <p><b>Modelo OLT</b>: ").concat(fttx[0].olttype, "</p>\n                      <p><b>Slot</b>: ").concat(fttx[0].slot, "</p>\n                      <p><b>PON</b>: ").concat(fttx[0].pon, "</p>\n                      <p><b>VLAN</b>: ").concat(fttx[0].vlan, "</p>\n                      <p><b>ONU/ONT ID</b>: ").concat(fttx[0].onuid, "</p>\n                      <p><b>Modo</b>: ").concat(fttx[0].mode, "</p>\n                      <p><b>Physical Address</b>: ").concat(fttx[0].phy_addr, "</p>\n                      <p><b>Tipo da ONU</b>: ").concat(fttx[0].onutype, "</p>\n                      <p><b>Descri\xE7\xE3o</b>: ").concat(fttx[0].description ? fttx[0].description : "Nenhuma", "</p>\n                    ");
+                    var fttxHTML = "\n                      <p><b>ID</b>: ".concat(fttx[0].onu_id, "</p>\n                      <p><b>OLT</b>: ").concat(fttx[0].name, "</p>\n                      <p><b>Modelo OLT</b>: ").concat(fttx[0].olttype, "</p>\n                      <p><b>Slot</b>: ").concat(fttx[0].slot, "</p>\n                      <p><b>PON</b>: ").concat(fttx[0].pon, "</p>\n                      <p><b>VLAN</b>: ").concat(fttx[0].vlan, "</p>\n                      <p><b>ONU/ONT ID</b>: ").concat(fttx[0].onuid, "</p>\n                      <p><b>Modo</b>: ").concat(fttx[0].mode, "</p>\n                      <p id=\"phys_address\"><b>Physical Address</b>: ").concat(fttx[0].phy_addr, "</p>\n                      <p><b>Tipo da ONU</b>: ").concat(fttx[0].onutype, "</p>\n                      <p><b>Descri\xE7\xE3o</b>: ").concat(fttx[0].description ? fttx[0].description : "Nenhuma", "</p>\n                    ");
                     jquery__WEBPACK_IMPORTED_MODULE_0___default()(".msg-insert").html(fttxHTML);
                     jquery__WEBPACK_IMPORTED_MODULE_0___default()(".chat-box").css("display", "block");
                     var data = {
@@ -23154,7 +23122,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
             },
             dataType: "json",
             success: function success(response) {
-              var statusHTML = "\n                <div class=\"card\">\n                  <div class=\"header\">\n                    ".concat(response.statusHtml, "\n                    <div class=\"status-internet-acoes\" data-contrato-id=\"").concat(internetId, "\">\n                      <a href=\"http://201.87.240.202:8000/admin/servicos/internet/").concat(internetId, "/disconnect/\" target=\"_blank\"><button class=\"button alert\">Desconectar</button></a>\n                      <a href=\"http://201.87.240.202:8000/admin/network/onu/").concat(onuId, "/reset/\" target=\"_blank\"><button class=\"button warning\">Reiniciar ONU</button></a>\n                      <a href=\"http://201.87.240.202:8000/admin/servicos/internet/").concat(internetId, "/radiuslog/\" target=\"_blank\"><button class=\"button secondary\">Log</button></a>\n                    </div>\n                  </div>\n                </div>\n              ");
+              var phys_address = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#phys_address").html();
+              var statusHTML = "\n                <div class=\"card\">\n                  <div class=\"header\">\n                    ".concat(response.statusHtml, "\n                    <br>\n              ");
+
+              try {
+                statusHTML += "\n                  Physical Address: ".concat(fttx[0].phy_addr, "\n                  <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar Physical Address\" data-copy=\"").concat(fttx[0].phy_addr, "\">\n                    <i class=\"fi fi-page-copy\"></i>\n                  </button>\n                  <br>\n                ");
+                statusHTML += "\n                  PPPoE: ".concat(pppoe, "\n                  <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar PPPoE\" data-copy=\"").concat(pppoe, "\">\n                    <i class=\"fi fi-page-copy\"></i>\n                  </button>\n                  <br>\n                ");
+                statusHTML += "\n                  Senha PPPoE: ".concat(senhaPppoe, "\n                  <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar Senha PPPoE\" data-copy=\"").concat(senhaPppoe, "\">\n                    <i class=\"fi fi-page-copy\"></i>\n                  </button>\n                  <br>\n                ");
+                statusHTML += "\n                  Senha Central: ".concat(senhaCentral, "\n                  <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar Senha PPPoE\" data-copy=\"").concat(senhaCentral, "\">\n                    <i class=\"fi fi-page-copy\"></i>\n                  </button>\n                  <br>\n                ");
+              } catch (e) {}
+
+              statusHTML += "\n                    <div class=\"status-internet-acoes\" data-contrato-id=\"".concat(internetId, "\">\n                      <a href=\"http://201.87.240.202:8000/admin/servicos/internet/").concat(internetId, "/disconnect/\" target=\"_blank\"><button class=\"button alert\">Desconectar</button></a>\n                      <a href=\"http://201.87.240.202:8000/admin/network/onu/").concat(onuId, "/reset/\" target=\"_blank\"><button class=\"button warning\">Reiniciar ONU</button></a>\n                      <a href=\"http://201.87.240.202:8000/admin/servicos/internet/").concat(internetId, "/radiuslog/\" target=\"_blank\"><button class=\"button secondary\">Log</button></a>\n                    </div>\n                  </div>\n                </div>\n              ");
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-contrato").html('');
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-contrato").html(statusHTML);
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#consumo-internet .card .card-divider").html("\n                <p>\n                  <b>Consumo</b> - <span class=\"primary-color\">Download: <b>".concat(response.consumoDownload, "</b> / Upload: <b>").concat(response.consumoUpload, "</b></span>\n                </p>\n              "));
@@ -23199,7 +23177,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
                   dataType: "json",
                   success: function success(response) {
                     var internetId = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".status-internet-acoes").attr("data-contrato-id");
-                    var statusHTML = "\n                      <div class=\"card\">\n                        <div class=\"header\">\n                          ".concat(response.statusHtml, "\n                          <div class=\"status-internet-acoes\" data-contrato-id=\"").concat(internetId, "\">\n                            <a href=\"http://201.87.240.202:8000/admin/servicos/internet/").concat(internetId, "/disconnect/\" target=\"_blank\"><button class=\"button alert\">Desconectar</button></a>\n                            <a href=\"http://201.87.240.202:8000/admin/network/onu/").concat(onuId, "/reset/\" target=\"_blank\"><button class=\"button warning\">Reiniciar ONU</button></a>\n                            <a href=\"http://201.87.240.202:8000/admin/servicos/internet/").concat(internetId, "/radiuslog/\" target=\"_blank\"><button class=\"button secondary\">Log</button></a>\n                          </div>\n                        </div>\n                      </div>\n                    ");
+                    var statusHTML = "\n                      <div class=\"card\">\n                        <div class=\"header\">\n                          ".concat(response.statusHtml, "\n                          <br>\n                    ");
+
+                    try {
+                      statusHTML += "\n                      Physical Address: ".concat(fttx[0].phy_addr, "\n                      <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar Physical Address\" data-copy=\"").concat(fttx[0].phy_addr, "\">\n                        <i class=\"fi fi-page-copy\"></i>\n                      </button>\n                      <br>\n                    ");
+                      statusHTML += "\n                      PPPoE: ".concat(pppoe, "\n                      <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar PPPoE\" data-copy=\"").concat(pppoe, "\">\n                        <i class=\"fi fi-page-copy\"></i>\n                      </button>\n                      <br>\n                    ");
+                      statusHTML += "\n                      Senha PPPoE: ".concat(senhaPppoe, "\n                      <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar Senha PPPoE\" data-copy=\"").concat(senhaPppoe, "\">\n                        <i class=\"fi fi-page-copy\"></i>\n                      </button>\n                      <br>\n                    ");
+                      statusHTML += "\n                      Senha Central: ".concat(senhaCentral, "\n                      <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar Senha PPPoE\" data-copy=\"").concat(senhaCentral, "\">\n                        <i class=\"fi fi-page-copy\"></i>\n                      </button>\n                      <br>\n                    ");
+                    } catch (e) {}
+
+                    statusHTML += "\n                          <div class=\"status-internet-acoes\" data-contrato-id=\"".concat(internetId, "\">\n                            <a href=\"http://201.87.240.202:8000/admin/servicos/internet/").concat(internetId, "/disconnect/\" target=\"_blank\"><button class=\"button alert\">Desconectar</button></a>\n                            <a href=\"http://201.87.240.202:8000/admin/network/onu/").concat(onuId, "/reset/\" target=\"_blank\"><button class=\"button warning\">Reiniciar ONU</button></a>\n                            <a href=\"http://201.87.240.202:8000/admin/servicos/internet/").concat(internetId, "/radiuslog/\" target=\"_blank\"><button class=\"button secondary\">Log</button></a>\n                          </div>\n                        </div>\n                      </div>\n                    ");
                     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-contrato").html('');
                     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-contrato").html(statusHTML);
                     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#" + contratoId).html(response.statusConexao);
@@ -23240,7 +23227,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
                 dataType: "json",
                 success: function success(response) {
                   var clienteId = jquery__WEBPACK_IMPORTED_MODULE_0___default()("tr#servico-internet").attr("data-internet-id");
-                  var statusHTML = "\n                    <div class=\"card\">\n                      <div class=\"header\">\n                        ".concat(response.statusHtml, "\n                        <div class=\"status-internet-acoes\">\n                          <a href=\"http://201.87.240.202:8000/admin/servicos/internet/").concat(clienteId, "/disconnect/\" target=\"_blank\"><button class=\"button alert\">Desconectar</button></a>\n                          <a href=\"http://201.87.240.202:8000/admin/network/onu/").concat(onuId, "/reset/\" target=\"_blank\"><button class=\"button warning\">Reiniciar ONU</button></a>\n                          <a href=\"http://201.87.240.202:8000/admin/servicos/internet/").concat(clienteId, "/radiuslog/\" target=\"_blank\"><button class=\"button secondary\">Log</button></a>\n                        </div>\n                      </div>\n                    </div>\n                  ");
+                  var statusHTML = "\n                    <div class=\"card\">\n                      <div class=\"header\">\n                        ".concat(response.statusHtml, "\n                  ");
+
+                  try {
+                    statusHTML += "\n                    Physical Address: ".concat(fttx[0].phy_addr, "\n                    <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar Physical Address\" data-copy=\"").concat(fttx[0].phy_addr, "\">\n                      <i class=\"fi fi-page-copy\"></i>\n                    </button>\n                    <br>\n                  ");
+                    statusHTML += "\n                    PPPoE: ".concat(pppoe, "\n                    <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar PPPoE\" data-copy=\"").concat(pppoe, "\">\n                      <i class=\"fi fi-page-copy\"></i>\n                    </button>\n                    <br>\n                  ");
+                    statusHTML += "\n                    Senha PPPoE: ".concat(senhaPppoe, "\n                    <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar Senha PPPoE\" data-copy=\"").concat(senhaPppoe, "\">\n                      <i class=\"fi fi-page-copy\"></i>\n                    </button>\n                    <br>\n                  ");
+                    statusHTML += "\n                    Senha Central: ".concat(senhaCentral, "\n                    <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar Senha PPPoE\" data-copy=\"").concat(senhaCentral, "\">\n                      <i class=\"fi fi-page-copy\"></i>\n                    </button>\n                    <br>\n                  ");
+                  } catch (e) {}
+
+                  statusHTML += "\n                        <div class=\"status-internet-acoes\">\n                          <a href=\"http://201.87.240.202:8000/admin/servicos/internet/".concat(clienteId, "/disconnect/\" target=\"_blank\"><button class=\"button alert\">Desconectar</button></a>\n                          <a href=\"http://201.87.240.202:8000/admin/network/onu/").concat(onuId, "/reset/\" target=\"_blank\"><button class=\"button warning\">Reiniciar ONU</button></a>\n                          <a href=\"http://201.87.240.202:8000/admin/servicos/internet/").concat(clienteId, "/radiuslog/\" target=\"_blank\"><button class=\"button secondary\">Log</button></a>\n                        </div>\n                      </div>\n                    </div>\n                  ");
                   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-contrato").html('');
                   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-contrato").html(statusHTML);
                   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#consumo-internet .card .card-divider").html("\n                    <p>\n                      <b>Consumo</b> - <span class=\"primary-color\">Download: <b>".concat(response.consumoDownload, "</b> / Upload: <b>").concat(response.consumoUpload, "</b></span>\n                    </p>\n                  "));
@@ -23283,7 +23279,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").on("click", "#tabela-chamados tr", function (e) {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
   var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
-  var numeroOcorrencia = $this.find('td.protocolo-chamado div.protocolo p').html();
+  var numeroOcorrencia = $this.find('td.chamado-id div.chamado_id p').html();
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-numero-chamado").html(numeroOcorrencia); //$("#editar-chamado").foundation('toggle');
 
   jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
@@ -23295,6 +23291,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").on("click", "#tabela-
     },
     success: function success(response) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
+      console.log(response); // Editar ocorrência
 
       if (response[0].data_agendamento) {
         jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-data-ag").val(new Date(response[0].data_agendamento).toJSON().slice(0, 19));
@@ -23307,10 +23304,27 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").on("click", "#tabela-
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('#edit-origem-ocorrencia option[value=' + response[0].metodo_id + ']').attr("selected", "selected");
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editar-chamado-status option[value=' + response[0].status + ']').attr("selected", "selected");
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editar-chamado-conteudo').val(response[0].conteudo);
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#edit-obs-ocorrencia').val(response[0].observacoes);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#edit-obs-ocorrencia').val(response[0].observacoes); // Editar OS
+
+      if (response[0].os_dataagendamento) {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-data-os").val(new Date(response[0].os_dataagendamento).toJSON().slice(0, 19));
+      }
+
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editar-os-setor option[value=' + response[0].os_setor + ']').attr("selected", "selected");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editar-os-tipo option[value=' + response[0].os_tipo + ']').attr("selected", "selected");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editar-os-status option[value=' + response[0].os_status_id + ']').attr("selected", "selected");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editar-os-motivoos option[value=' + response[0].os_motivo + ']').attr("selected", "selected");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editar-os-problema').val(response[0].os_conteudo);
+
+      if (response[0].os_responsavelid) {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editar-os-tecnico option[value=' + response[0].os_tecnico_id + ']').attr("selected", "selected");
+      }
+
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editar-os-prioridade option[value=' + response[0].os_prioridade + ']').attr("selected", "selected");
     }
   });
 });
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-contrato-suporte").on("click", function (e) {});
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-suporte").on("click", function (e) {
   var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
   $this.prop('disabled', true);
@@ -23362,13 +23376,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-suporte")
     dataType: "json",
     data: data,
     success: function success(response) {
-      console.log(data);
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
       data = null;
-      console.log(data);
-
-      if (!alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero)) {//window.location.href = window.location.href;
-      }
+      alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero);
     },
     complete: function complete(response) {
       var clienteid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("span#cliente-id").html();
@@ -23433,16 +23443,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-protocolo
     data: data,
     success: function success(response) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
-
-      if (!alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero)) {//window.location.href = window.location.href;
-      }
+      alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero);
     },
     complete: function complete(response) {
-      /*       $("tr[data-contrato-id=" + contratoid + "]").trigger("click");
-            var clienteid = $("tr[data-contrato-id=" + contratoid + "]").data('cliente-id');
-            $(".carregar_dados_cliente[data-contratoid=" + clienteid + "]").trigger("click");
-            $('.criar-chamado-form').trigger("reset");
-            $this.prop('disabled', false); */
       var clienteid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("span#cliente-id").html();
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.criar-chamado-form').trigger("reset");
       jquery__WEBPACK_IMPORTED_MODULE_0___default()(".criar-chamado-input-contrato").val(contratoid + " - " + jquery__WEBPACK_IMPORTED_MODULE_0___default()("#servico-internet-" + contratoid).html());
@@ -23505,16 +23508,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-boleto").
     data: data,
     success: function success(response) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
-
-      if (!alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero)) {//window.location.href = window.location.href;
-      }
+      alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero);
     },
     complete: function complete(response) {
-      /*       $("tr[data-contrato-id=" + contratoid + "]").trigger("click");
-            var clienteid = $("tr[data-contrato-id=" + contratoid + "]").data('cliente-id');
-            $(".carregar_dados_cliente[data-contratoid=" + clienteid + "]").trigger("click");
-            $('.criar-chamado-form').trigger("reset");
-            $this.prop('disabled', false); */
       var clienteid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("span#cliente-id").html();
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.criar-chamado-form').trigger("reset");
       jquery__WEBPACK_IMPORTED_MODULE_0___default()(".criar-chamado-input-contrato").val(contratoid + " - " + jquery__WEBPACK_IMPORTED_MODULE_0___default()("#servico-internet-" + contratoid).html());
@@ -23525,19 +23521,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-boleto").
     }
   });
 });
-/* 
-setInterval(function (e) {
-  $.ajax({
-    method: "GET",
-    url: "api/v1/consultar_ultima_ocorrencia",
-    dataType: "json",
-    success: function (response) {
-      $("#protocolo-ocorrencia").html('Protocolo: ' + response[0]['numero']);
-    }
-  });
-  $( '#iframe-log' ).attr( 'src', function ( i, val ) { if(i) return val; return null; });
-}, 7000); */
-
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-os-checkbox").on("change", function (e) {
   if (this.checked) {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-os-problema, #criar-os-status, #criar-os-tecnico, #criar-os-motivoos, #criar-os-prioridade, #criar-os-tipo, #criar-os-setor, #data-os").prop("disabled", false);
@@ -23545,8 +23528,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-os-checkbox").on("change",
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-os-problema, #criar-os-status, #criar-os-tecnico, #criar-os-motivoos, #criar-os-prioridade, #criar-os-tipo, #criar-os-setor, #data-os").prop("disabled", true);
   }
 });
-jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").on("click", "#criar-chamado", function (e) {//openModal('modal-' + $(this).find('button').data('contrato'));
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-os-checkbox").on("change", function (e) {
+  if (this.checked) {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-os-problema, #editar-os-status, #editar-os-tecnico, #editar-os-motivoos, #editar-os-prioridade, #editar-os-tipo, #editar-os-setor, #edit-data-os").prop("disabled", false);
+  } else {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-os-problema, #editar-os-status, #editar-os-tecnico, #editar-os-motivoos, #editar-os-prioridade, #editar-os-tipo, #editar-os-setor, #edit-data-os").prop("disabled", true);
+  }
 });
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").on("click", "#criar-chamado", function (e) {});
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-conteudo, #criar-os-problema").on("change keyup", function () {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-os-problema").not(jquery__WEBPACK_IMPORTED_MODULE_0___default()(this)).val(jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val());
 });
@@ -23564,19 +23553,58 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#buscar-cliente-mumo").on("click"
     type: 'POST',
     processData: false,
     contentType: 'application/json',
-    success: function success(response) {
-      console.log(response);
-      console.log(user);
-    }
+    success: function success(response) {}
   });
 });
-/*
- verifica_cpf_cnpj
- 
- Verifica se é CPF ou CNPJ
- 
- @see http://www.todoespacoonline.com/w/
-*/
+
+if (lastClient) {
+  eraseCookie("lastClient");
+  setCookie("lastClient", lastClient, 1);
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").val(lastClient);
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").trigger("change");
+}
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#menu-principal").on("click", function (e) {
+  e.preventDefault;
+  eraseCookie('lastClient');
+  lastClient = null;
+  location.href = baseURL;
+});
+
+function disableF5(e) {
+  if ((e.which || e.keyCode) == 116) {
+    e.preventDefault();
+    lastClient = getCookie('lastClient');
+    window.location.reload();
+  } else if ((e.which || e.keyCode) == 117) {
+    e.preventDefault();
+    lastClient = null;
+    eraseCookie("lastClient");
+    window.location.reload();
+  }
+}
+
+;
+
+var capitalize = function capitalize(str) {
+  var lower = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  return (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, function (match) {
+    return match.toUpperCase();
+  });
+};
+
+function setTimeoutReturnMessage() {
+  setTimeout(function () {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(".return-msg").show(500);
+  }, 200);
+  setTimeout(function () {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(".return-msg").hide(500);
+  }, 5000);
+}
+
+function openModal(id) {
+  return jquery__WEBPACK_IMPORTED_MODULE_0___default()(id).foundation('open');
+}
 
 function verifica_cpf_cnpj(valor) {
   // Garante que o valor é uma string
@@ -23593,207 +23621,103 @@ function verifica_cpf_cnpj(valor) {
     else {
         return false;
       }
-} // verifica_cpf_cnpj
-
-/*
-calc_digitos_posicoes
-
-Multiplica dígitos vezes posições
-
-@param string digitos Os digitos desejados
-@param string posicoes A posição que vai iniciar a regressão
-@param string soma_digitos A soma das multiplicações entre posições e dígitos
-@return string Os dígitos enviados concatenados com o último dígito
-*/
-
+}
 
 function calc_digitos_posicoes(digitos) {
   var posicoes = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
   var soma_digitos = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-  // Garante que o valor é uma string
-  digitos = digitos.toString(); // Faz a soma dos dígitos com a posição
-  // Ex. para 10 posições:
-  //   0    2    5    4    6    2    8    8   4
-  // x10   x9   x8   x7   x6   x5   x4   x3  x2
-  //   0 + 18 + 40 + 28 + 36 + 10 + 32 + 24 + 8 = 196
+  digitos = digitos.toString();
 
   for (var i = 0; i < digitos.length; i++) {
-    // Preenche a soma com o dígito vezes a posição
-    soma_digitos = soma_digitos + digitos[i] * posicoes; // Subtrai 1 da posição
-
-    posicoes--; // Parte específica para CNPJ
-    // Ex.: 5-4-3-2-9-8-7-6-5-4-3-2
+    soma_digitos = soma_digitos + digitos[i] * posicoes;
+    posicoes--;
 
     if (posicoes < 2) {
-      // Retorno a posição para 9
       posicoes = 9;
     }
-  } // Captura o resto da divisão entre soma_digitos dividido por 11
-  // Ex.: 196 % 11 = 9
+  }
 
-
-  soma_digitos = soma_digitos % 11; // Verifica se soma_digitos é menor que 2
+  soma_digitos = soma_digitos % 11;
 
   if (soma_digitos < 2) {
-    // soma_digitos agora será zero
     soma_digitos = 0;
   } else {
-    // Se for maior que 2, o resultado é 11 menos soma_digitos
-    // Ex.: 11 - 9 = 2
-    // Nosso dígito procurado é 2
     soma_digitos = 11 - soma_digitos;
-  } // Concatena mais um dígito aos primeiro nove dígitos
-  // Ex.: 025462884 + 2 = 0254628842
+  }
 
-
-  var cpf = digitos + soma_digitos; // Retorna
-
+  var cpf = digitos + soma_digitos;
   return cpf;
-} // calc_digitos_posicoes
-
-/*
-Valida CPF
-
-Valida se for CPF
-
-@param  string cpf O CPF com ou sem pontos e traço
-@return bool True para CPF correto - False para CPF incorreto
-*/
-
+}
 
 function valida_cpf(valor) {
-  // Garante que o valor é uma string
-  valor = valor.toString(); // Remove caracteres inválidos do valor
-
-  valor = valor.replace(/[^0-9]/g, ""); // Captura os 9 primeiros dígitos do CPF
-  // Ex.: 02546288423 = 025462884
-
-  var digitos = valor.substr(0, 9); // Faz o cálculo dos 9 primeiros dígitos do CPF para obter o primeiro dígito
-
-  var novo_cpf = calc_digitos_posicoes(digitos); // Faz o cálculo dos 10 dígitos do CPF para obter o último dígito
-
-  var novo_cpf = calc_digitos_posicoes(novo_cpf, 11); // Verifica se o novo CPF gerado é idêntico ao CPF enviado
+  valor = valor.toString();
+  valor = valor.replace(/[^0-9]/g, "");
+  var digitos = valor.substr(0, 9);
+  var novo_cpf = calc_digitos_posicoes(digitos);
+  var novo_cpf = calc_digitos_posicoes(novo_cpf, 11);
 
   if (novo_cpf === valor) {
-    // CPF válido
     return true;
   } else {
-    // CPF inválido
     return false;
   }
-} // valida_cpf
-
-/*
-valida_cnpj
-
-Valida se for um CNPJ
-
-@param string cnpj
-@return bool true para CNPJ correto
-*/
-
+}
 
 function valida_cnpj(valor) {
-  // Garante que o valor é uma string
-  valor = valor.toString(); // Remove caracteres inválidos do valor
-
-  valor = valor.replace(/[^0-9]/g, ""); // O valor original
-
-  var cnpj_original = valor; // Captura os primeiros 12 números do CNPJ
-
-  var primeiros_numeros_cnpj = valor.substr(0, 12); // Faz o primeiro cálculo
-
-  var primeiro_calculo = calc_digitos_posicoes(primeiros_numeros_cnpj, 5); // O segundo cálculo é a mesma coisa do primeiro, porém, começa na posição 6
-
-  var segundo_calculo = calc_digitos_posicoes(primeiro_calculo, 6); // Concatena o segundo dígito ao CNPJ
-
-  var cnpj = segundo_calculo; // Verifica se o CNPJ gerado é idêntico ao enviado
+  valor = valor.toString();
+  valor = valor.replace(/[^0-9]/g, "");
+  var cnpj_original = valor;
+  var primeiros_numeros_cnpj = valor.substr(0, 12);
+  var primeiro_calculo = calc_digitos_posicoes(primeiros_numeros_cnpj, 5);
+  var segundo_calculo = calc_digitos_posicoes(primeiro_calculo, 6);
+  var cnpj = segundo_calculo;
 
   if (cnpj === cnpj_original) {
     return true;
-  } // Retorna falso por padrão
-
+  }
 
   return false;
-} // valida_cnpj
-
-/*
-valida_cpf_cnpj
-
-Valida o CPF ou CNPJ
-
-@access public
-@return bool true para válido, false para inválido
-*/
-
+}
 
 function valida_cpf_cnpj(valor) {
-  // Verifica se é CPF ou CNPJ
-  var valida = verifica_cpf_cnpj(valor); // Garante que o valor é uma string
-
-  valor = valor.toString(); // Remove caracteres inválidos do valor
-
-  valor = valor.replace(/[^0-9]/g, ""); // Valida CPF
+  var valida = verifica_cpf_cnpj(valor);
+  valor = valor.toString();
+  valor = valor.replace(/[^0-9]/g, "");
 
   if (valida === "CPF") {
-    // Retorna true para cpf válido
     return valida_cpf(valor);
-  } // Valida CNPJ
-  else if (valida === "CNPJ") {
-      // Retorna true para CNPJ válido
-      return valida_cnpj(valor);
-    } // Não retorna nada
-    else {
-        return false;
-      }
-} // valida_cpf_cnpj
-
-/*
-formata_cpf_cnpj
-
-Formata um CPF ou CNPJ
-
-@access public
-@return string CPF ou CNPJ formatado
-*/
-
+  } else if (valida === "CNPJ") {
+    return valida_cnpj(valor);
+  } else {
+    return false;
+  }
+}
 
 function formata_cpf_cnpj(valor) {
-  // O valor formatado
-  var formatado = false; // Verifica se é CPF ou CNPJ
-
-  var valida = verifica_cpf_cnpj(valor); // Garante que o valor é uma string
-
-  valor = valor.toString(); // Remove caracteres inválidos do valor
-
-  valor = valor.replace(/[^0-9]/g, ""); // Valida CPF
+  var formatado = false;
+  var valida = verifica_cpf_cnpj(valor);
+  valor = valor.toString();
+  valor = valor.replace(/[^0-9]/g, "");
 
   if (valida === "CPF") {
-    // Verifica se o CPF é válido
     if (valida_cpf(valor)) {
-      // Formata o CPF ###.###.###-##
       formatado = valor.substr(0, 3) + ".";
       formatado += valor.substr(3, 3) + ".";
       formatado += valor.substr(6, 3) + "-";
       formatado += valor.substr(9, 2) + "";
     }
-  } // Valida CNPJ
-  else if (valida === "CNPJ") {
-      // Verifica se o CNPJ é válido
-      if (valida_cnpj(valor)) {
-        // Formata o CNPJ ##.###.###/####-##
-        formatado = valor.substr(0, 2) + ".";
-        formatado += valor.substr(2, 3) + ".";
-        formatado += valor.substr(5, 3) + "/";
-        formatado += valor.substr(8, 4) + "-";
-        formatado += valor.substr(12, 14) + "";
-      }
-    } // Retorna o valor
-
+  } else if (valida === "CNPJ") {
+    if (valida_cnpj(valor)) {
+      formatado = valor.substr(0, 2) + ".";
+      formatado += valor.substr(2, 3) + ".";
+      formatado += valor.substr(5, 3) + "/";
+      formatado += valor.substr(8, 4) + "-";
+      formatado += valor.substr(12, 14) + "";
+    }
+  }
 
   return formatado;
-} // formata_cpf_cnpj
-
+}
 
 function dateFormat(date) {
   var formattedDate = new Date(parseDate(date));
@@ -23814,8 +23738,7 @@ function parseDate(input) {
 
 function fallbackCopyTextToClipboard(text) {
   var textArea = document.createElement("textarea");
-  textArea.value = text; // Avoid scrolling to bottom
-
+  textArea.value = text;
   textArea.style.top = "0";
   textArea.style.left = "0";
   textArea.style.position = "fixed";
@@ -23892,30 +23815,6 @@ function getCookie(name) {
 function eraseCookie(name) {
   document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
-
-if (lastClient) {
-  eraseCookie("lastClient");
-  setCookie("lastClient", lastClient, 1);
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").val(lastClient);
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").trigger("change");
-}
-
-jquery__WEBPACK_IMPORTED_MODULE_0___default()("#menu-principal").on("click", function (e) {
-  eraseCookie('lastClient');
-  lastClient = null;
-  window.location.reload();
-});
-
-/***/ }),
-
-/***/ "./src/assets/js/color-replace.js":
-/*!****************************************!*\
-  !*** ./src/assets/js/color-replace.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
 
 /***/ }),
 

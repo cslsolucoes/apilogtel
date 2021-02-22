@@ -280,9 +280,9 @@
               <div class="medium-3 cell">
                 <button class="button primary" id="editar-chamado-contrato-suporte" data-close data-clienteid data-contratoid data-userid="edit-<?= $_SESSION['userid'] ?>">Salvar</button>
               </div>
-              <div class="medium-3 cell">
+              <div class="medium-5 cell">
                 <input type="checkbox" name="editar-os-checkbox" id="editar-os-checkbox">
-                <label for="editar-os-checkbox">Criar OS</label>
+                <label for="editar-os-checkbox">Editar ou Criar OS</label>
               </div>
               <div class="medium-5 cell">
                 <input type="hidden" name="protocolo-checkbox" id="edit-protocolo-checkbox" value="false">
