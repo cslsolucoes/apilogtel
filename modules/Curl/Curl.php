@@ -48,8 +48,8 @@ class Curl {
     }
 
     $masterToken = $this->api['token'];
-    $address = "http://{$this->api['ip']}:{$this->api['port']}/api/ura/" . $uri;
-    $address_dest = "http://{$this->api['ip']}:{$this->api['port']}/api/ura/" . $uri;
+    $address = "http://{$this->api['ip']}:{$this->api['port']}{$_SERVER['REQUEST_URI']}";
+    $address_dest = "http://{$this->api['ip']}:{$this->api['port']}{$_SERVER['REQUEST_URI']}";
     $address_local = "http://{$_SERVER['HTTP_HOST']}/" . $uri;
 
     $address_dest_array = explode('?', $address_dest);
