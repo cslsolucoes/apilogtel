@@ -23122,7 +23122,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
             },
             dataType: "json",
             success: function success(response) {
-              var phys_address = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#phys_address").html();
               var statusHTML = "\n                <div class=\"card\">\n                  <div class=\"header\">\n                    ".concat(response.statusHtml, "\n                    <br>\n              ");
 
               try {
@@ -23227,7 +23226,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
                 dataType: "json",
                 success: function success(response) {
                   var clienteId = jquery__WEBPACK_IMPORTED_MODULE_0___default()("tr#servico-internet").attr("data-internet-id");
-                  var statusHTML = "\n                    <div class=\"card\">\n                      <div class=\"header\">\n                        ".concat(response.statusHtml, "\n                  ");
+                  var statusHTML = "\n                    <div class=\"card\">\n                      <div class=\"header\">\n                        ".concat(response.statusHtml, "\n                        <br>\n                  ");
 
                   try {
                     statusHTML += "\n                    Physical Address: ".concat(fttx[0].phy_addr, "\n                    <button class=\"button copy_button copy_button_primary_status\" title=\"Copiar Physical Address\" data-copy=\"").concat(fttx[0].phy_addr, "\">\n                      <i class=\"fi fi-page-copy\"></i>\n                    </button>\n                    <br>\n                  ");
