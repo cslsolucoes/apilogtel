@@ -7,5 +7,4 @@ dist
 .cache
 .idea
 .vscode
-.htaccess
 config.php
