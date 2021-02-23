@@ -311,7 +311,7 @@ class Api {
   public function validarQualifica($dados, $show_all = false) {
     $token = $dados['token'];
     $app = $dados['app'];
-    if($show_all == false) {
+    if($show_all == true) {
       $dados['senha'] = '';
     }
     if($this->checkToken($token, $app)) {
