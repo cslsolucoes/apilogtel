@@ -49,7 +49,7 @@ class Api {
           'statusCode' => 200
         );
         $response = json_encode($response);
-        echo $response;
+        echo $response . '';
         $query = "
           INSERT INTO adm_api_log (cliente_id, uri_origem, uri_destino, body_origem, body_destino, response_origem, response_destino, ip_origem, ip_destino)
           VALUES ($id, '$address_local', '', '$body', '', '$response', '', '{$_SERVER['SERVER_ADDR']}', '{$_SERVER['REMOTE_ADDR']}')
