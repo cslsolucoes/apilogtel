@@ -79,9 +79,7 @@ class Api {
       );
     }
     $response = json_encode($response);
-    var_dump($body);
-    var_dump($id);
-    var_dump($_SERVER['SERVER_ADDR']);
+    $body = json_encode($body);
     $query = "
       INSERT INTO adm_api_log (cliente_id, uri_origem, uri_destino, body_origem, body_destino, response_origem, response_destino, ip_origem, ip_destino)
       VALUES ($id, '', '', '$body', '', '$response', '', '{$_SERVER['SERVER_ADDR']}', '{$_SERVER['REMOTE_ADDR']}')
