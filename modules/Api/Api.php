@@ -60,7 +60,7 @@ class Api {
         $id = $user;
         $response = array(
           'msg' => 'user not provided and/or is incorrect',
-          'error' => 'true',
+          'error' => '10002',
           'user' => $id,
           'cpf' => '',
           'statusCode' => 403
@@ -72,7 +72,7 @@ class Api {
     } else {
       $response = array(
         'msg' => 'user not provided and/or is incorrect',
-        'error' => 'true',
+        'error' => '10001',
         'user' => $user,
         'cpf' => '',
         'statusCode' => 403

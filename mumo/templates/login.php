@@ -7,7 +7,7 @@ if($checkUser->checkUser($data[0], $data[1], $data[2])) {
 } else {
   $response = array(
     'msg' => 'user not provided and/or is incorrect',
-    'error' => 'true',
+    'error' => '10003',
     'user' => $data[0],
     'cpf' => '',
     'statusCode' => 403
