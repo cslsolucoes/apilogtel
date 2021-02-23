@@ -311,7 +311,7 @@ class Api {
   public function validarQualifica($dados) {
     $dados['cpfcnpj'] = $this->validator->formata($dados['cpfcnpj']);
     $qry = "SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaQualifica\"('" . $dados['cpfcnpj'] . "', '" . $dados['cpfcnpj'] . "')";
-    $sql = $this->db->query($qry);
+    $sql = $this->db->queryErp($qry);
     $array = $sql->fetchAll();
     return $array;
   }
