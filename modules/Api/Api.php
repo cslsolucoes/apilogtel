@@ -308,7 +308,7 @@ class Api {
     return json_encode(explode(":", curl_exec($ch)));
   }
 
-  public function validarQualifica($dados) {
+  public function validarQualifica($dados, $show_all = false) {
     $token = $dados['token'];
     $app = $dados['app'];
     if($this->checkToken($token, $app)) {
@@ -317,6 +317,22 @@ class Api {
       $sql = $this->db->queryErp($qry);
       $array = $sql->fetchAll();
       if($array[0]['mensagem'] == "True") {
+        if($show_all) {
+          $contratos = '';
+          $razaoSocial = '';
+          $nome = '';
+          $emails = array();
+          $contratoStatus = 1;
+          $response = array(
+            'contratos' => $contratos,
+            'razaoSocial' => $razaoSocial,
+            'nome' => $nome,
+            'emails' => $emails,
+            'contratoStatus' => $contratoStatus,
+            'planointernet' => $array
+          );
+          return $response;
+        }
         return array('auth' => true);
       }
     }

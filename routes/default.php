@@ -49,6 +49,13 @@ $this->post('api/central/contratos', function($data) {
   }
 });
 
+$this->post('api/ura/consultacliente', function($data) {
+  extract($_POST);
+  if(isset($cpfcnpj) && $cpfcnpj) {
+    $this->core->loadModule('template')->render('qualifica_consulta', $_POST);
+  }
+});
+
 $this->get('{uri}', function ($data) {
   $this->core->loadModule('template')->render('api', $data);
 });
