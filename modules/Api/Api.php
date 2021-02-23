@@ -319,23 +319,23 @@ class Api {
       $qry = "SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaQualifica\"('" . $dados['cpfcnpj'] . "', '" . $dados['senha'] . "')";
       $sql = $this->db->queryErp($qry);
       $array = $sql->fetchAll();
+      if($show_all) {
+        $contratos = '';
+        $razaoSocial = '';
+        $nome = '';
+        $emails = array();
+        $contratoStatus = 1;
+        $response = array(
+          'contratos' => $contratos,
+          'razaoSocial' => $razaoSocial,
+          'nome' => $nome,
+          'emails' => $emails,
+          'contratoStatus' => $contratoStatus,
+          'planointernet' => $array
+        );
+        return $response;
+      }
       if($array[0]['mensagem'] == "True") {
-        if($show_all) {
-          $contratos = '';
-          $razaoSocial = '';
-          $nome = '';
-          $emails = array();
-          $contratoStatus = 1;
-          $response = array(
-            'contratos' => $contratos,
-            'razaoSocial' => $razaoSocial,
-            'nome' => $nome,
-            'emails' => $emails,
-            'contratoStatus' => $contratoStatus,
-            'planointernet' => $array
-          );
-          return $response;
-        }
         return array('auth' => true);
       }
     }
