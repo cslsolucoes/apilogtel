@@ -307,4 +307,9 @@ class Api {
     curl_close($ch);
     return json_encode(explode(":", curl_exec($ch)));
   }
+
+  public function validarQualifica($dados) {
+    $dados['cpfcnpj'] = $this->validator->formata($dados['cpfcnpj']);
+    return array('auth' => $dados['cpfcnpj']);
+  }
 }

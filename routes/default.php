@@ -42,6 +42,13 @@ $this->post('login', function () {
   }
 });
 
+$this->post('api/central/contratos', function($data) {
+  extract($_POST);
+  if(isset($cpfcnpj) && $cpfcnpj && isset($senha) && $senha) {
+    $this->core->loadModule('template')->render('qualifica', $_POST);
+  }
+});
+
 $this->get('{uri}', function ($data) {
   $this->core->loadModule('template')->render('api', $data);
 });
