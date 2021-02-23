@@ -13,14 +13,14 @@ class Api {
       return $inst;
   }
 
-  public function checkToken($token) {
-    $query = "SELECT cliente_id FROM adm_token WHERE token = '$token'";
+  public function checkToken($token, $app = NULL) {
+    $query = "SELECT cliente_id FROM adm_token WHERE token = '$token' AND description = '$app'";
     $sql = $this->db->queryLocal($query);
     $result = $sql->fetchAll();
     if(count($result) > 0) {
-      return $result[0]['cliente_id'];
+      return true;
     } else {
-      return false;
+      return NULL;
     }
   }
 
@@ -309,11 +309,17 @@ class Api {
   }
 
   public function validarQualifica($dados) {
-    $dados['cpfcnpj'] = $this->validator->formata($dados['cpfcnpj']);
-    $qry = "SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaQualifica\"('" . $dados['cpfcnpj'] . "', '" . $dados['senha'] . "')";
-    $sql = $this->db->queryErp($qry);
-    $array = $sql->fetchAll();
-    $array[] = $qry;
-    return $array;
+    $token = $dados['token'];
+    $app = $dados['app'];
+    if($this->checkToken($token, $app)) {
+      $dados['cpfcnpj'] = $this->validator->formata($dados['cpfcnpj']);
+      $qry = "SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaQualifica\"('" . $dados['cpfcnpj'] . "', '" . $dados['senha'] . "')";
+      $sql = $this->db->queryErp($qry);
+      $array = $sql->fetchAll();
+      if($array[0]['mensagem'] == "True") {
+        return array('auth' => true);
+      }
+    }
+    return array();
   }
 }
