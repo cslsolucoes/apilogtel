@@ -313,7 +313,7 @@ class Api {
     $qry = "SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaQualifica\"('" . $dados['cpfcnpj'] . "', '" . $dados['cpfcnpj'] . "')";
     $sql = $this->db->queryErp($qry);
     $array = $sql->fetchAll();
-    $array[] = array('query' => $qry);
+    $array[] = $qry;
     return $array;
   }
 }
