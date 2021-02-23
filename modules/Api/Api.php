@@ -320,18 +320,18 @@ class Api {
       $sql = $this->db->queryErp($qry);
       $array = $sql->fetchAll();
       if($show_all) {
-        $contratos = '';
-        $razaoSocial = '';
-        $nome = '';
-        $emails = array();
-        $contratoStatus = 1;
+        $contratos = $array[0]['contrato_id'];
+        $razaoSocial = $array[0]['nome'];
+        $nome = $array[0]['nome'];
+        $emails = $array[0]['contato'];
+        $contratoStatus = $array[0]['status'];
         $response = array(
           'contratos' => $contratos,
           'razaoSocial' => $razaoSocial,
           'nome' => $nome,
           'emails' => $emails,
           'contratoStatus' => $contratoStatus,
-          'planointernet' => $array
+          'planointernet' => NULL
         );
         return $response;
       }
