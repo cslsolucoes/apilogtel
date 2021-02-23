@@ -311,6 +311,9 @@ class Api {
   public function validarQualifica($dados, $show_all = false) {
     $token = $dados['token'];
     $app = $dados['app'];
+    if($show_all == false) {
+      $dados['senha'] = '';
+    }
     if($this->checkToken($token, $app)) {
       $dados['cpfcnpj'] = $this->validator->formata($dados['cpfcnpj']);
       $qry = "SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaQualifica\"('" . $dados['cpfcnpj'] . "', '" . $dados['senha'] . "')";
