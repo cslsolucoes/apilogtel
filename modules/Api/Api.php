@@ -310,6 +310,9 @@ class Api {
 
   public function validarQualifica($dados) {
     $dados['cpfcnpj'] = $this->validator->formata($dados['cpfcnpj']);
-    return array('auth' => $dados['cpfcnpj']);
+    $qry = "SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaQualifica\"('" . $dados['cpfcnpj'] . "', '" . $dados['cpfcnpj'] . "')";
+    $sql = $this->db->query($qry);
+    $array = $sql->fetchAll();
+    return $array;
   }
 }
