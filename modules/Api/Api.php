@@ -309,8 +309,8 @@ class Api {
   }
 
   public function validarQualifica($dados, $show_all = false) {
-    $token = $dados['token'];
-    $app = $dados['app'];
+    $token = "0984dab0-af86-47cd-b0e1-ef66030a3212";
+    $app = "qualifica";
     if($show_all == true) {
       $dados['senha'] = '';
     }
