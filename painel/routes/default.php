@@ -64,6 +64,7 @@ $this->loadRouteFile('api/consultar_ocorrencia');
 $this->loadRouteFile('api/enviar_fatura');
 $this->loadRouteFile('api/promessa_pagamento');
 $this->loadRouteFile('api/testar_mumo');
+$this->loadRouteFile('api/consultar_fabricante_mac');
 
 // Log de conexão
 // http://201.87.240.202:8000/admin/servicos/internet/38288/radiuslog/

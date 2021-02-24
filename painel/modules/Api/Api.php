@@ -404,4 +404,24 @@ class Api {
     $result = array('status' => $obj->status, 'protocolo' => $obj->protocolo);
     return $result;
   }
+
+  public function consultarFabricanteMac($dados) {
+    $url = "https://api.macvendors.com/" . urlencode($dados);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_VERBOSE, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FAILONERROR, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    
+    $response = curl_exec($ch);
+    if($response) {
+      return json_encode(array('vendor' => $response));
+    } else {
+      return json_encode(array('vendor' => 'Não identificado'));
+    }
+  }
 }
