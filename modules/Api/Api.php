@@ -339,8 +339,8 @@ class Api {
         );
         $contratosArray = json_encode($contratosArray);
         $contratosArray = json_decode($contratosArray);
-        foreach($contratosArray as $value) {
-          $contratosArrayValues[] = $value;
+        foreach($contratosArray as $key => $value) {
+          $contratosArrayValues[$key] = $value;
         }
         $response = array(
           'contratos' => $contratosArrayValues
