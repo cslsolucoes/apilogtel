@@ -1,34 +1,39 @@
 <?php
-class Api {
-  private function __construct() {
+class Api
+{
+  private function __construct()
+  {
     $this->db = Core::getInstance()->loadModule('database');
     $this->validator = Core::getInstance()->loadModule('validacpfcnpj');
   }
 
-  public static function getInstance() {
-      static $inst = null;
-      if($inst === null) {
-          $inst = new Api();
-      }
-      return $inst;
+  public static function getInstance()
+  {
+    static $inst = null;
+    if ($inst === null) {
+      $inst = new Api();
+    }
+    return $inst;
   }
 
-  public function checkToken($token, $app = NULL) {
+  public function checkToken($token, $app = NULL)
+  {
     $query = "SELECT cliente_id FROM adm_token WHERE token = '$token' AND description = '$app'";
     $sql = $this->db->queryLocal($query);
     $result = $sql->fetchAll();
-    if(count($result) > 0) {
+    if (count($result) > 0) {
       return true;
     } else {
       return NULL;
     }
   }
 
-  public function checkUser($user, $token, $body) {
+  public function checkUser($user, $token, $body)
+  {
     $user = preg_replace('/[^0-9]/', '', $user);
     $cliente_id = $this->checkToken($token);
     $id = 'NULL';
-    if($cliente_id) {
+    if ($cliente_id) {
       $qry = "
         SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaMumo\"('$user')
       ";
@@ -40,7 +45,7 @@ class Api {
       $uri = substr($uri, 1);
       $address_local = "http://{$_SERVER['HTTP_HOST']}/" . $uri;
       $body = json_encode($body);
-      if($id != 'NULL') {
+      if ($id != 'NULL') {
         $response = array(
           'msg' => 'success',
           'error' => 'false',
@@ -87,11 +92,12 @@ class Api {
     return $return ?? false;
   }
 
-  public function consultarCliente($busca, $tipo = "todos") {
-    if(is_numeric($busca) && (strlen($busca) == 11 || strlen($busca) == 14)) {
+  public function consultarCliente($busca, $tipo = "todos")
+  {
+    if (is_numeric($busca) && (strlen($busca) == 11 || strlen($busca) == 14)) {
       $busca = $this->validator->formata($busca);
     }
-    if($tipo == "internet") {
+    if ($tipo == "internet") {
       $qry = "
         SELECT * FROM \"dbsgp\".\"public\".\"ConsultaCliente\"('%{$busca}%')
         WHERE servico_internet_id IS NOT NULL
@@ -107,7 +113,8 @@ class Api {
     return $sql->fetchAll();
   }
 
-  public function consultarOcorrencias($contrato) {
+  public function consultarOcorrencias($contrato)
+  {
     $qry = "
       SELECT * FROM \"dbsgp\".\"public\".\"SuporteOcorrencias\"
       WHERE clientecontrato_id = $contrato
@@ -117,9 +124,10 @@ class Api {
     return $sql->fetchAll();
   }
 
-  public function cadastrarVenda($dados) {
+  public function cadastrarVenda($dados)
+  {
     $nome = $dados['nome'] ?? "Não informado";
-    if(!isset($dados['telefone'])) {
+    if (!isset($dados['telefone'])) {
       echo "
       <script type='text/javascript'>
         alert('Sua solicitação foi enviada com sucesso!');
@@ -131,53 +139,53 @@ class Api {
     $telefone = $dados['telefone'] ?? "Não informado";
     $email = $dados['email'] ?? "Não informado";
     $planoCombo = $dados['plano-combo'] ?? "Não informado";
-    if($dados['cep'] == "") {
+    if ($dados['cep'] == "") {
       $cep = "Não informado";
     } else {
       $cep = $dados['cep'] ?? "Não informado";
     }
 
-    if($dados['logradouro'] == "") {
+    if ($dados['logradouro'] == "") {
       $logradouro = "Não informado";
     } else {
       $logradouro = $dados['logradouro'] ?? "Não informado";
     }
 
-    if($dados['bairro'] == "") {
+    if ($dados['bairro'] == "") {
       $bairro = "Não informado";
     } else {
       $bairro = $dados['bairro'] ?? "Não informado";
     }
-    
-    if($dados['cidade'] == "") {
+
+    if ($dados['cidade'] == "") {
       $cidade = "Não informado";
     } else {
       $cidade = $dados['cidade'] ?? "Não informado";
     }
-    
-    if($dados['uf'] == "") {
+
+    if ($dados['uf'] == "") {
       $uf = "Não informado";
     } else {
       $uf = $dados['uf'] ?? "Não informado";
     }
 
-    if($dados['numero'] == "") {
+    if ($dados['numero'] == "") {
       $numero = 0;
     } else {
       $numero = $dados['numero'] ?? 0;
     }
-    
+
     $mensagem = "FORMULÁRIO VIA SITE";
-    $mensagem .= "\nNome: ".$nome;
-    $mensagem .= "\nE-mail: ".$email;
-    $mensagem .= "\nTelefone: ". $telefone;
-    $mensagem .= "\nPlano: ". $planoCombo;
-    $mensagem .= "\nCEP: ". $cep;
-    $mensagem .= "\nLogradouro: ". $logradouro;
-    $mensagem .= "\nBairro: ". $bairro;
-    $mensagem .= "\nCidade: ". $cidade;
-    $mensagem .= "\nUF: ". $uf;
-    $mensagem .= "\nNúmero: ". $numero;
+    $mensagem .= "\nNome: " . $nome;
+    $mensagem .= "\nE-mail: " . $email;
+    $mensagem .= "\nTelefone: " . $telefone;
+    $mensagem .= "\nPlano: " . $planoCombo;
+    $mensagem .= "\nCEP: " . $cep;
+    $mensagem .= "\nLogradouro: " . $logradouro;
+    $mensagem .= "\nBairro: " . $bairro;
+    $mensagem .= "\nCidade: " . $cidade;
+    $mensagem .= "\nUF: " . $uf;
+    $mensagem .= "\nNúmero: " . $numero;
     $realIP = file_get_contents("http://ipecho.net/plain");
     $qry = "SELECT * FROM \"OcorrenciaAbrir\"(0, 115574, 90212, NULL, 55, 14, 272, 1, '$mensagem', '', '$nome', '$telefone', '$realIP')";
     $sql = $this->db->query($qry);
@@ -195,44 +203,48 @@ class Api {
     return true;
   }
 
-  public function getOnuUniqueId($ip, $physAddress, $version = SNMP::VERSION_2c, $collection = "adsl", $walk = "1.3.6.1.4.1.5875.800.3.10.1.1.10") {
+  public function getOnuUniqueId($ip, $physAddress, $version = SNMP::VERSION_2c, $collection = "adsl", $walk = "1.3.6.1.4.1.5875.800.3.10.1.1.10")
+  {
     $session = new SNMP($version, $ip, $collection);
     $session->valueretrieval = SNMP_VALUE_PLAIN;
     $session->valueretrieval = SNMP_VALUE_LIBRARY;
     $ifDescr = $session->walk($walk, TRUE, 20000);
-    foreach($ifDescr as $i => $n) {
-      if(str_replace('"', '', substr($ifDescr[$i], 9)) == $physAddress) {
+    foreach ($ifDescr as $i => $n) {
+      if (str_replace('"', '', substr($ifDescr[$i], 9)) == $physAddress) {
         return $i;
       }
     }
     return 0;
   }
 
-  public function getOnuTxSignal($ip, $uid, $version = SNMP::VERSION_2c, $collection = "adsl", $walk = "1.3.6.1.4.1.5875.800.3.9.3.3.1.6.") {
+  public function getOnuTxSignal($ip, $uid, $version = SNMP::VERSION_2c, $collection = "adsl", $walk = "1.3.6.1.4.1.5875.800.3.9.3.3.1.6.")
+  {
     $session = new SNMP($version, $ip, $collection);
     $session->valueretrieval = SNMP_VALUE_PLAIN;
     $session->valueretrieval = SNMP_VALUE_LIBRARY;
     $ifDescr = $session->walk($walk . $uid, TRUE, 20000);
     $key = array_keys($ifDescr) ?? NULL;
-    if($key) {
+    if ($key) {
       return substr($ifDescr[$key[0]], 9) / 100;
     }
     return 0;
   }
 
-  public function getOnuTemp($ip, $uid, $version = SNMP::VERSION_2c, $collection = "adsl", $walk = "1.3.6.1.4.1.5875.800.3.9.3.3.1.10.") {
+  public function getOnuTemp($ip, $uid, $version = SNMP::VERSION_2c, $collection = "adsl", $walk = "1.3.6.1.4.1.5875.800.3.9.3.3.1.10.")
+  {
     $session = new SNMP($version, $ip, $collection);
     $session->valueretrieval = SNMP_VALUE_PLAIN;
     $session->valueretrieval = SNMP_VALUE_LIBRARY;
     $ifDescr = $session->walk($walk . $uid, TRUE, 20000);
     $key = array_keys($ifDescr) ?? NULL;
-    if($key) {
+    if ($key) {
       return substr($ifDescr[$key[0]], 9) / 100;
     }
     return 0;
   }
 
-  public function getTxRxBandwidth($id, $values) {
+  public function getTxRxBandwidth($id, $values)
+  {
     $token = file_get_contents("http://201.87.240.202:8000/accounts/login");
     $pos = strpos($token, "csrfmiddlewaretoken");
     $token = substr($token, $pos + 29);
@@ -241,9 +253,9 @@ class Api {
     $password = trim($values["password"]);
     $path = "tmp";
     $url = "http://201.87.240.202:8000/accounts/login/";
-    $postinfo = "username=".$username."&password=".$password."&csrfmiddlewaretoken".$token;
-    $cookie_file_path = $path."/cookie.txt";
-    if (! file_exists($cookie_file_path) || ! is_writable($cookie_file_path)) {
+    $postinfo = "username=" . $username . "&password=" . $password . "&csrfmiddlewaretoken" . $token;
+    $cookie_file_path = $path . "/cookie.txt";
+    if (!file_exists($cookie_file_path) || !is_writable($cookie_file_path)) {
       return "cookie not writable";
     }
     $ch = curl_init();
@@ -273,7 +285,8 @@ class Api {
     return json_encode(array('download' => $download, 'upload' => $upload));
   }
 
-  public function getInternetInformation($id, $values) {
+  public function getInternetInformation($id, $values)
+  {
     $token = file_get_contents("http://201.87.240.202:8000/accounts/login");
     $pos = strpos($token, "csrfmiddlewaretoken");
     $token = substr($token, $pos + 29);
@@ -282,9 +295,9 @@ class Api {
     $password = trim($values["password"]);
     $path = "tmp";
     $url = "http://201.87.240.202:8000/accounts/login/";
-    $postinfo = "username=".$username."&password=".$password."&csrfmiddlewaretoken".$token;
-    $cookie_file_path = $path."/cookie.txt";
-    if (! file_exists($cookie_file_path) || ! is_writable($cookie_file_path)) {
+    $postinfo = "username=" . $username . "&password=" . $password . "&csrfmiddlewaretoken" . $token;
+    $cookie_file_path = $path . "/cookie.txt";
+    if (!file_exists($cookie_file_path) || !is_writable($cookie_file_path)) {
       echo "cookie not writable";
     }
     $ch = curl_init();
@@ -308,13 +321,14 @@ class Api {
     return json_encode(explode(":", curl_exec($ch)));
   }
 
-  public function validarQualifica($dados, $show_all = false) {
+  public function validarQualifica($dados, $show_all = false)
+  {
     $token = "0984dab0-af86-47cd-b0e1-ef66030a3212";
     $app = "qualifica";
-    if($show_all == true) {
+    if ($show_all == true) {
       $dados['senha'] = '';
     }
-    if($this->checkToken($token, $app)) {
+    if ($this->checkToken($token, $app)) {
       $dados['cpfcnpj'] = str_replace('-', '', $dados['cpfcnpj']);
       $dados['cpfcnpj'] = str_replace('.', '', $dados['cpfcnpj']);
       $dados['cpfcnpj'] = str_replace('/', '', $dados['cpfcnpj']);
@@ -322,13 +336,13 @@ class Api {
       $qry = "SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaQualifica\"('" . $dados['cpfcnpj'] . "', '" . $dados['senha'] . "')";
       $sql = $this->db->queryErp($qry);
       $array = $sql->fetchAll();
-      if($show_all) {
+      if ($show_all) {
         $contratos = $array[0]['contrato_id'];
         $razaoSocial = $array[0]['nome'];
         $nome = $array[0]['nome'];
         $emails = json_decode($array[0]['contato']);
-        foreach ($emails as $value) 
-        $contatos[] = $value->contato;
+        foreach ($emails as $value)
+          $contatos[] = $value->contato;
         $contratoStatus = $array[0]['status'];
         $contratosArray = array(
           'id' => $contratos,
@@ -340,15 +354,28 @@ class Api {
         );
         $contratosArray = json_encode($contratosArray);
         $contratosArray = json_decode($contratosArray, true);
-        foreach($contratosArray as $key => $value) {
+        foreach ($contratosArray as $key => $value) {
           $contratosArrayValues[$key] = $value;
         }
         $response = array(
           'contratos' => array($contratosArrayValues)
         );
-        return $response;
+
+        $array = [
+          'contratos' => [
+            [
+              "id" => $contratos,
+              "razaoSocial" => $razaoSocial,
+              "nome" => $razaoSocial,
+              "emails" => $contatos,
+              "contratoStatus" => $contratoStatus,
+              "planointernet" => null,
+            ],
+          ],
+        ];
+        return $array;
       }
-      if($array[0]['mensagem'] == "True") {
+      if ($array[0]['mensagem'] == "True") {
         return array('auth' => true);
       }
     }
