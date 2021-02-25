@@ -331,11 +331,12 @@ class Api {
         $contatos[] = $value->contato;
         $contratoStatus = $array[0]['status'];
         $contratosArray = array(
+          'id' => $contratos,
           'razaoSocial' => $razaoSocial,
           'nome' => $nome,
           'emails' => $contatos,
           'contratoStatus' => $contratoStatus,
-          'planointernet' => $contratos
+          'planointernet' => null
         );
         $contratosArray = json_encode($contratosArray);
         $contratosArray = json_decode($contratosArray);
