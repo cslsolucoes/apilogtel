@@ -329,7 +329,6 @@ class Api {
         $emails = json_decode($array[0]['contato']);
         foreach ($emails as $value) 
         $contatos[] = $value->contato;
-        print_r($emails);
         $contratoStatus = $array[0]['status'];
         $response = array(
           'contratos' => $contratos,
