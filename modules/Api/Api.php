@@ -327,14 +327,15 @@ class Api {
         $razaoSocial = $array[0]['nome'];
         $nome = $array[0]['nome'];
         $emails = json_decode($array[0]['contato']);
-        $emails = json_decode($emails[0], true);
+        foreach ($emails as $value) 
+        $contatos[] = $value->contato;
         print_r($emails);
         $contratoStatus = $array[0]['status'];
         $response = array(
           'contratos' => $contratos,
           'razaoSocial' => $razaoSocial,
           'nome' => $nome,
-          'emails' => $emails,
+          'emails' => $contatos,
           'contratoStatus' => $contratoStatus,
           'planointernet' => NULL
         );
