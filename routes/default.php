@@ -55,7 +55,7 @@ $this->post('api/ura/consultacliente', function($data) {
     $this->core->loadModule('template')->render('qualifica_consulta', $_POST);
   }
 });
-
+/* 
 $this->get('{uri}', function ($data) {
   $this->core->loadModule('template')->render('api', $data);
 });
@@ -74,7 +74,7 @@ $this->post('{uri}', function ($data) {
 
 $this->post('{uri}/{data}', function ($data) {
   $this->core->loadModule('template')->render('api', $data);
-});
+}); */
 
 $this->post('', function () {
   $response = array(
