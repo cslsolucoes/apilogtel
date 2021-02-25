@@ -327,7 +327,7 @@ class Api {
         $razaoSocial = $array[0]['nome'];
         $nome = $array[0]['nome'];
         $emails = json_decode($array[0]['contato']);
-        print_r($emails['contato']);
+        print_r($emails[0]);
         $contratoStatus = $array[0]['status'];
         $response = array(
           'contratos' => $contratos,
