@@ -315,9 +315,10 @@ class Api {
       $dados['senha'] = '';
     }
     if($this->checkToken($token, $app)) {
-      if(strlen($dados['cpfcnpj']) > 11) {
-        $dados['cpfcnpj'] = $this->validator->formata($dados['cpfcnpj']);
-      }
+      $dados['cpfcnpj'] = str_replace('-', '', $dados['cpfcnpj']);
+      $dados['cpfcnpj'] = str_replace('.', '', $dados['cpfcnpj']);
+      $dados['cpfcnpj'] = str_replace('/', '', $dados['cpfcnpj']);
+      $dados['cpfcnpj'] = $this->validator->formata($dados['cpfcnpj']);
       $qry = "SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaQualifica\"('" . $dados['cpfcnpj'] . "', '" . $dados['senha'] . "')";
       $sql = $this->db->queryErp($qry);
       $array = $sql->fetchAll();
