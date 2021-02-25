@@ -337,6 +337,7 @@ class Api {
           'contratoStatus' => $contratoStatus,
           'planointernet' => $contratos
         );
+        $contratosArray = json_encode($contratosArray);
         $contratosArray = json_decode($contratosArray);
         foreach($contratosArray as $value) {
           $contratosArrayValues[] = $value;
