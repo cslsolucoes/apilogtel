@@ -344,7 +344,7 @@ class Api {
           $contratosArrayValues[$key] = $value;
         } */
         $response = array(
-          'contratos' => array($contratosArray)
+          'contratos' => array('id' => $contratosArray['id'])
         );
         return $response;
       }
