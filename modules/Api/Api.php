@@ -332,7 +332,7 @@ class Api {
           'contratos' => $contratos,
           'razaoSocial' => $razaoSocial,
           'nome' => $nome,
-          'emails' => $emails,
+          'emails' => json_decode($emails),
           'contratoStatus' => $contratoStatus,
           'planointernet' => NULL
         );
