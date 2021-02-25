@@ -341,6 +341,9 @@ class Api
         $razaoSocial = $array[0]['nome'];
         $nome = $array[0]['nome'];
         $emails = json_decode($array[0]['contato']);
+        if(!$contratos) {
+          return array('contratos' => array());
+        }
         foreach ($emails as $value)
           $contatos[] = $value->contato;
         $contratoStatus = $array[0]['status'];
