@@ -365,6 +365,6 @@ class Api
         return array('auth' => true);
       }
     }
-    return array();
+    return array('auth' => false);
   }
 }
