@@ -344,32 +344,15 @@ class Api
         foreach ($emails as $value)
           $contatos[] = $value->contato;
         $contratoStatus = $array[0]['status'];
-        $contratosArray = array(
-          'id' => $contratos,
-          'razaoSocial' => $razaoSocial,
-          'nome' => $nome,
-          'emails' => $contatos,
-          'contratoStatus' => $contratoStatus,
-          'planointernet' => null
-        );
-        $contratosArray = json_encode($contratosArray);
-        $contratosArray = json_decode($contratosArray, true);
-        foreach ($contratosArray as $key => $value) {
-          $contratosArrayValues[$key] = $value;
-        }
-        $response = array(
-          'contratos' => array($contratosArrayValues)
-        );
-
         $array = [
           'contratos' => [
             [
               "id" => $contratos,
               "razaoSocial" => $razaoSocial,
-              "nome" => $razaoSocial,
+              "nome" => $nome,
               "emails" => $contatos,
               "contratoStatus" => $contratoStatus,
-              "planointernet" => null,
+              "planointernet" => "",
             ],
           ],
         ];
