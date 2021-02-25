@@ -326,13 +326,13 @@ class Api {
         $contratos = $array[0]['contrato_id'];
         $razaoSocial = $array[0]['nome'];
         $nome = $array[0]['nome'];
-        $emails = $array[0]['contato'];
+        $emails = json_decode($array[0]['contato']);
         $contratoStatus = $array[0]['status'];
         $response = array(
           'contratos' => $contratos,
           'razaoSocial' => $razaoSocial,
           'nome' => $nome,
-          'emails' => json_decode($emails, true),
+          'emails' => $emails,
           'contratoStatus' => $contratoStatus,
           'planointernet' => NULL
         );
