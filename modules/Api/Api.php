@@ -331,12 +331,13 @@ class Api {
         $contatos[] = $value->contato;
         $contratoStatus = $array[0]['status'];
         $response = array(
-          'contratos' => $contratos,
-          'razaoSocial' => $razaoSocial,
-          'nome' => $nome,
-          'emails' => $contatos,
-          'contratoStatus' => $contratoStatus,
-          'planointernet' => NULL
+          'contratos' => array(
+            'razaoSocial' => $razaoSocial,
+            'nome' => $nome,
+            'emails' => $contatos,
+            'contratoStatus' => $contratoStatus,
+            'planointernet' => $contratos
+          )
         );
         return $response;
       }
