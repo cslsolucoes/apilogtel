@@ -22,7 +22,7 @@ $this->get('login', function () {
   echo json_encode($response);
 });
 
-$this->post('login', function () {
+/* $this->post('login', function () {
   (string)$user = '';
   (string)$token = '';
   $data = json_decode(file_get_contents('php://input'), true);
@@ -40,7 +40,7 @@ $this->post('login', function () {
     header('X-PHP-Response-Code: 403', true, 403);
     echo json_encode($response);
   }
-});
+}); */
 
 $this->post('api/central/contratos', function($data) {
   extract($_POST);
