@@ -338,13 +338,13 @@ class Api {
           'contratoStatus' => $contratoStatus,
           'planointernet' => null
         );
-/*         $contratosArray = json_encode($contratosArray);
+        $contratosArray = json_encode($contratosArray);
         $contratosArray = json_decode($contratosArray, true);
         foreach($contratosArray as $key => $value) {
           $contratosArrayValues[$key] = $value;
-        } */
+        }
         $response = array(
-          'contratos' => array("id" => $contratosArray)
+          'contratos' => array($contratosArrayValues)
         );
         return $response;
       }
