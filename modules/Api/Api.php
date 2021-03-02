@@ -347,6 +347,8 @@ class Api
         if($emails) {
           foreach ($emails as $value)
           $contatos[] = $value->contato;
+        } else {
+          $contatos = [];
         }
         $contratoStatus = $array[0]['status'];
         if($contratoStatus == 'Ativo') {
