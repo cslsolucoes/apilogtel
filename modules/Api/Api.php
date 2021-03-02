@@ -338,13 +338,13 @@ class Api
       $array = $sql->fetchAll();
       $arrayJson = json_encode($array);
       $dadosJson = json_encode($dados);
-      $id = $array[0]['cliente_id'] ?? 0;
+      $id = $array[0]['cliente_id'] ?? 1;
       $uri = $_SERVER['REQUEST_URI'];
       $uri = substr($uri, 1);
       $address_local = "http://{$_SERVER['HTTP_HOST']}/" . $uri;
       $query = "
         INSERT INTO adm_api_log (cliente_id, uri_origem, uri_destino, body_origem, body_destino, response_origem, response_destino, ip_origem, ip_destino)
-        VALUES ($id, '$address_local', '', '$dadosJson', '', '$arrayJson', '', '{$_SERVER['SERVER_ADDR']}', '{$_SERVER['REMOTE_ADDR']}')
+        VALUES ($id, '$address_local', 'Sem dados', '$dadosJson', 'Sem dados', '$arrayJson', 'Sem dados', '{$_SERVER['SERVER_ADDR']}', '{$_SERVER['REMOTE_ADDR']}')
       ";
       $this->db->queryLocal($query);
       if ($show_all) {
