@@ -338,7 +338,7 @@ class Api
       $array = $sql->fetchAll();
       $arrayJson = json_encode($array);
       $dadosJson = json_encode($dados);
-      $id = $array[0]['cliente_id'] ?? NULL;
+      $id = $array[0]['cliente_id'] ?? 0;
       $uri = $_SERVER['REQUEST_URI'];
       $uri = substr($uri, 1);
       $address_local = "http://{$_SERVER['HTTP_HOST']}/" . $uri;
@@ -346,8 +346,7 @@ class Api
         INSERT INTO adm_api_log (cliente_id, uri_origem, uri_destino, body_origem, body_destino, response_origem, response_destino, ip_origem, ip_destino)
         VALUES ($id, '$address_local', '', '$dadosJson', '', '$arrayJson', '', '{$_SERVER['SERVER_ADDR']}', '{$_SERVER['REMOTE_ADDR']}')
       ";
-      echo $query;
-      //$this->db->queryLocal($query);
+      $this->db->queryLocal($query);
       if ($show_all) {
         $contratos = $array[0]['contrato_id'];
         $razaoSocial = $array[0]['nome'];
