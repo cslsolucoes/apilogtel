@@ -346,7 +346,8 @@ class Api
         INSERT INTO adm_api_log (cliente_id, uri_origem, uri_destino, body_origem, body_destino, response_origem, response_destino, ip_origem, ip_destino)
         VALUES ($id, '$address_local', 'Sem dados', '$dadosJson', 'Sem dados', '$arrayJson', 'Sem dados', '{$_SERVER['SERVER_ADDR']}', '{$_SERVER['REMOTE_ADDR']}')
       ";
-      $this->db->queryLocal($query);
+      echo $query;
+      //$this->db->queryLocal($query);
       if ($show_all) {
         $contratos = $array[0]['contrato_id'];
         $razaoSocial = $array[0]['nome'];
