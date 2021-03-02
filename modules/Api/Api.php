@@ -347,7 +347,7 @@ class Api
         VALUES ($id, '$address_local', '', '$dadosJson', '', '$arrayJson', '', '{$_SERVER['SERVER_ADDR']}', '{$_SERVER['REMOTE_ADDR']}')
       ";
       echo $query;
-      $this->db->queryLocal($query);
+      //$this->db->queryLocal($query);
       if ($show_all) {
         $contratos = $array[0]['contrato_id'];
         $razaoSocial = $array[0]['nome'];
