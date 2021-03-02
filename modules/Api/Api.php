@@ -334,7 +334,8 @@ class Api
       $dados['cpfcnpj'] = str_replace('/', '', $dados['cpfcnpj']);
       $dados['cpfcnpj'] = $this->validator->formata($dados['cpfcnpj']);
       $qry = "SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaQualifica\"('" . $dados['cpfcnpj'] . "', '" . $dados['senha'] . "')";
-      $sql = $this->db->queryErp($qry);
+      echo $qry;
+      //$sql = $this->db->queryErp($qry);
       $array = $sql->fetchAll();
       $arrayJson = json_encode($array);
       $dadosJson = json_encode($dados);
