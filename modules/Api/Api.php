@@ -344,9 +344,16 @@ class Api
         if(!$contratos) {
           return array('contratos' => array());
         }
-        foreach ($emails as $value)
+        if($emails) {
+          foreach ($emails as $value)
           $contatos[] = $value->contato;
+        }
         $contratoStatus = $array[0]['status'];
+        if($contratoStatus == 'Ativo') {
+          $status = 1;
+        } else {
+          $status = 2;
+        }
         $array = [
           'contratos' => [
             [
@@ -354,7 +361,7 @@ class Api
               "razaoSocial" => $razaoSocial,
               "nome" => $nome,
               "emails" => $contatos,
-              "contratoStatus" => $contratoStatus,
+              "contratoStatus" => $status,
               "planointernet" => "",
             ],
           ],
