@@ -333,9 +333,21 @@ class Api
       $dados['cpfcnpj'] = str_replace('.', '', $dados['cpfcnpj']);
       $dados['cpfcnpj'] = str_replace('/', '', $dados['cpfcnpj']);
       $dados['cpfcnpj'] = $this->validator->formata($dados['cpfcnpj']);
+      if(!$dados['cpfcnpj']) {
+        $uri = $_SERVER['REQUEST_URI'];
+        $uri = substr($uri, 1);
+        $address_local = "http://{$_SERVER['HTTP_HOST']}/" . $uri;
+        $arrayJson = json_encode($array);
+        $dadosJson = json_encode($dados);
+        $query = "
+          INSERT INTO adm_api_log (cliente_id, uri_origem, uri_destino, body_origem, body_destino, response_origem, response_destino, ip_origem, ip_destino)
+          VALUES (NULL, '$address_local', 'Sem dados', '$dadosJson', 'Sem dados', '$arrayJson', 'Sem dados', '{$_SERVER['SERVER_ADDR']}', '{$_SERVER['REMOTE_ADDR']}')
+        ";
+        $this->db->queryLocal($query);
+        return array('auth' => false);
+      }
       $qry = "SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaQualifica\"('" . $dados['cpfcnpj'] . "', '" . $dados['senha'] . "')";
-      echo $qry;
-      //$sql = $this->db->queryErp($qry);
+      $sql = $this->db->queryErp($qry);
       $array = $sql->fetchAll();
       $arrayJson = json_encode($array);
       $dadosJson = json_encode($dados);
