@@ -37,7 +37,7 @@ function getUserId($username) {
 }
 
 function isAdmin($user) {
-  if(!$user || ($user != "ludmila.bernardes@logtel.net.br" && $user != "claiton.linhares@logtel.net.br")) return false;
+  if(!$user || ($user != "ludmila.bernardes@logtel.net.br" && $user != "claiton.linhares@logtel.net.br" && $user != "marcos.santos@logtel.net.br")) return false;
   return true;
 }
 
