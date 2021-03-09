@@ -29,7 +29,7 @@
   
   <div class="grid-container">
     <div class="grid-x grid-padding-x color-white">
-      <div class="medium-7 cell">
+      <div class="medium-12 cell">
         <h3>Planos Logtel Chip</h3>
         <table class="hover" id="logtelchip-tableplans">
           <thead>

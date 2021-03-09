@@ -278,7 +278,7 @@
             <label>Observações Internas: <textarea class="editar-chamado-input-obs" id="edit-obs-ocorrencia" rows="3">Reiniciado equipamentos</textarea></label>
             <div class="grid-x">
               <div class="medium-3 cell">
-                <button class="button primary" id="editar-chamado-contrato-suporte" data-close data-clienteid data-contratoid data-userid="edit-<?= $_SESSION['userid'] ?>">Salvar</button>
+                <button class="button primary" id="editar-chamado-contrato-suporte" data-close data-clienteid data-osid data-ocorrenciaid data-contratoid data-userid="<?= $_SESSION['userid'] ?>">Salvar</button>
               </div>
               <div class="medium-5 cell">
                 <input type="checkbox" name="editar-os-checkbox" id="editar-os-checkbox">
