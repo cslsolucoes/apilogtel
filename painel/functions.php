@@ -37,7 +37,7 @@ function getUserId($username) {
 }
 
 function isAdmin($user) {
-  if(!$user || ($user != "ludmila.bernardes@logtel.net.br" && $user != "claiton.linhares@logtel.net.br" && $user != "marcos.santos@logtel.net.br")) return false;
+  if(!$user || ($user != "ludmila.bernardes@logtel.net.br" && $user != "claiton.linhares@logtel.net.br" && $user != "marcos.santos@logtel.net.br" && $user != "andre.goncalves@logtel.net.br" && $user != "michelle.vieira@logtel.net.br")) return false;
   return true;
 }
 
@@ -54,7 +54,7 @@ function formatBytes($bytes, $precision = 0) {
 
   $bytes = max($bytes, 0); 
   $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
-  $pow = min($pow, count($units) - 1); 
+  $pow = min($pow, count($units) - 1);
 
   // $bytes /= pow(1024, $pow);
   $bytes /= (1 << (10 * $pow)); 
