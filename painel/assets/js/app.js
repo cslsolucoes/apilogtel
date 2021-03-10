@@ -22692,6 +22692,18 @@ lastClient = getCookie('lastClient');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).bind("keydown", disableF5);
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", disableF5);
 setTimeoutReturnMessage();
+
+window.onpopstate = function (event) {
+  console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+  lastClient = event.state.lastClient;
+  eraseCookie("lastClient");
+  setCookie("lastClient", lastClient, 1); //window.history.pushState({'lastClient': lastClient}, '', '#' + lastClient);
+
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").val(lastClient);
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").trigger("change");
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + lastClient + "]").trigger("click");
+};
+
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#setor").on("change", function (e) {
   var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
@@ -22914,7 +22926,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
                     });
                   }
 
-                  html += "\n                        <tr class=\"contrato-linha servico-internet ".concat(response[i].contrato_status, "\"\n                            data-cliente-id=\"").concat(response[i].cliente_id, "\"\n                            data-contrato-id=\"").concat(response[i].contrato_id, "\"\n                            data-internet-id=\"").concat(servico_internet[0].id, "\">\n                          <td>").concat(response[i].contrato_id, "</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: <span id=\"servico-internet-").concat(response[i].contrato_id, "\">").concat(servico_internet[0].plano, "</span> / <b>Valor</b>: ").concat(servico_internet[0].valor, "<br><b>PPPoE</b>: ").concat(servico_internet[0].login, " / <b>Senha</b>: ").concat(servico_internet[0].login_password, " / <b>Senha Central</b>: ").concat(servico_internet[0].central_password, "</td>\n                          <td><button id=\"").concat(response[i].contrato_id, "\" class=\"button small no-margin contrato_status\"></button></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td>").concat(response[i].logradouro).concat(response[i].numero ? ", " + response[i].numero : "", "<br><b>").concat(response[i].bairro, ", ").concat(response[i].cidade, "</b> - ").concat(response[i].uf).concat(response[i].complemento ? ", " + response[i].complemento : "", "</td>\n                  ");
+                  html += "\n                        <tr class=\"contrato-linha servico-internet ".concat(response[i].contrato_status, "\"\n                            data-cliente-id=\"").concat(response[i].cliente_id, "\"\n                            data-contrato-id=\"").concat(response[i].contrato_id, "\"\n                            data-internet-id=\"").concat(servico_internet[0].id, "\">\n                          <td>").concat(response[i].contrato_id, "</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: <span id=\"servico-internet-").concat(response[i].contrato_id, "\">").concat(servico_internet[0].plano, "</span> / <b>Valor</b>: ").concat(servico_internet[0].valor, "<br><b>PPPoE</b>: ").concat(servico_internet[0].login, " / <b>Senha</b>: ").concat(servico_internet[0].login_password, " / <b>Senha Central</b>: ").concat(servico_internet[0].central_password, "</td>\n                          <td><button id=\"").concat(response[i].contrato_id, "\" class=\"button small no-margin contrato_status\"></button></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td>").concat(servico_internet[0].logradouro).concat(servico_internet[0].numero ? ", " + servico_internet[0].numero : "", "<br><b>").concat(servico_internet[0].bairro, ", ").concat(servico_internet[0].cidade, "</b> - ").concat(servico_internet[0].uf).concat(response[i].complemento ? ", " + response[i].complemento : "", "</td>\n                  ");
                   xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
                     method: "POST",
                     url: "api/v1/consultar_ocorrencias",
@@ -22996,6 +23008,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
               html += "</tbody></table></div></div>";
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-cliente").html(html);
+              window.history.pushState({
+                'lastClient': lastClient
+              }, '', '#' + lastClient);
             }
           });
         });
@@ -23064,6 +23079,47 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
           jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-boleto").attr("data-contratoid", contratoId);
           jquery__WEBPACK_IMPORTED_MODULE_0___default()(".criar-chamado-input-contrato").val(contratoId + " - " + jquery__WEBPACK_IMPORTED_MODULE_0___default()("#servico-internet-" + contratoId).html());
           jquery__WEBPACK_IMPORTED_MODULE_0___default()(".criar-chamado-input-contrato-hidden").val(contratoId);
+          xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+            method: "POST",
+            url: "api/v1/consultar_ocorrencias",
+            data: {
+              contrato: contratoId
+            },
+            dataType: "json",
+            success: function success(chamados) {
+              var chamadosHTML = "\n                <table class='hover tabela-chamados' id='tabela-chamados'>\n                  <thead>\n                    <tr>\n                      <th style=\"display:none\">ID</th>\n                      <th><span class=\"th-title\">Protocolo</span><span class='order-arrows'><i class='fi fi-play arrow'></i><i class='fi fi-play arrow'></i></span></th>\n                      <th><span class=\"th-title\">Status</span><span class='order-arrows'><i class='fi fi-play arrow'></i><i class='fi fi-play arrow'></i></span></th>\n                      <th><span class=\"th-title\">Contrato</span><span class='order-arrows'><i class='fi fi-play arrow'></i><i class='fi fi-play arrow'></i></span></th>\n                      <th><span class=\"th-title\">Tipo</span><span class='order-arrows'><i class='fi fi-play arrow'></i><i class='fi fi-play arrow'></i></span></th>\n                      <th><span class=\"th-title\">Conte\xFAdo</span><span class='order-arrows'><i class='fi fi-play arrow'></i><i class='fi fi-play arrow'></i></span></th>\n                      <th><span class=\"th-title\">Observa\xE7\xF5es</span><span class='order-arrows'><i class='fi fi-play arrow'></i><i class='fi fi-play arrow'></i></span></th>\n                      <th><span class=\"th-title\">Cria\xE7\xE3o</span><span class='order-arrows'><i class='fi fi-play arrow'></i><i class='fi fi-play arrow'></i></span></th>\n                      <th><span class=\"th-title\">Agendado</span><span class='order-arrows'><i class='fi fi-play arrow'></i><i class='fi fi-play arrow'></i></span></th>\n                      <th><span class=\"th-title\">Encerrado</span><span class='order-arrows'><i class='fi fi-play arrow'></i><i class='fi fi-play arrow'></i></span></th>\n                      <th><span class=\"th-title\">Respons\xE1vel</span><span class='order-arrows'><i class='fi fi-play arrow'></i><i class='fi fi-play arrow'></i></span></th>\n                      <th><span class=\"th-title\">Usu\xE1rio</span><span class='order-arrows'><i class='fi fi-play arrow'></i><i class='fi fi-play arrow'></i></span></th>\n                      <th><span class=\"th-title\">OS</span><span class='order-arrows'><i class='fi fi-play arrow'></i><i class='fi fi-play arrow'></i></span></th>\n                    </tr>\n                  </thead>\n                  <tbody>\n              ";
+
+              for (var k = 0; k < chamados.length; k++) {
+                var data_cadastro = new Date(chamados[k].data_cadastro);
+                var data_finalizacao = new Date(chamados[k].data_finalizacao);
+                var data_agendamento = new Date(chamados[k].data_agendamento);
+                chamadosHTML += "\n                <tr>\n                  <td class=\"chamado-id\" style=\"display:none\">\n                    <div style=\"position:relative\" class=\"chamado_id\">\n                      <p class=\"button no-margin alert small copy_button_no_style\" data-copy=\"".concat(chamados[k].id, "\">").concat(chamados[k].id, "</p>\n                    </div>\n                  </td>\n                  <td class=\"protocolo-chamado\">\n                    <div style=\"position:relative\" class=\"protocolo\">\n                      <p class=\"button no-margin primary small copy_button_no_style\" data-copy=\"").concat(chamados[k].numero, "\">").concat(chamados[k].numero, "</p>\n                    </div>\n                  </td>\n                ");
+
+                if (chamados[k].situacao == "Encerrada") {
+                  chamadosHTML += "\n                    <td>".concat(chamados[k].situacao ? '<b class="ocorrencia-encerrada">' + chamados[k].situacao + "</b>" : "", "</td>\n                  ");
+                } else if (chamados[k].situacao == "Aberta") {
+                  chamadosHTML += "\n                    <td>".concat(chamados[k].situacao ? '<b class="ocorrencia-aberta">' + chamados[k].situacao + "</b>" : "", "</td>\n                  ");
+                } else {
+                  chamadosHTML += "\n                    <td>".concat(chamados[k].situacao ? "<b>" + chamados[k].situacao + "</b>" : "", "</td>\n                  ");
+                }
+
+                chamadosHTML += "\n                  <td>".concat(chamados[k].clientecontrato_id ? chamados[k].clientecontrato_id : "", "</td>\n                  <td>").concat(chamados[k].descricao_tipo ? chamados[k].descricao_tipo : "", "</td>\n                  <td>").concat(chamados[k].conteudo ? chamados[k].conteudo : "", "</td>\n                  <td>").concat(chamados[k].observacoes ? chamados[k].observacoes : "", "</td>\n                  <td>").concat(chamados[k].data_cadastro ? data_cadastro.toLocaleDateString() : "", "</td>\n                  <td>").concat(chamados[k].data_agendamento ? data_agendamento.toLocaleDateString() : "", "</td>\n                  <td>").concat(chamados[k].data_finalizacao ? data_finalizacao.toLocaleDateString() : "", "</td>\n                  <td>").concat(chamados[k].username_responsavel ? chamados[k].username_responsavel : "", "</td>\n                  <td>").concat(chamados[k].username_usuario ? chamados[k].username_usuario : "", "</td>\n                  <td>").concat(chamados[k].os_id ? '<p class="button small no-margin success contrato_status">' + chamados[k].os_id + "</p>" : "", "</td>\n                </tr>\n                ");
+              }
+
+              chamadosHTML += "</tbody>\n                        </table>\n              ";
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").html(chamadosHTML);
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#tabela-chamados").show();
+              var table = document.getElementById("tabela-chamados");
+
+              if (table) {
+                table.querySelectorAll("th").forEach(function (th, pos) {
+                  th.addEventListener("click", function (evt) {
+                    return sortTable(pos, "tabela-chamados");
+                  });
+                });
+              }
+            }
+          });
           xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
             method: "POST",
             url: "api/v1/consultar_cliente",
@@ -23331,7 +23387,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").on("click", "#tabela-chamados tbody tr", function (e) {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
   var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
-  var numeroOcorrencia = $this.find('td.chamado-id div.chamado_id p').html();
+  var idOcorrencia = $this.find('td.chamado-id div.chamado_id p').html();
+  var numeroOcorrencia = $this.find('td.protocolo-chamado div.protocolo p').html();
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-numero-chamado").html(numeroOcorrencia); //$("#editar-chamado").foundation('toggle');
 
   jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
@@ -23339,7 +23396,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").on("click", "#tabela-
     url: "api/v1/consultar_ocorrencia",
     dataType: "json",
     data: {
-      numero: numeroOcorrencia
+      numero: idOcorrencia
     },
     success: function success(response) {
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide(); // Editar ocorrência
@@ -23348,6 +23405,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").on("click", "#tabela-
         jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-data-ag").val(new Date(response[0].data_agendamento).toJSON().slice(0, 19));
       }
 
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-contrato-suporte").attr("data-ocorrenciaid", idOcorrencia);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-contrato-suporte").attr("data-osid", response[0].os_id);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-contrato-suporte").attr("data-contratoid", response[0].clientecontrato_id);
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.editar-chamado-input-contrato').val(response[0].clientecontrato_id);
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editar-chamado-input-contrato-hidden').val(response[0].clientecontrato_id);
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('#edit-setor-ocorrencia option[value=' + response[0].setor_id + ']').attr("selected", "selected");
@@ -23375,7 +23435,53 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").on("click", "#tabela-
     }
   });
 });
-jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-contrato-suporte").on("click", function (e) {});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-contrato-suporte").on("click", function (e) {
+  var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
+  $this.prop('disabled', true);
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
+  e.preventDefault();
+  var status = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-status").val();
+  var contratoid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-contratoid");
+  var dataagendamento = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-data-ag").val();
+  var setor = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-setor-ocorrencia").val();
+  var userid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-userid");
+  var origem = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-origem-ocorrencia").val();
+  var tipo = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-tipo-ocorrencia").val();
+  var conteudo = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-conteudo").val();
+  var obs = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#obs-ocorrencia").val();
+  var protocolocheck = document.getElementById('protocolo-checkbox').checked ? true : false;
+  var oscheck = document.getElementById('editar-os-checkbox').checked ? true : false;
+  var dataos = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-data-os").val();
+  var setoros = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-os-setor").val();
+  var tipoos = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-os-tipo").val();
+  var prioridadeos = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-os-prioridade").val();
+  var motivoos = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-os-motivoos").val();
+  var tecnicoos = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-os-tecnico").val();
+  var statusos = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-os-status").val();
+  var problemaos = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-os-problema").val();
+  var data = {
+    status: status,
+    contratoid: contratoid,
+    dataagendamento: dataagendamento,
+    setor: setor,
+    userid: userid,
+    origem: origem,
+    tipo: tipo,
+    conteudo: conteudo,
+    obs: obs,
+    protocolocheck: protocolocheck,
+    oscheck: oscheck,
+    dataos: dataos,
+    setoros: setoros,
+    tipoos: tipoos,
+    prioridadeos: prioridadeos,
+    motivoos: motivoos,
+    tecnicoos: tecnicoos,
+    statusos: statusos,
+    problemaos: problemaos
+  };
+  console.log(data);
+});
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-suporte").on("click", function (e) {
   var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
   $this.prop('disabled', true);
