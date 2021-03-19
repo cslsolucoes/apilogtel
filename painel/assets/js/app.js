@@ -22688,21 +22688,26 @@ var busca = "";
 var xhr;
 var token = "7789c183-98c1-4667-b31f-b20931376f6f";
 var app = "ura";
-lastClient = getCookie('lastClient');
+
+if (getCookie('lastClient')) {
+  lastClient = getCookie('lastClient');
+} else {
+  lastClient = '';
+}
+
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).bind("keydown", disableF5);
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", disableF5);
 setTimeoutReturnMessage();
-
-window.onpopstate = function (event) {
+/* window.onpopstate = function(event) {
   console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
   lastClient = event.state.lastClient;
   eraseCookie("lastClient");
-  setCookie("lastClient", lastClient, 1); //window.history.pushState({'lastClient': lastClient}, '', '#' + lastClient);
-
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").val(lastClient);
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").trigger("change");
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + lastClient + "]").trigger("click");
-};
+  setCookie("lastClient", lastClient, 1);
+  //window.history.pushState({'lastClient': lastClient}, '', '#' + lastClient);
+  $("#cliente").val(lastClient);
+  $("#cliente").trigger("change");
+  $(".carregar_dados_cliente[data-contratoid=" + lastClient + "]").trigger("click");
+}; */
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#setor").on("change", function (e) {
@@ -22828,8 +22833,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
           var data = {
             busca: $this.data("contratoid"),
             tipo: "unico"
-          };
-          lastClient = null;
+          }; //lastClient = null;
+
           setCookie('lastClient', $this.data("contratoid"), 1);
           lastClient = $this.data("contratoid");
           xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
@@ -22911,6 +22916,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
                   senhaPppoe = servico_internet[0].login_password;
                   senhaCentral = servico_internet[0].central_password;
                   mac_dhcp = servico_internet[0].mac_dhcp;
+                  if (mac_dhcp == null) mac_dhcp = 'Não informado';
 
                   if (!getCookie("macDhcp")) {
                     setCookie("macDhcp", mac_dhcp, 1);
@@ -22922,11 +22928,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
                     setCookie("macDhcp", mac_dhcp, 1);
                     jquery__WEBPACK_IMPORTED_MODULE_0___default.a.get("api/v1/consultar_fabricante_mac", "mac=" + mac_dhcp, function (data) {
                       vendor = JSON.parse(data);
+                      if (vendor.vendor == null) vendor.vendor = 'Não informado';
                       setCookie("vendor", vendor.vendor, 1);
                     });
                   }
 
-                  html += "\n                        <tr class=\"contrato-linha servico-internet ".concat(response[i].contrato_status, "\"\n                            data-cliente-id=\"").concat(response[i].cliente_id, "\"\n                            data-contrato-id=\"").concat(response[i].contrato_id, "\"\n                            data-internet-id=\"").concat(servico_internet[0].id, "\">\n                          <td>").concat(response[i].contrato_id, "</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: <span id=\"servico-internet-").concat(response[i].contrato_id, "\">").concat(servico_internet[0].plano, "</span> / <b>Valor</b>: ").concat(servico_internet[0].valor, "<br><b>PPPoE</b>: ").concat(servico_internet[0].login, " / <b>Senha</b>: ").concat(servico_internet[0].login_password, " / <b>Senha Central</b>: ").concat(servico_internet[0].central_password, "</td>\n                          <td><button id=\"").concat(response[i].contrato_id, "\" class=\"button small no-margin contrato_status\"></button></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td>").concat(servico_internet[0].logradouro).concat(servico_internet[0].numero ? ", " + servico_internet[0].numero : "", "<br><b>").concat(servico_internet[0].bairro, ", ").concat(servico_internet[0].cidade, "</b> - ").concat(servico_internet[0].uf).concat(servico_internet[0].complemento ? ", " + servico_internet[0].complemento : "", "</td>\n                  ");
+                  html += "\n                        <tr class=\"contrato-linha servico-internet ".concat(response[i].contrato_status, "\"\n                            data-cliente-id=\"").concat(response[i].cliente_id, "\"\n                            data-contrato-id=\"").concat(response[i].contrato_id, "\"\n                            data-internet-id=\"").concat(servico_internet[0].id, "\"\n                            data-pppoe=\"").concat(pppoe, "\"\n                            data-senhapppoe=\"").concat(senhaPppoe, "\"\n                            data-senhacentral=\"").concat(senhaCentral, "\"\n                            data-macdhcp=\"").concat(mac_dhcp, "\">\n                          <td>").concat(response[i].contrato_id, "</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: <span id=\"servico-internet-").concat(response[i].contrato_id, "\">").concat(servico_internet[0].plano, "</span> / <b>Valor</b>: ").concat(servico_internet[0].valor, "<br><b>PPPoE</b>: ").concat(servico_internet[0].login, " / <b>Senha</b>: ").concat(servico_internet[0].login_password, " / <b>Senha Central</b>: ").concat(servico_internet[0].central_password, "</td>\n                          <td><button id=\"").concat(response[i].contrato_id, "\" class=\"button small no-margin contrato_status\"></button></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td>").concat(servico_internet[0].logradouro).concat(servico_internet[0].numero ? ", " + servico_internet[0].numero : "", "<br><b>").concat(servico_internet[0].bairro, ", ").concat(servico_internet[0].cidade, "</b> - ").concat(servico_internet[0].uf).concat(servico_internet[0].complemento ? ", " + servico_internet[0].complemento : "", "</td>\n                  ");
                   xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
                     method: "POST",
                     url: "api/v1/consultar_ocorrencias",
@@ -23007,10 +23014,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
 
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
               html += "</tbody></table></div></div>";
-              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-cliente").html(html);
-              window.history.pushState({
-                'lastClient': lastClient
-              }, '', '#' + lastClient);
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-cliente").html(html); //window.history.pushState({'lastClient':lastClient}, '', '#' + lastClient);
             }
           });
         });
@@ -23071,6 +23075,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
             busca: clienteId,
             tipo: "todos"
           };
+          pppoe = t.data("pppoe");
+          senhaPppoe = t.data("senhapppoe");
+          senhaCentral = t.data("senhacentral");
+          mac_dhcp = t.data("macdhcp");
           jquery__WEBPACK_IMPORTED_MODULE_0___default()(".msg-insert").html("");
           jquery__WEBPACK_IMPORTED_MODULE_0___default()(".chat-box").css("display", "none");
           jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado").html("\n            <button type=\"button\" class=\"button success criar-chamado-button\" data-contrato=\"".concat(contratoId, "\" data-open=\"criar-chamado-modal-suporte\"><b>Novo chamado (suporte)</b></button>\n            <button type=\"button\" class=\"button primary criar-chamado-button\" data-contrato=\"").concat(contratoId, "\" data-open=\"criar-chamado-modal-protocolo\"><b>Novo chamado (protocolo)</b></button>\n            <button type=\"button\" class=\"button warning criar-chamado-button\" data-contrato=\"").concat(contratoId, "\" data-open=\"criar-chamado-modal-boleto\"><b>Novo chamado (boleto)</b></button>\n          "));
@@ -23364,8 +23372,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
       },
       complete: function complete() {
         if (lastClient) {
-          jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + lastClient + "]").trigger("click");
-          lastClient = null;
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + lastClient + "]").trigger("click"); //lastClient = null;
         }
       }
     });
@@ -23389,8 +23396,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").on("click", "#tabela-
   var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
   var idOcorrencia = $this.find('td.chamado-id div.chamado_id p').html();
   var numeroOcorrencia = $this.find('td.protocolo-chamado div.protocolo p').html();
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-numero-chamado").html(numeroOcorrencia); //$("#editar-chamado").foundation('toggle');
-
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-numero-chamado").html(numeroOcorrencia);
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado").foundation('toggle');
   jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
     method: "GET",
     url: "api/v1/consultar_ocorrencia",
