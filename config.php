@@ -27,5 +27,3 @@ $config = array(
     'token' => '7789c183-98c1-4667-b31f-b20931376f6f'
   )
 );
-
-//teste

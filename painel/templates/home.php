@@ -324,6 +324,7 @@
                 <option value="118">AUDITORIA</option>
                 <option value="239">SUPORTE HOME SERVICE</option>
                 <option value="117">MUDANÇA DE PONTO</option>
+                <option value="242">MIGRAÇÃO ZTE PREVENTIVO</option>
               </select>
             </label>
             <label>Técnico responsável:
