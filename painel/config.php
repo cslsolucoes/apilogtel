@@ -2,7 +2,7 @@
 $config = array(
   'httpHost' => (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]",
   // DEVELOPMENT
-  'sitePath' => '/painel/',
+  'sitePath' => 'painel/',
   // PRODUCTION
   //'sitePath' => 'logdesk/',
   'assetsFolder' => 'assets',
