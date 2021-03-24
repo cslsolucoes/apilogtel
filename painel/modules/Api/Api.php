@@ -78,6 +78,19 @@ class Api {
     return $result;
   }
 
+  public function consultarClienteAtivo($busca, $tipo = "todos") {
+    if(is_numeric($busca['busca']) && (strlen($busca['busca']) == 11 || strlen($busca['busca']) == 14)) {
+      $busca['busca'] = $this->validator->formata($busca['busca']);
+      if(!$busca['busca']) {
+        return array();
+      }
+    }
+    $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ConsultaClienteView\" WHERE nome LIKE '%" . $busca['busca'] . "%' OR cpfcnpj LIKE '%" . $busca['busca'] . "%' AND contrato_status = 'Ativo' ORDER BY nome ASC LIMIT 10";
+    $sql = $this->db->query($qry);
+    $result = $sql->fetchAll();
+    return $result;
+  }
+
   public function consultarOcorrencias($contrato) {
     $qry = "SELECT * FROM \"dbsgp\".\"public\".\"SuporteOcorrencias\" WHERE clientecontrato_id = $contrato ORDER BY data_cadastro DESC LIMIT 20";
     $sql = $this->db->query($qry);
