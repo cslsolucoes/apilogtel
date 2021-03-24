@@ -23170,22 +23170,25 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
                           success: function success(responseOnuTemp) {
                             var onuTempHTML = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".msg-insert").html();
                             onuTempHTML += "<p><b>Temperatura ONU</b>: ".concat(responseOnuTemp, "\xB0C</p>");
-                            jquery__WEBPACK_IMPORTED_MODULE_0___default()(".msg-insert").html(onuTempHTML);
-                            var data = {
-                              ip: oltIp,
-                              uid: onuUid
-                            };
-                            xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
-                              method: "POST",
-                              url: "api/v1/consultar_sinal_onu",
-                              data: data,
-                              dataType: "json",
-                              success: function success(responseOnuSignal) {
-                                var onuSignalHTML = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".msg-insert").html();
-                                onuSignalHTML += "<p><b>Sinal ONU</b>: ".concat(responseOnuSignal, "</p>");
-                                jquery__WEBPACK_IMPORTED_MODULE_0___default()(".msg-insert").html(onuSignalHTML);
-                              }
-                            });
+
+                            if (onuUid != 0) {
+                              jquery__WEBPACK_IMPORTED_MODULE_0___default()(".msg-insert").html(onuTempHTML);
+                              var data = {
+                                ip: oltIp,
+                                uid: onuUid
+                              };
+                              xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+                                method: "POST",
+                                url: "api/v1/consultar_sinal_onu",
+                                data: data,
+                                dataType: "json",
+                                success: function success(responseOnuSignal) {
+                                  var onuSignalHTML = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".msg-insert").html();
+                                  onuSignalHTML += "<p><b>Sinal ONU</b>: ".concat(responseOnuSignal, "</p>");
+                                  jquery__WEBPACK_IMPORTED_MODULE_0___default()(".msg-insert").html(onuSignalHTML);
+                                }
+                              });
+                            }
                           }
                         });
                       }

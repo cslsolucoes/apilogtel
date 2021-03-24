@@ -53,7 +53,10 @@ class Api {
     return $sql->fetchAll();
   }
 
-  public function consultarCliente($busca, $tipo = "todos") {
+  public function consultarCliente($busca) {
+    if(!isset($busca['tipo'])) {
+      $busca['tipo'] = "todos";
+    }
     if(is_numeric($busca['busca']) && (strlen($busca['busca']) == 11 || strlen($busca['busca']) == 14)) {
       $busca['busca'] = $this->validator->formata($busca['busca']);
       if(!$busca['busca']) {
@@ -78,7 +81,7 @@ class Api {
     return $result;
   }
 
-  public function consultarClienteAtivo($busca, $tipo = "todos") {
+  public function consultarClienteAtivo($busca) {
     if(is_numeric($busca['busca']) && (strlen($busca['busca']) == 11 || strlen($busca['busca']) == 14)) {
       $busca['busca'] = $this->validator->formata($busca['busca']);
       if(!$busca['busca']) {

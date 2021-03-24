@@ -4,8 +4,8 @@ class Logtelchip {
   private $db;
   private $urlAuthentication = 'https://www.pagtel.com.br/ispvendas-homologacao/api/v1/token';
   private $urlPlans = 'https://www.pagtel.com.br/ispvendas-homologacao/api/v1/plans';
-  private $login = 'andre@logtel.net.br';
-  private $password = '5656b94a-562a-4ab6-953f-1d31809fed3f';
+  private $login = 'admalogtel@pagtel.com.br';
+  private $password = 'logtel@123';
   private $bearerToken;
 
   private function __construct() {
