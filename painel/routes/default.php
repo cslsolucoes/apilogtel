@@ -64,6 +64,7 @@ $this->loadRouteFile('api/consultar_ultima_ocorrencia');
 $this->loadRouteFile('api/consultar_ocorrencia');
 $this->loadRouteFile('api/enviar_fatura');
 $this->loadRouteFile('api/promessa_pagamento');
+$this->loadRouteFile('api/verificaacesso');
 $this->loadRouteFile('api/testar_mumo');
 $this->loadRouteFile('api/consultar_fabricante_mac');
 

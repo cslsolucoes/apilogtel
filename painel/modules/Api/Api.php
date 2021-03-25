@@ -76,8 +76,6 @@ class Api {
     }
     $sql = $this->db->query($qry);
     $result = $sql->fetchAll();
-    $result[] = $qry;
-    $result[] = $busca;
     return $result;
   }
 
@@ -415,10 +413,10 @@ class Api {
     );
     
     $json = curl_exec($ch);
-    $obj = json_decode($json);
+    //$obj = json_decode($json);
     
-    $result = array('status' => $obj->status, 'protocolo' => $obj->protocolo);
-    return $result;
+    //$result = array('status' => $obj->status, 'protocolo' => $obj->protocolo);
+    return $json;
   }
 
   public function consultarFabricanteMac($dados) {
@@ -439,5 +437,30 @@ class Api {
     } else {
       return json_encode(array('vendor' => 'Não identificado'));
     }
+  }
+
+  public function verificaAcesso($contratoId) {
+    $url = "http://201.87.240.202:8000/ws/ura/verificaacesso/";
+    
+    $token = "7789c183-98c1-4667-b31f-b20931376f6f";
+    $app = "ura";
+
+    $data = array('token' => $token, 'app' => $app, 'contrato' => $contratoId['contrato']);;
+    $data_string = json_encode($data);
+    
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($data_string))
+    );
+    
+    $json = curl_exec($ch);
+    $obj = json_decode($json);
+    
+    //$result = array('status' => $obj->status, 'protocolo' => $obj->protocolo);
+    return $json;
   }
 }
