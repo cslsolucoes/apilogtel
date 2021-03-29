@@ -439,7 +439,7 @@ class Api {
     }
   }
 
-  public function verificaAcesso($contratoId) {
+  public function verificaManutencao($contratoId) {
     $url = "http://201.87.240.202:8000/ws/ura/verificaacesso/";
     
     $token = "7789c183-98c1-4667-b31f-b20931376f6f";
@@ -459,7 +459,7 @@ class Api {
     
     $json = curl_exec($ch);
     $obj = json_decode($json);
-    if($obj->status == 9) {
+    if($obj->status === 9) {
       return array('status' => true);
     } else {
       return array('status' => false);
