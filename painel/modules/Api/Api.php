@@ -64,14 +64,14 @@ class Api {
       }
     }
     if($busca['tipo'] == "internet" && is_numeric($busca['busca'])) {
-      $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ConsultaClienteView\" WHERE cliente_id = {$busca['busca']} AND servico_internet_id IS NOT NULL ORDER BY nome ASC LIMIT 10";
+      $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ViewConsultaCliente\" WHERE cliente_id = {$busca['busca']} AND servico_internet_id IS NOT NULL ORDER BY nome ASC LIMIT 10";
     } else if($busca['tipo'] == 'unico' && is_numeric($busca['busca'])) {
-      $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ConsultaClienteView\" WHERE cliente_id = {$busca['busca']} ORDER BY nome ASC LIMIT 10";
+      $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ViewConsultaCliente\" WHERE cliente_id = {$busca['busca']} ORDER BY nome ASC LIMIT 10";
     } else {
       if(is_numeric($busca['busca'])) {
-        $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ConsultaClienteView\" WHERE cliente_id = {$busca['busca']} OR contrato_id = {$busca['busca']} ORDER BY nome ASC LIMIT 10";
+        $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ViewConsultaCliente\" WHERE cliente_id = {$busca['busca']} OR contrato_id = {$busca['busca']} ORDER BY nome ASC LIMIT 10";
       } else {
-        $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ConsultaClienteView\" WHERE nome LIKE '%" . $busca['busca'] . "%' OR cpfcnpj LIKE '%" . $busca['busca'] . "%' ORDER BY nome ASC LIMIT 10";
+        $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ViewConsultaCliente\" WHERE nome LIKE '%" . $busca['busca'] . "%' OR cpfcnpj LIKE '%" . $busca['busca'] . "%' ORDER BY nome ASC LIMIT 10";
       }
     }
     $sql = $this->db->query($qry);
@@ -86,7 +86,7 @@ class Api {
         return array();
       }
     }
-    $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ConsultaClienteView\" WHERE nome LIKE '%" . $busca['busca'] . "%' OR cpfcnpj LIKE '%" . $busca['busca'] . "%' AND contrato_status = 'Ativo' ORDER BY nome ASC LIMIT 10";
+    $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ViewConsultaCliente\" WHERE nome LIKE '%" . $busca['busca'] . "%' OR cpfcnpj LIKE '%" . $busca['busca'] . "%' AND contrato_status = 'Ativo' ORDER BY nome ASC LIMIT 10";
     $sql = $this->db->query($qry);
     $result = $sql->fetchAll();
     return $result;
@@ -459,8 +459,12 @@ class Api {
     
     $json = curl_exec($ch);
     $obj = json_decode($json);
-    
+    if($obj->status == 9) {
+      return array('status' => true);
+    } else {
+      return array('status' => false);
+    }
     //$result = array('status' => $obj->status, 'protocolo' => $obj->protocolo);
-    return $json;
+    //return $json;
   }
 }
