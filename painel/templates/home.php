@@ -177,7 +177,7 @@
             <label>Motivo da OS:
               <select class="criar-os-select-motivoos" id="criar-os-motivoos" disabled>
                 <option value="103">CONEXÃO</option>
-                <option value="240">LOS LED VERMELHO</option>
+                <option value="240">ONU SEM SINAL</option>
                 <option value="241">PREVENTIVO FIBERHOME</option>
                 <option value="112">RETORNAR</option>
                 <option value="110">SEM ATENDIMENTO</option>
