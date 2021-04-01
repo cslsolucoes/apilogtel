@@ -22907,7 +22907,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
               html += contatoTel;
               html += contatoMail;
               html += "</h6></div>";
-              html += "\n                <div class=\"card-section contratos\">\n                  <table class=\"table hover\">\n                    <thead>\n                      <tr>\n                        <th>Contrato</th>\n                        <th>In\xEDcio</th>\n                        <th>Servi\xE7o</th>\n                        <th>Conex\xE3o</th>\n                        <th>Status</th>\n                        <th>Endere\xE7o</th>\n                      </tr>\n                    </thead>\n                    <tbody>\n              ";
+              html += "\n                <div class=\"card-section contratos\">\n                  <table class=\"table hover\">\n                    <thead>\n                      <tr>\n                        <th>Contrato</th>\n                        <th>Tipo</th>\n                        <th>In\xEDcio</th>\n                        <th>Servi\xE7o</th>\n                        <th>Conex\xE3o</th>\n                        <th>Status</th>\n                        <th>Endere\xE7o</th>\n                      </tr>\n                    </thead>\n                    <tbody>\n              ";
 
               for (var i = 0; i < response.length; i++) {
                 try {
@@ -22933,7 +22933,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
                     });
                   }
 
-                  html += "\n                        <tr class=\"contrato-linha servico-internet ".concat(response[i].contrato_status, "\"\n                            data-cliente-id=\"").concat(response[i].cliente_id, "\"\n                            data-contrato-id=\"").concat(response[i].contrato_id, "\"\n                            data-internet-id=\"").concat(servico_internet[0].id, "\"\n                            data-pppoe=\"").concat(pppoe, "\"\n                            data-senhapppoe=\"").concat(senhaPppoe, "\"\n                            data-senhacentral=\"").concat(senhaCentral, "\"\n                            data-macdhcp=\"").concat(mac_dhcp, "\">\n                          <td>").concat(response[i].contrato_id, "</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: <span id=\"servico-internet-").concat(response[i].contrato_id, "\">").concat(servico_internet[0].plano, "</span> / <b>Valor</b>: ").concat(servico_internet[0].valor, "<br><b>PPPoE</b>: ").concat(servico_internet[0].login, " / <b>Senha</b>: ").concat(servico_internet[0].login_password, " / <b>Senha Central</b>: ").concat(servico_internet[0].central_password, "</td>\n                          <td><button id=\"").concat(response[i].contrato_id, "\" class=\"button small no-margin contrato_status\"></button></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td>").concat(servico_internet[0].logradouro).concat(servico_internet[0].numero ? ", " + servico_internet[0].numero : "", "<br><b>").concat(servico_internet[0].bairro, ", ").concat(servico_internet[0].cidade, "</b> - ").concat(servico_internet[0].uf).concat(servico_internet[0].complemento ? ", " + servico_internet[0].complemento : "", "</td>\n                  ");
+                  html += "\n                        <tr class=\"contrato-linha servico-internet ".concat(response[i].contrato_status, "\"\n                            data-cliente-id=\"").concat(response[i].cliente_id, "\"\n                            data-contrato-id=\"").concat(response[i].contrato_id, "\"\n                            data-internet-id=\"").concat(servico_internet[0].id, "\"\n                            data-pppoe=\"").concat(pppoe, "\"\n                            data-senhapppoe=\"").concat(senhaPppoe, "\"\n                            data-senhacentral=\"").concat(senhaCentral, "\"\n                            data-macdhcp=\"").concat(mac_dhcp, "\">\n                          <td>").concat(response[i].contrato_id, "</td>\n                          <td>Internet</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: <span id=\"servico-internet-").concat(response[i].contrato_id, "\">").concat(servico_internet[0].plano, "</span> / <b>Valor</b>: ").concat(servico_internet[0].valor, "<br><b>PPPoE</b>: ").concat(servico_internet[0].login, " / <b>Senha</b>: ").concat(servico_internet[0].login_password, " / <b>Senha Central</b>: ").concat(servico_internet[0].central_password, "</td>\n                          <td><button id=\"").concat(response[i].contrato_id, "\" class=\"button small no-margin contrato_status\"></button></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td>").concat(servico_internet[0].logradouro).concat(servico_internet[0].numero ? ", " + servico_internet[0].numero : "", "<br><b>").concat(servico_internet[0].bairro, ", ").concat(servico_internet[0].cidade, "</b> - ").concat(servico_internet[0].uf).concat(servico_internet[0].complemento ? ", " + servico_internet[0].complemento : "", "</td>\n                  ");
                   xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
                     method: "POST",
                     url: "api/v1/consultar_ocorrencias",
@@ -23001,14 +23001,36 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
 
                 try {
                   var servico_tv = JSON.parse(response[i].servico_tv);
-                  html += "\n                        <tr>\n                          <td>".concat(response[i].contrato_id, "</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: ").concat(servico_tv[0].descricao, " / <b>Smartcard</b>: ").concat(servico_tv[0].smartcard ? servico_tv[0].smartcard : "Nenhum", "</td>\n                          <td></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td></td>\n                  ");
+                  html += "\n                        <tr>\n                          <td>".concat(response[i].contrato_id, "</td>\n                          <td>TV</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: ").concat(servico_tv[0].descricao, " / <b>Smartcard</b>: ").concat(servico_tv[0].smartcard ? servico_tv[0].smartcard : "Nenhum", "</td>\n                          <td></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td></td>\n                  ");
                   html += "</tr>";
                 } catch (e) {}
 
                 try {
-                  var servico_multimidia = JSON.parse(response[i].servico_multimida);
-                  html += "\n                        <tr>\n                          <td>".concat(response[i].contrato_id, "</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: ").concat(servico_multimidia[0].descricao, " / <b>Celular</b>: ").concat(servico_multimidia[0].email, "</td>\n                          <td></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td></td>\n                  ");
+                  var servico_multimidia = JSON.parse(response[i].servico_multimidia);
+                  html += "\n                        <tr>\n                          <td>".concat(response[i].contrato_id, "</td>\n                          <td>Multim\xEDdia</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: ").concat(servico_multimidia[0].descricao, " / <b>Celular</b>: ").concat(servico_multimidia[0].email, "</td>\n                          <td></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td></td>\n                  ");
                   html += "</tr>";
+                } catch (e) {}
+
+                try {
+                  var servico_telefonia = JSON.parse(response[i].servico_telefonia);
+                  var servico_telefonia_linhas = JSON.parse(servico_telefonia[0].linha);
+
+                  for (var j = 0; j < servico_telefonia_linhas.length; j++) {
+                    if (servico_telefonia_linhas[j].simcard == null) {
+                      servico_telefonia_linhas[j].simcard = 'Nenhum';
+                    }
+
+                    var tipo = '';
+
+                    if (servico_telefonia.tipo == 'CELULAR') {
+                      tipo = 'Tel. Móvel';
+                    } else {
+                      tipo = 'Tel. Fixo';
+                    }
+
+                    html += "\n                          <tr>\n                            <td>".concat(response[i].contrato_id, "</td>\n                            <td>").concat(tipo, "</td>\n                            <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                            <td>\n                              <b>Plano</b>: ").concat(servico_telefonia[0].descricao, "\n                              <br>\n                              <b>Celular</b>: ").concat(servico_telefonia_linhas[j].numero, " / <b>Simcard</b>: ").concat(servico_telefonia_linhas[j].simcard, "\n                            </td>\n                            <td></td>\n                            <td>").concat(response[i].contrato_status, "</td>\n                            <td>").concat(response[i].logradouro).concat(response[i].numero ? ", " + response[i].numero : "", " ").concat(response[i].complemento ? ", " + response[i].complemento : "", "<br><b>").concat(response[i].bairro, ", ").concat(response[i].cidade, "</b> - ").concat(response[i].uf, "</td>\n                    ");
+                    html += "</tr>";
+                  }
                 } catch (e) {}
               }
 

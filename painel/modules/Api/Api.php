@@ -111,7 +111,8 @@ class Api {
   }
 
   public function criarOcorrencia($dados) {
-    $realIP = file_get_contents("http://ipecho.net/plain");
+    $realIP = @file_get_contents("http://ipecho.net/plain");
+    if(!$realIP) $realIP = '0.0.0.0';
     $dados['conteudo'] = $dados['conteudo'] . ($dados['protocolocheck'] == 'true' ? ' Protocolo anotado pelo cliente.' : ' Protocolo não anotado pelo cliente.');
     $qry = "SELECT * FROM \"funcaoOcorrenciaAbrir\"({$dados['status']}, {$dados['contratoid']}, {$dados['userid']}, {$dados['origem']}, {$dados['setor']}, {$dados['tipo']}, {$dados['userid']}, '{$dados['conteudo']}', '{$dados['obs']}', '', '', '$realIP')";
     $sql = $this->db->query($qry);
@@ -198,7 +199,8 @@ class Api {
     $mensagem .= "\nCidade: ". $cidade;
     $mensagem .= "\nUF: ". $uf;
     $mensagem .= "\nNúmero: ". $numero;
-    $realIP = file_get_contents("http://ipecho.net/plain");
+    $realIP = @file_get_contents("http://ipecho.net/plain");
+    if(!$realIP) $realIP = '0.0.0.0';
     $qry = "SELECT * FROM \"funcaoOcorrenciaAbrir\"(0, 115574, 90212, NULL, 55, 14, 272, 1, '$mensagem', '', '$nome', '$telefone', '$realIP')";
     $sql = $this->db->query($qry);
     $resultado = $sql->fetchAll();

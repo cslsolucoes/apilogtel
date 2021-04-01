@@ -1,4 +1,5 @@
 <?php
+  header('Content-Type: application/json');
   $core = Core::getInstance();
   $api = $core->loadModule('api');
   if(!isset($_SESSION['user']) || !isset($_SESSION['pass'])) {
