@@ -135,6 +135,12 @@ class Api {
       $resultado[0]['OcorrenciaNumero'] = $dados['ocorrenciaid'];
       return $resultado;
     }
+
+    if($dados['protocolocheck'] == 'true') {
+      $dados['conteudo'] = $dados['conteudo'] . ' Protocolo informado ao cliente.';
+    } else {
+      $dados['conteudo'] = $dados['conteudo'] . ' Protocolo não informado ao cliente.';
+    }
     $qry = "SELECT * FROM \"funcaoOcorrenciaAbrir\"({$dados['status']}, {$dados['contratoid']}, {$dados['userid']}, {$dados['origem']}, {$dados['setor']}, {$dados['tipo']}, {$dados['userid']}, '{$dados['conteudo']}', '{$dados['obs']}', '', '', '$realIP')";
     $sql = $this->db->query($qry);
     $resultado = $sql->fetchAll();
