@@ -1,5 +1,5 @@
 <?php
 
-$this->get('logtelchip', function ($data) {
+$this->get('logtelchip/planos', function ($data) {
   $this->core->loadModule('template')->render('logtelchip', $data);
 });

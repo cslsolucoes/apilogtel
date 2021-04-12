@@ -23422,7 +23422,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").on("click", "#tabela-
   var idOcorrencia = $this.find('td.chamado-id div.chamado_id p').html();
   var numeroOcorrencia = $this.find('td.protocolo-chamado div.protocolo p').html();
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-numero-chamado").html(numeroOcorrencia);
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado").foundation('toggle');
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-modal-suporte").foundation('toggle');
   jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
     method: "GET",
     url: "api/v1/consultar_ocorrencia",
@@ -23473,10 +23473,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-contrato-suporte"
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
   e.preventDefault();
   var status = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-status").val();
-  var contratoid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-contratoid");
+  var ocorrenciaid = $this.attr("data-ocorrenciaid");
+  var osid = $this.attr("data-osid");
+  var contratoid = $this.attr("data-contratoid");
   var dataagendamento = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-data-ag").val();
   var setor = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-setor-ocorrencia").val();
-  var userid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-userid");
+  var userid = $this.attr("data-userid");
   var origem = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-origem-ocorrencia").val();
   var tipo = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#edit-tipo-ocorrencia").val();
   var conteudo = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-conteudo").val();
@@ -23492,6 +23494,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-contrato-suporte"
   var statusos = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-os-status").val();
   var problemaos = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-os-problema").val();
   var data = {
+    ocorrenciaid: ocorrenciaid,
+    osid: osid,
     status: status,
     contratoid: contratoid,
     dataagendamento: dataagendamento,
@@ -23512,6 +23516,26 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#editar-chamado-contrato-suporte"
     statusos: statusos,
     problemaos: problemaos
   };
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+    method: "POST",
+    url: "api/v1/criar_ocorrencia",
+    dataType: "json",
+    data: data,
+    success: function success(response) {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
+      data = null;
+      alert("Ocorrência editada com sucesso. Protocolo: " + response[0].OcorrenciaNumero);
+    },
+    complete: function complete(response) {
+      var clienteid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("span#cliente-id").html();
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.editar-chamado-form').trigger("reset");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".editar-chamado-input-contrato").val(contratoid + " - " + jquery__WEBPACK_IMPORTED_MODULE_0___default()("#servico-internet-" + contratoid).html());
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".editar-chamado-input-contrato-hidden").val(contratoid);
+      $this.prop('disabled', false);
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editar-chamado-modal-suporte').foundation('close');
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + clienteid + "]").trigger("click");
+    }
+  });
   console.log(data);
 });
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-suporte").on("click", function (e) {

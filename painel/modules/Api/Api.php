@@ -113,7 +113,28 @@ class Api {
   public function criarOcorrencia($dados) {
     //$realIP = @file_get_contents("http://ipecho.net/plain");
     $realIP = '0.0.0.0';
-    $dados['conteudo'] = $dados['conteudo'] . ($dados['protocolocheck'] == 'true' ? ' Protocolo anotado pelo cliente.' : ' Protocolo não anotado pelo cliente.');
+    if(isset($dados['ocorrenciaid']) && $dados['ocorrenciaid']) {
+      $dados['dataagendamento'] = date("Y-m-d H:i:s", strtotime($dados['dataagendamento']));
+      $qry = "SELECT * FROM \"funcaoOcorrenciaAlterar\"({$dados['ocorrenciaid']}, {$dados['status']}, {$dados['userid']}, {$dados['userid']}, {$dados['setor']}, {$dados['tipo']}, {$dados['origem']}, '{$dados['dataagendamento']}', '{$dados['conteudo']}', '{$dados['obs']}', '$realIP')";
+      $sql = $this->db->query($qry);
+      $resultado = $sql->fetchAll();
+      if($dados['oscheck'] == 'true' && isset($dados['osid']) && $dados['osid']) {
+        $dados['dataos'] = date("Y-m-d H:i:s", strtotime($dados['dataos']));
+        if(!$dados['tecnicoos']) {
+          $dados['tecnicoos'] = 'NULL';
+        }
+        unset($qry);
+        $qry = "SELECT * FROM \"funcaoOSAlterar\"({$dados['osid']}, {$dados['statusos']}, {$dados['motivoos']}, {$dados['setoros']}, {$dados['userid']}, {$dados['tecnicoos']}, '{$dados['problemaos']}', '{$dados['dataos']}', '$realIP')";
+        $sql = $this->db->query($qry);
+      } else if($dados['oscheck'] == 'true') {
+        $dados['dataos'] = date("Y-m-d H:i:s", strtotime($dados['dataos']));
+        unset($qry);
+        $qry = "SELECT * FROM \"funcaoOSAbrir\"({$dados['ocorrenciaid']}, {$dados['motivoos']}, {$dados['setoros']}, {$dados['userid']}, '{$dados['problemaos']}', '{$dados['dataos']}', '$realIP')";
+        $sql = $this->db->query($qry);
+      }
+      $resultado[0]['OcorrenciaNumero'] = $dados['ocorrenciaid'];
+      return $resultado;
+    }
     $qry = "SELECT * FROM \"funcaoOcorrenciaAbrir\"({$dados['status']}, {$dados['contratoid']}, {$dados['userid']}, {$dados['origem']}, {$dados['setor']}, {$dados['tipo']}, {$dados['userid']}, '{$dados['conteudo']}', '{$dados['obs']}', '', '', '$realIP')";
     $sql = $this->db->query($qry);
     $resultado = $sql->fetchAll();

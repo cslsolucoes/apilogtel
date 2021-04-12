@@ -41,15 +41,15 @@
   
   <div class="grid-container">
     <div class="grid-x grid-padding-x grid-margin-x">
-      <div class="medium-8 cell">
+      <div class="large-8 small-12 cell">
         <div id="dados-cliente" style="color:white;">
   
         </div>
-        <div class="medium-6 cell" id="criar-chamado">
+        <div class="large-6 small-12 cell" id="criar-chamado">
   
         </div>
       </div>
-      <div class="medium-4 cell">
+      <div class="large-4 small-12 cell">
         <div id="dados-contrato" style="color:white;">
   
         </div>
@@ -217,7 +217,7 @@
     </button>
   </div>
   
-  <div class="reveal" id="editar-chamado" data-reveal data-close-on-click="false">
+  <div class="reveal" id="editar-chamado-modal-suporte" data-reveal data-close-on-click="false">
     <form action="index.php" method="post" class="editar-chamado-form">
       <div class="grid-container">
         <div class="grid-x grid-padding-x">
