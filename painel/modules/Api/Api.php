@@ -112,9 +112,13 @@ class Api {
 
   public function criarOcorrencia($dados) {
     //$realIP = @file_get_contents("http://ipecho.net/plain");
-    $realIP = '0.0.0.0';
+    $realIP = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
     if(isset($dados['ocorrenciaid']) && $dados['ocorrenciaid']) {
-      $dados['dataagendamento'] = date("Y-m-d H:i:s", strtotime($dados['dataagendamento']));
+      if(isset($dados['dataagendamento']) && $dados['dataagendamento']) {
+        $dados['dataagendamento'] = date("Y-m-d H:i:s", strtotime($dados['dataagendamento']));
+      } else {
+        $dados['dataagendamento'] = '';
+      }
       $qry = "SELECT * FROM \"funcaoOcorrenciaAlterar\"({$dados['ocorrenciaid']}, {$dados['status']}, {$dados['userid']}, {$dados['userid']}, {$dados['setor']}, {$dados['tipo']}, {$dados['origem']}, '{$dados['dataagendamento']}', '{$dados['conteudo']}', '{$dados['obs']}', '$realIP')";
       $sql = $this->db->query($qry);
       $resultado = $sql->fetchAll();
