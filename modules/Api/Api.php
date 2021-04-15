@@ -345,7 +345,7 @@ class Api
         $this->db->queryLocal($query);
         return array('auth' => false);
       }
-      if(!isset($dados['cpfcnpj']) || $dados['cpfcnpj']) {
+      if(!isset($dados['cpfcnpj']) || !$dados['cpfcnpj']) {
         return array('auth' => false);
       }
       $qry = "SELECT * FROM \"dbsgp\".\"public\".\"funcaoValidaQualifica\"('" . $dados['cpfcnpj'] . "', '" . $dados['senha'] . "')";
