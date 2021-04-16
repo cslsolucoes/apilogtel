@@ -37,7 +37,7 @@ class Api {
       ORDER BY nome
       ) as consulta;
     ";
-    $sql = $this->db->query($query);
+    $sql = $this->db->queryErp($query);
     $result = $sql->fetchAll();
     return $result[0]['quantidade'];
   }
