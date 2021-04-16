@@ -476,10 +476,13 @@ class Api {
     );
     
     $json = curl_exec($ch);
-    //$obj = json_decode($json);
-    
-    //$result = array('status' => $obj->status, 'protocolo' => $obj->protocolo);
-    return $json;
+    $obj = json_decode($json);
+    if(isset($obj->protocolo) && $obj->protocolo) {
+      $result = array('status' => $obj->status, 'protocolo' => $obj->protocolo);
+    } else {
+      $result = array('status' => $obj->status, 'protocolo' => null);
+    }
+    return $result;
   }
 
   public function consultarFabricanteMac($dados) {
