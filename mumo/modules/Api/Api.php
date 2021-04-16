@@ -24,6 +24,24 @@ class Api {
     }
   }
 
+  public function contratosAtivos() {
+    $query = "
+      Select count(telefone) as quantidade from 
+      (
+      SELECT mm.email as telefone,mm.id as contrato, pe.cpfcnpj as cpf, pe.nome, mm.data_cadastro,mm.data_alteracao FROM \"admcore_servicomultimidia\" mm
+      INNER JOIN admcore_cliente cl on (cl.id=mm.clientecontrato_id)
+      INNER JOIN admcore_pessoa  pe on (pe.id=cl.pessoa_id)
+      INNER JOIN admcore_clientecontrato co on (co.id = mm.clientecontrato_id)
+      INNER JOIN admcore_clientecontratostatus st on (st.id=co.status_id)
+      Where st.status = 1
+      ORDER BY nome
+      ) as consulta;
+    ";
+    $sql = $this->db->queryLocal($query);
+    $result = $sql->fetchAll();
+    return $result[0]['quantidade'];
+  }
+
   public function checkUser($user, $token, $body) {
     $user = preg_replace('/[^0-9]/', '', $user);
     $cliente_id = $this->checkToken($token);

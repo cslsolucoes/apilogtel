@@ -22,6 +22,10 @@ $this->get('login', function () {
   echo json_encode($response);
 });
 
+$this->get('contratos_ativos', function () {
+  $this->core->loadModule('template')->render('contratos_ativos', $_GET ?? NULL);
+});
+
 $this->post('login', function () {
   (string)$user = '';
   (string)$token = '';
