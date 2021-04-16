@@ -86,7 +86,7 @@ class Api {
         return array();
       }
     }
-    $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ViewConsultaCliente\" WHERE nome LIKE '%" . $busca['busca'] . "%' OR cpfcnpj LIKE '%" . $busca['busca'] . "%' AND contrato_status = 'Ativo' ORDER BY nome ASC LIMIT 10";
+    $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ViewConsultaCliente\" WHERE nome LIKE '%" . $busca['busca'] . "%' OR cpfcnpj LIKE '%" . $busca['busca'] . "%' AND (contrato_status = 'Ativo' OR contrato_status = 'Suspenso') ORDER BY nome ASC LIMIT 10";
     $sql = $this->db->query($qry);
     $result = $sql->fetchAll();
     return $result;
@@ -108,6 +108,36 @@ class Api {
     $qry = "SELECT * FROM \"dbsgp\".\"public\".\"SuporteOcorrencias\" WHERE id = '$numero' LIMIT 1";
     $sql = $this->db->query($qry);
     return $sql->fetchAll();
+  }
+
+  public function consultarFaturas($data) {
+    $url = "http://201.87.240.202:8000/api/central/titulos";
+
+    $data['cpfcnpj'] = $data['cpfcnpj'] ?? '';
+    $data['senhacentral'] = $data['senhacentral'] ?? '';
+    $data['contrato'] = $data['contrato'] ?? '';
+
+    $data = array('cpfcnpj' => $data['cpfcnpj'], 'senha' => $data['senhacentral'], 'contrato' => $data['contrato']);
+    $data_string = json_encode($data);
+    
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($data_string))
+    );
+    
+    $json = curl_exec($ch);
+    $obj = json_decode($json);
+    
+    if(isset($obj->faturas)) {
+      $result = array('faturas' => $obj->faturas);
+    } else {
+      $result = array('msg' => 'invalid credentials');
+    }
+    return $result;
   }
 
   public function criarOcorrencia($dados) {
@@ -478,7 +508,7 @@ class Api {
     $token = "7789c183-98c1-4667-b31f-b20931376f6f";
     $app = "ura";
 
-    $data = array('token' => $token, 'app' => $app, 'contrato' => $contratoId['contrato']);;
+    $data = array('token' => $token, 'app' => $app, 'contrato' => $contratoId['contrato']);
     $data_string = json_encode($data);
     
     $ch = curl_init($url);
