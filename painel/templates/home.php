@@ -212,7 +212,7 @@
         </div>
       </div>
     </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
+    <button class="close-button" data-close aria-label="Fechar" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -353,7 +353,7 @@
         </div>
       </div>
     </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
+    <button class="close-button" data-close aria-label="Fechar" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -411,7 +411,7 @@
             </label>
             <label>Conteúdo: <textarea class="criar-chamado-input-conteudo" id="criar-chamado-conteudo-protocolo" rows="3"></textarea></label>
             <div class="grid-x">
-              <div class="medium-4 cell">
+              <div class="medium-2 cell">
                 <button class="button primary" id="criar-chamado-contrato-protocolo" data-close data-clienteid data-contratoid data-userid="<?= $_SESSION['userid'] ?>">Abrir chamado</button>
               </div>
               <div class="medium-5 cell">
@@ -424,7 +424,7 @@
         </div>
       </div>
     </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
+    <button class="close-button" data-close aria-label="Fechar" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -482,7 +482,7 @@
             </label>
             <label>Conteúdo: <textarea class="criar-chamado-input-conteudo" id="criar-chamado-conteudo-boleto" rows="3">Enviado para o e-mail do cadastro o boleto com vencimento em </textarea></label>
             <div class="grid-x">
-              <div class="medium-4 cell">
+              <div class="medium-2 cell">
                 <button class="button primary" id="criar-chamado-contrato-boleto" data-close data-clienteid data-contratoid data-userid="<?= $_SESSION['userid'] ?>">Abrir chamado</button>
               </div>
               <div class="medium-5 cell">
@@ -495,11 +495,52 @@
         </div>
       </div>
     </form>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
+    <button class="close-button" data-close aria-label="Fechar" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   
+  <div class="reveal small" id="enviar-fatura-modal-boleto" data-reveal data-close-on-click="false">
+    <form action="index.php" method="post" class="criar-chamado-form">
+      <div class="grid-container">
+        <div class="grid-x grid-padding-x">
+          <div class="medium-12 cell">
+            <h1>Envio de boletos</h1>
+          </div>
+          <div class="medium-12 cell">
+            <label>Contrato:
+              <input type="text" class="criar-chamado-input-contrato" disabled></input>
+              <input type="hidden" value="" id="criar-chamado-input-contrato-hidden-protocolo" class="criar-chamado-input-contrato-hidden"></input>
+            </label>
+            <label>E-mail <i>(deixe em branco para usar o e-mail de cobrança)</i>:
+              <input type="text" id="enviar-boleto-email" placeholder="cliente@mail.com"></input>
+            </label>
+            <table id="tabela-titulos">
+              <thead>
+                <tr>
+                  <th>N. Doc.</th>
+                  <th>Vencimento</th>
+                  <th>Vencimento atualizado</th>
+                  <th>Dias de atraso</th>
+                  <th>Valor</th>
+                  <th>Valor atual</th>
+                </tr>
+              </thead>
+              <tbody id="titulos"></tbody>
+            </table>
+            <div class="grid-x">
+              <div class="medium-4 cell">
+                <button class="button primary" id="enviar-titulos-button" data-close data-cpfcnpj data-senhacentral data-email data-contratoid data-userid="<?= $_SESSION['userid'] ?>">Enviar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <button class="close-button" data-close aria-label="Fechar" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
   <script>
     var baseURL = '<?= $uri ?>';
   </script>

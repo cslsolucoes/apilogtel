@@ -22688,6 +22688,7 @@ var busca = "";
 var xhr;
 var token = "7789c183-98c1-4667-b31f-b20931376f6f";
 var app = "ura";
+var arrayMail = [];
 
 if (getCookie('lastClient')) {
   lastClient = getCookie('lastClient');
@@ -22790,7 +22791,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
             var servico_internet = JSON.parse(response[i].servico_internet);
 
             for (var j = 0; j < servico_internet.length; j++) {
-              jquery__WEBPACK_IMPORTED_MODULE_0___default()(".lista-clientes").append("\n                <a class=\"carregar_dados_cliente\" data-contratoid=\"".concat(response[i].cliente_id, "\">\n                  <li class=\"resultado-cliente\">\n                    ").concat(response[i].nome, " - ").concat(response[i].cpfcnpj, " - Cliente ID: ").concat(response[i].cliente_id, "\n                    <br>\n                    Contrato: ").concat(response[i].contrato_id, " (").concat(response[i].contrato_status, ") - Login: ").concat(servico_internet[j].login, " - POP: ").concat(response[i].contrato_pop, "\n                    <br>\n                    Endere\xE7o: ").concat(servico_internet[j].logradouro).concat(servico_internet[j].numero ? ", " + servico_internet[j].numero : "", " - ").concat(servico_internet[j].bairro, ", ").concat(servico_internet[j].cidade, " - ").concat(servico_internet[j].uf, "\n                  </li>\n                </a>\n              "));
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()(".lista-clientes").append("\n                <a class=\"carregar_dados_cliente\" data-contratoid=\"".concat(response[i].cliente_id, "\">\n                  <li class=\"resultado-cliente\" data-status=\"").concat(response[i].contrato_status, "\">\n                    ").concat(response[i].nome, " - ").concat(response[i].cpfcnpj, " - Cliente ID: ").concat(response[i].cliente_id, "\n                    <br>\n                    Contrato: ").concat(response[i].contrato_id, " (").concat(response[i].contrato_status, ") - Login: ").concat(servico_internet[j].login, " - POP: ").concat(response[i].contrato_pop, "\n                    <br>\n                    Endere\xE7o: ").concat(servico_internet[j].logradouro).concat(servico_internet[j].numero ? ", " + servico_internet[j].numero : "", " - ").concat(servico_internet[j].bairro, ", ").concat(servico_internet[j].cidade, " - ").concat(servico_internet[j].uf, "\n                  </li>\n                </a>\n              "));
             }
           } catch (e) {}
         }
@@ -22843,7 +22844,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
             data: data,
             dataType: "json",
             success: function success(response) {
-              var html = "\n                <div class=\"card\">\n                  <div class=\"card-divider header\">\n                    <h6>\n                      <p><b>Cliente</b>: <span id=\"cliente-id\">".concat(response[0].cliente_id, "</span><br>\n                      <b>CPF/CNPJ</b>: ").concat(response[0].cpfcnpj, "\n                      <button class=\"button copy_button copy_button_primary\" title=\"Copiar CPF/CNPJ\" data-copy=\"").concat(response[0].cpfcnpj, "\">\n                        <i class=\"fi fi-page-copy\"></i>\n                      </button>\n                      <br>\n                      <b>Nome</b>: ").concat(response[0].nome, "<br>\n                      <b>Endere\xE7o principal</b>: ").concat(response[0].logradouro).concat(response[0].numero ? ", " + response[0].numero : "", " - ").concat(response[0].bairro, ", ").concat(response[0].cidade, " - ").concat(response[0].uf).concat(response[0].complemento ? ", " + response[0].complemento : "", "</p>\n                    </h6>\n                  </div>\n                  <div class=\"card-divider header\"><h6>\n              ");
+              var html = "\n                <div class=\"card\">\n                  <div class=\"card-divider header\">\n                    <h6>\n                      <p><b>Cliente</b>: <span id=\"cliente-id\">".concat(response[0].cliente_id, "</span><br>\n                      <b>CPF/CNPJ</b>: <span id=\"cliente-cpfcnpj\">").concat(response[0].cpfcnpj, "</span>\n                      <button class=\"button copy_button copy_button_primary\" title=\"Copiar CPF/CNPJ\" data-copy=\"").concat(response[0].cpfcnpj, "\">\n                        <i class=\"fi fi-page-copy\"></i>\n                      </button>\n                      <br>\n                      <b>Nome</b>: ").concat(response[0].nome, "<br>\n                      <b>Endere\xE7o principal</b>: ").concat(response[0].logradouro).concat(response[0].numero ? ", " + response[0].numero : "", " - ").concat(response[0].bairro, ", ").concat(response[0].cidade, " - ").concat(response[0].uf).concat(response[0].complemento ? ", " + response[0].complemento : "", "</p>\n                    </h6>\n                  </div>\n                  <div class=\"card-divider header\"><h6>\n              ");
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-cliente").html("");
 
               try {
@@ -22854,13 +22855,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
 
               var contatoMail = '';
               var contatoTel = '';
+              arrayMail = [];
 
               for (var j = 0; j < contato.length; j++) {
                 try {
                   var regExp = /[a-zA-Z]/g;
 
                   if (regExp.test(contato[j].contato)) {
-                    contatoMail += "\n                      <p><b>".concat(capitalize(contato[j].tipo.replace(/_/gi, " "), true), "</b>: ").concat(formatarTelefone(contato[j].contato, true), "\n                      <button class=\"button copy_button copy_button_primary\" title=\"Copiar e-mail\" data-copy=\"").concat(formatarTelefone(contato[j].contato), "\">\n                        <i class=\"fi fi-page-copy\"></i>\n                      </button></p>\n                    ");
+                    arrayMail.push(contato[j].contato);
+                    contatoMail += "\n                      <p><b>".concat(capitalize(contato[j].tipo.replace(/_/gi, " "), true), "</b>: <span class=\"").concat(contato[j].tipo.toLowerCase(), "\">").concat(formatarTelefone(contato[j].contato, true), "</span>\n                      <button class=\"button copy_button copy_button_primary\" title=\"Copiar e-mail\" data-copy=\"").concat(formatarTelefone(contato[j].contato), "\">\n                        <i class=\"fi fi-page-copy\"></i>\n                      </button></p>\n                    ");
                     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").on("mousedown", ".copy_button", function (e) {
                       jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).css("color", "white");
                     });
@@ -22927,13 +22930,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
                     eraseCookie("vendor");
                     setCookie("macDhcp", mac_dhcp, 1);
                     jquery__WEBPACK_IMPORTED_MODULE_0___default.a.get("api/v1/consultar_fabricante_mac", "mac=" + mac_dhcp, function (data) {
-                      vendor = JSON.parse(data);
-                      if (vendor.vendor == null) vendor.vendor = 'Não informado';
-                      setCookie("vendor", vendor.vendor, 1);
+                      try {
+                        if (data.vendor == null) data.vendor = 'Não informado';
+                        setCookie("vendor", data.vendor, 1);
+                      } catch (e) {
+                        setCookie("vendor", "Não informado", 1);
+                      }
                     });
                   }
 
-                  html += "\n                        <tr class=\"contrato-linha servico-internet ".concat(response[i].contrato_status, "\"\n                            data-cliente-id=\"").concat(response[i].cliente_id, "\"\n                            data-contrato-id=\"").concat(response[i].contrato_id, "\"\n                            data-internet-id=\"").concat(servico_internet[0].id, "\"\n                            data-pppoe=\"").concat(pppoe, "\"\n                            data-senhapppoe=\"").concat(senhaPppoe, "\"\n                            data-senhacentral=\"").concat(senhaCentral, "\"\n                            data-macdhcp=\"").concat(mac_dhcp, "\">\n                          <td>").concat(response[i].contrato_id, "</td>\n                          <td>Internet</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: <span id=\"servico-internet-").concat(response[i].contrato_id, "\">").concat(servico_internet[0].plano, "</span> / <b>Valor</b>: ").concat(servico_internet[0].valor, "<br><b>PPPoE</b>: ").concat(servico_internet[0].login, " / <b>Senha</b>: ").concat(servico_internet[0].login_password, " / <b>Senha Central</b>: ").concat(servico_internet[0].central_password, "</td>\n                          <td><button id=\"").concat(response[i].contrato_id, "\" class=\"button small no-margin contrato_status\"></button></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td>").concat(servico_internet[0].logradouro).concat(servico_internet[0].numero ? ", " + servico_internet[0].numero : "", "<br><b>").concat(servico_internet[0].bairro, ", ").concat(servico_internet[0].cidade, "</b> - ").concat(servico_internet[0].uf).concat(servico_internet[0].complemento ? ", " + servico_internet[0].complemento : "", "</td>\n                  ");
+                  html += "\n                        <tr class=\"contrato-linha servico-internet ".concat(response[i].contrato_status, "\"\n                            data-cliente-id=\"").concat(response[i].cliente_id, "\"\n                            data-cpfcnpj=\"").concat(response[i].cpfcnpj, "\"\n                            data-contrato-id=\"").concat(response[i].contrato_id, "\"\n                            data-internet-id=\"").concat(servico_internet[0].id, "\"\n                            data-pppoe=\"").concat(pppoe, "\"\n                            data-senhapppoe=\"").concat(senhaPppoe, "\"\n                            data-senhacentral=\"").concat(senhaCentral, "\"\n                            data-macdhcp=\"").concat(mac_dhcp, "\">\n                          <td>").concat(response[i].contrato_id, "</td>\n                          <td>Internet</td>\n                          <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                          <td><b>Plano</b>: <span id=\"servico-internet-").concat(response[i].contrato_id, "\">").concat(servico_internet[0].plano, "</span> / <b>Valor</b>: ").concat(servico_internet[0].valor, "<br><b>PPPoE</b>: ").concat(servico_internet[0].login, " / <b>Senha</b>: ").concat(servico_internet[0].login_password, " / <b>Senha Central</b>: ").concat(servico_internet[0].central_password, "</td>\n                          <td><button id=\"").concat(response[i].contrato_id, "\" class=\"button small no-margin contrato_status\"></button></td>\n                          <td>").concat(response[i].contrato_status, "</td>\n                          <td>").concat(servico_internet[0].logradouro).concat(servico_internet[0].numero ? ", " + servico_internet[0].numero : "", "<br><b>").concat(servico_internet[0].bairro, ", ").concat(servico_internet[0].cidade, "</b> - ").concat(servico_internet[0].uf).concat(servico_internet[0].complemento ? ", " + servico_internet[0].complemento : "", "</td>\n                  ");
                   xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
                     method: "POST",
                     url: "api/v1/consultar_ocorrencias",
@@ -23091,6 +23097,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
 
           xhrContrato = t.data("contrato-id");
           var clienteId = t.data("cliente-id");
+          var cpfcnpj = t.data("cpfcnpj");
           var contratoId = t.data("contrato-id");
           var internetId = t.data("internet-id");
           var data = {
@@ -23101,9 +23108,44 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
           senhaPppoe = t.data("senhapppoe");
           senhaCentral = t.data("senhacentral");
           mac_dhcp = t.data("macdhcp");
+          jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+            method: "POST",
+            url: "http://201.87.240.202:8000/api/central/titulos/",
+            data: {
+              cpfcnpj: cpfcnpj,
+              senha: senhaCentral,
+              contrato: contratoId
+            },
+            dataType: "json",
+            success: function success(response) {
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#enviar-titulos-button").attr("data-contratoid", contratoId);
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#enviar-titulos-button").attr("data-cpfcnpj", cpfcnpj);
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#enviar-titulos-button").attr("data-senhacentral", senhaCentral);
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#enviar-titulos-button").attr("data-email", jquery__WEBPACK_IMPORTED_MODULE_0___default()(".email_cobranca").html());
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()("#titulos").html(' ');
+              jquery__WEBPACK_IMPORTED_MODULE_0___default.a.each(response.faturas, function (i, fatura) {
+                var vencimento = dateFormat(fatura.vencimento);
+                var vencimento_atualizado = dateFormat(fatura.vencimento_atualizado);
+                var data_atual = new Date();
+                var vencimento_calculo = new Date(fatura.vencimento_atualizado);
+                var formatter = new Intl.NumberFormat('pt-BR', {
+                  style: 'currency',
+                  currency: 'BRL' // These options are needed to round to whole numbers if that's what you want.
+                  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+                  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+
+                });
+                var valor = formatter.format(fatura.valor);
+                var valorCorrigido = formatter.format(fatura.valorcorrigido);
+                var diffDays = dateDiffInDays(vencimento_calculo, data_atual);
+                if (diffDays <= 1) diffDays = 0;
+                jquery__WEBPACK_IMPORTED_MODULE_0___default()("#titulos").append("\n                  <tr>\n                    <td>".concat(fatura.numero_documento, "</td>\n                    <td>").concat(vencimento, "</td>\n                    <td>").concat(vencimento_atualizado, "</td>\n                    <td").concat(diffDays ? ' class="alert-color"' : '', ">").concat(diffDays, "</td>\n                    <td>").concat(valor, "</td>\n                    <td>").concat(valorCorrigido, "</td>\n                  </tr>\n                "));
+              });
+            }
+          });
           jquery__WEBPACK_IMPORTED_MODULE_0___default()(".msg-insert").html("");
           jquery__WEBPACK_IMPORTED_MODULE_0___default()(".chat-box").css("display", "none");
-          jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado").html("\n            <button type=\"button\" class=\"button success criar-chamado-button\" data-contrato=\"".concat(contratoId, "\" data-open=\"criar-chamado-modal-suporte\"><b>Novo chamado (suporte)</b></button>\n            <button type=\"button\" class=\"button primary criar-chamado-button\" data-contrato=\"").concat(contratoId, "\" data-open=\"criar-chamado-modal-protocolo\"><b>Novo chamado (protocolo)</b></button>\n            <button type=\"button\" class=\"button warning criar-chamado-button\" data-contrato=\"").concat(contratoId, "\" data-open=\"criar-chamado-modal-boleto\"><b>Novo chamado (boleto)</b></button>\n          "));
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado").html("\n            <div class=\"acoes_suporte\">\n              <button type=\"button\" class=\"button success criar-chamado-button\" data-contrato=\"".concat(contratoId, "\" data-open=\"criar-chamado-modal-suporte\"><b>Novo chamado (suporte)</b></button>\n              <button type=\"button\" class=\"button primary criar-chamado-button\" data-contrato=\"").concat(contratoId, "\" data-open=\"criar-chamado-modal-protocolo\"><b>Novo chamado (protocolo)</b></button>\n              <button type=\"button\" class=\"button warning criar-chamado-button\" data-contrato=\"").concat(contratoId, "\" data-open=\"criar-chamado-modal-boleto\"><b>Novo chamado (boleto)</b></button>\n              <button type=\"button\" class=\"button alert enviar-fatura-button\" data-contrato=\"").concat(contratoId, "\" data-cpfcnpj=\"").concat(cpfcnpj, "\" data-senhacentral=\"").concat(senhaCentral, "\" data-emails=\"").concat(arrayMail.join(), "\" data-open=\"enviar-fatura-modal-boleto\"><b>Enviar segunda via de faturas</b></button>\n            </div>\n          "));
           jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-suporte").attr("data-contratoid", contratoId);
           jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-protocolo").attr("data-contratoid", contratoId);
           jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-boleto").attr("data-contratoid", contratoId);
@@ -23415,6 +23457,43 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
       arrow.attr("src", "https://maxcdn.icons8.com/windows10/PNG/16/Arrows/angle_up-16.png");
     }
   });
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#enviar-titulos-button").on('click', function (e) {
+  e.preventDefault();
+  var t = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
+  var email_input = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#enviar-boleto-email').val();
+  var email = t.data('email');
+
+  if (email_input) {
+    email = email_input;
+  } else if (email.length < 4) {
+    return false;
+  } else {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
+    jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+      method: "POST",
+      url: "http://201.87.240.202:8000/api/central/envia2via/",
+      data: {
+        cpfcnpj: t.data('cpfcnpj'),
+        senha: t.data('senhacentral'),
+        contrato: t.data('contratoid'),
+        email: email
+      },
+      dataType: "json",
+      success: function success(response) {
+        try {
+          if (response.status == 1) {
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
+            alert('Títulos enviados para o e-mail: ' + email + '. Protocolo: ' + response.protocolo);
+            location.reload();
+          }
+        } catch (e) {
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
+          alert('Algo saiu errado, tente enviar novamente e verifique se o e-mail digitado está correto.');
+        }
+      }
+    });
+  }
 });
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#chamados").on("click", "#tabela-chamados tbody tr", function (e) {
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
@@ -24178,8 +24257,25 @@ function sortTable(n, id) {
     }
   }
 
-  console.log(getColumn(id, n, 0));
   return 0;
+}
+/* function dateFormat(data){
+  var date = new Date(data),
+      dia  = date.getDate().toString().padStart(2, '0'),
+      mes  = (date.getMonth()+1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
+      ano  = date.getFullYear();
+  return dia+"/"+mes+"/"+ano;
+} */
+
+
+var _MS_PER_DAY = 1000 * 60 * 60 * 24; // a and b are javascript Date objects
+
+
+function dateDiffInDays(a, b) {
+  // Discard the time and time-zone information.
+  var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+  var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+  return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
 
 /***/ }),
