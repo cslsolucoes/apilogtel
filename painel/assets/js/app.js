@@ -23123,7 +23123,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#enviar-titulos-button").attr("data-senhacentral", senhaCentral);
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#enviar-titulos-button").attr("data-email", jquery__WEBPACK_IMPORTED_MODULE_0___default()(".email_cobranca").html());
               jquery__WEBPACK_IMPORTED_MODULE_0___default()("#titulos").html(' ');
+              console.log(response);
               jquery__WEBPACK_IMPORTED_MODULE_0___default.a.each(response.faturas, function (i, fatura) {
+                if (fatura.data_pagamento != null) return;
                 var vencimento = dateFormat(fatura.vencimento);
                 var vencimento_atualizado = dateFormat(fatura.vencimento_atualizado);
                 var data_atual = new Date();
