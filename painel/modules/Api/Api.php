@@ -71,7 +71,7 @@ class Api {
       if(is_numeric($busca['busca'])) {
         $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ViewConsultaCliente\" WHERE cliente_id = {$busca['busca']} OR contrato_id = {$busca['busca']} ORDER BY nome ASC LIMIT 10";
       } else {
-        $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ViewConsultaCliente\" WHERE nome LIKE '%" . $busca['busca'] . "%' OR cpfcnpj LIKE '%" . $busca['busca'] . "%' ORDER BY nome ASC LIMIT 10";
+        $qry = "SELECT * FROM \"dbsgp\".\"public\".\"ViewConsultaCliente\" WHERE login LIKE '%" . strtolower($busca['busca']) . "%' OR nome LIKE '%" . $busca['busca'] . "%' OR cpfcnpj LIKE '%" . $busca['busca'] . "%' ORDER BY nome ASC LIMIT 10";
       }
     }
     $sql = $this->db->query($qry);
