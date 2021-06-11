@@ -2,9 +2,9 @@
 $this->get('', function ($data) {
   if(not_logged_in()) {
     $this->core->loadModule('template')->render('login', $data);
-  } else {
-    $this->core->loadModule('template')->render('home', $data);
+    return;
   }
+  $this->core->loadModule('template')->render($_SESSION['tecnico'] ? 'tecnico' : 'home', $data);
 });
 
 /* $this->get('{clientid}/{contratoid}', function ($data) {
@@ -21,7 +21,7 @@ $this->get('login', function ($data) {
 
 $this->post('login', function ($data) {
   extract($_POST);
-  if(isset($login) && isset($password) && ldapLogin($login, $password)) {
+  if(isset($login) && isset($password) && $password && $login && ldapLogin($login, $password)) {
     $un = explode('@', $login);
     session_destroy();
     session_start();
@@ -29,8 +29,12 @@ $this->post('login', function ($data) {
     $_SESSION['userid'] = getUserId($_SESSION['username']);
     $_SESSION['user'] = $login;
     $_SESSION['pass'] = $password;
+    $_SESSION['tecnico'] = true;
+    if(isTecnico($_SESSION['username'])) {
+      $_SESSION['tecnico'] = true;
+    }
     header("Location: ./");
-    $this->core->loadModule('template')->render('home', $data);
+    //$this->core->loadModule('template')->render('tecnico', $data);
   } else {
     $error = array(
       'msg' => 'Usuário ou senha inválidos.',
@@ -47,7 +51,16 @@ $this->get('logout', function($data) {
 // Load another router files if you want to separate each route on it's own file
 $this->loadRouteFile('cadastros/pontuacao');
 $this->loadRouteFile('cadastros/penalizacoes');
-$this->loadRouteFile('cadastros/logtelchip');
+
+// Logtel Chip
+$this->loadRouteFile('surftelecom/consultar_planos');
+$this->loadRouteFile('surftelecom/consultar_clientes');
+$this->loadRouteFile('surftelecom/consultar_subscricoes');
+$this->loadRouteFile('surftelecom/consultar_usuarios');
+$this->loadRouteFile('surftelecom/consultar_regras_usuario');
+$this->loadRouteFile('surftelecom/consultar_operadoras_portabilidade');
+$this->loadRouteFile('surftelecom/cadastrar_cliente');
+$this->loadRouteFile('surftelecom/cadastrar_subscricao');
 
 // API route files
 $this->loadRouteFile('api/consultar_cliente');
