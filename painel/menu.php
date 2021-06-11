@@ -6,7 +6,8 @@
 <div class="top-bar elevation-4dp" id="menu">
   <div class="top-bar-left">
     <ul class="dropdown menu" data-dropdown-menu>
-      <li class="menu-text"><a href="" id="menu-principal">LogDesk</a></li>
+      <li class="menu-text"><a id="menu-principal">LogDesk</a></li>
+      <?php if($isTecnico): ?>
       <li>
         <a href="">Cadastro</a>
         <ul class="menu vertical">
@@ -27,13 +28,55 @@
       </li>
       <li><a href="http://cslsolucoes.com.br/logtel/paineis">Auditoria</a></li>
       <li><a href="http://cslsolucoes.com.br/logtel/paineis">Comissão</a></li>
-      <?= ($isAdmin ? "<li><a href='{$uri}logtelchip'>Logtel Chip</a></li>" : "") ?>
-      <li><a href='<?= $uri ?>testar_mumo'>Testar MUMO</a></li>
+      <!-- <li><a href='<?= $uri ?>testar_mumo'>Testar MUMO</a></li> -->
+      <?php endif ?>
+      <?php
+        if($isAdmin) {
+          echo "
+            <li>
+              <a>Logtel Chip</a>
+              <ul class='menu vertical'>
+                <li>
+                  <a>Consultas</a>
+                  <ul class='menu third-menu-ul'>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/planos'>Consultar planos</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/clientes'>Consultar clientes</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/subscricoes'>Consultar subscrições</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/usuarios'>Consultar usuários</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/regras_usuario'>Regras de usuário</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/operadoras_portabilidade'>Operadoras de portabilidade</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a>Cadastros</a>
+                  <ul class='menu third-menu-ul'>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/cadastro_cliente'>Cadastrar cliente</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/cadastro_subscricao'>Cadastrar subscrição</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/cadastro_usuario'>Cadastrar usuário</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/portabilidade'>Portabilidade</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/recarga'>Recarga</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a>Históricos</a>
+                  <ul class='menu third-menu-ul'>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/historico_ativacoes'>Ativações</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/historico_portabilidade'>Portabilidades</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/historico_recargas'>Recargas</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/historico_subscricoes'>Subscrições</a></li>
+                    <li class='third-menu'><a href='" . $uri . "surftelecom/msisdn'>Relatório MSISDN</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          ";
+        }
+      ?>
     </ul>
   </div>
   <div class="top-bar-right">
     <ul class="menu">
-      <li><a data-tooltip tabindex="1" title="<?= ($isAdmin ? 'Grupo: administradores' : 'Grupo: usuários') ?>" data-position="bottom" data-alignment="center"><?= $_SESSION['userid'] . ' - ' . $_SESSION['user'] ?></a></li>
+      <li><a data-tooltip tabindex="1" title="<?= ($isAdmin ? 'Grupo: administradores' : ($isTecnico ? 'Grupo: área técnica' : 'Grupo: usuários')) ?>" data-position="bottom" data-alignment="center"><?= $_SESSION['userid'] . ' - ' . $_SESSION['user'] ?></a></li>
       <li><a href="<?= $uri ?>logout" class="no-margin no-padding"><button type="button" class="button alert">Sair</button></a>
       </li>
     </ul>

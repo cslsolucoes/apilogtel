@@ -36,6 +36,20 @@ function getUserId($username) {
   return false;
 }
 
+function isTecnico($username) {
+  $pdo = new PDO('pgsql:host=201.87.240.202;port=5432;dbname=dbsgp;user=postgres;password=postmy');
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+  $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+  $sql = "SELECT id FROM auth_user_tecnica WHERE username = '$username'";
+  $res = $pdo->query($sql);
+  $res = $res->fetchAll();
+  if(isset($res[0]['id']) && $res[0]['id']) {
+    return true;
+  }
+  return false;
+}
+
 function isAdmin($user) {
   if(!$user || ($user != "ludmila.bernardes@logtel.net.br" && $user != "claiton.linhares@logtel.net.br" && $user != "marcos.santos@logtel.net.br" && $user != "andre.goncalves@logtel.net.br" && $user != "michelle.vieira@logtel.net.br")) return false;
   return true;

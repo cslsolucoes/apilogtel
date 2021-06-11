@@ -3,6 +3,7 @@
   $uri = $core->getConfig('httpHost') . '/' . $core->getConfig('sitePath');
   $assets = $uri . $core->getConfig('assetsFolder');
   $isAdmin = isAdmin($_SESSION['user'] ?? NULL);
+  $isTecnico = isTecnico($_SESSION['username'] ?? NULL);
 ?>
 <!doctype html>
 <html class="no-js" lang="pt-br">

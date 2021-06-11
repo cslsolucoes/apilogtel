@@ -266,7 +266,6 @@ class Api {
     $sql = $this->db->query($qry);
     $resultado = $sql->fetchAll();
     $qry = "SELECT * FROM \"funcaoVendasPreCadastroCria\"('$nome', '$telefone', '$email', '$logradouro', '$numero', '$bairro', '$cidade', '$uf', '$cep', '$planoCombo', '$realIP')";
-    print_r($qry);
     $sql = $this->db->query($qry);
     $sql->fetchAll();
     echo "

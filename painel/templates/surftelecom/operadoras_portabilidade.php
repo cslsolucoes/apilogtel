@@ -20,31 +20,38 @@
 
 <body>
   <?php
-  include('menu.php');
+    include('menu.php');
+    if(!$isAdmin) {
+      header("Location: $uri");
+    }
+    $chip = $core->loadModule('surftelecom');
+    $operadoras = $chip->consultarOperadorasPortabilidade();
   ?>
-  <div class="grid-container">
-    <form action="" method="post" onsubmit="return false;" id="search-form">
-      <div class="grid-x grid-padding-x grid-margin-x">
-        <div class="medium-3 cell">
-          <div class="pesquisa-cliente-mumo">
-            <input type="text" name="cliente-mumo" id="cliente-mumo" placeholder="Celular do cliente MUMO" autocomplete="on">
-          </div>
-        </div>
-        <div class="medium-2 cell">
-          <div class="pesquisa-cliente-mumo">
-            <button id="buscar-cliente-mumo" class="button success">Buscar</button>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
+  
+  
   
   <div class="grid-container">
-    <div class="grid-x grid-padding-x grid-margin-x">
-      <div class="medium-6 cell">
-        <div id="resultado-pesquisa-cliente-mumo">
-  
-        </div>
+    <div class="grid-x grid-padding-x grid-margin-x grid-padding-y color-white">
+      <div class="medium-12 cell">
+        <h3>Consultar operadoras de portabilidade</h3>
+        <table class="hover" id="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Operadora</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if(isset($operadoras->payload)): ?>
+              <?php for($i = 0; $i < count($operadoras->payload); $i++): ?>
+                <tr>
+                  <td><?= $operadoras->payload[$i]->id; ?></td>
+                  <td><?= $operadoras->payload[$i]->name; ?></td>
+                </tr>
+              <?php endfor ?>
+            <?php endif ?>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

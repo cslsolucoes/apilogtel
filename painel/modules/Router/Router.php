@@ -55,7 +55,7 @@ class Router {
         foreach($matches as $key => $match) {
           $args[$itens[$key]] = $match;
         }
-        
+
         $function($args);
         break;
       }

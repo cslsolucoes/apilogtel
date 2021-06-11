@@ -20,9 +20,34 @@
 
 <body>
   <?php
-    session_destroy();
-    header("Location: ./");
+    include('menu.php');
+    if(!$isAdmin) {
+      header("Location: $uri");
+    }
   ?>
+  
+  <div class="grid-container">
+    <div class="grid-x grid-padding-x grid-margin-x">
+      <div class="medium-3 cell">
+        <div class="surf-pesquisa-cliente">
+          <form action="" method="post" onsubmit="return false;" id="search-form" data-toggle="resultado-busca">
+            <input type="text" name="cliente" id="surf-cliente" placeholder="CPF/CNPJ do cliente..." autocomplete="on">
+            <button id="search" data-toggle="resultado-busca" style="display:none;"></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="grid-container">
+    <div class="grid-x grid-padding-x grid-margin-x">
+      <div class="medium-12 cell">
+        <div class="surf-dados-cliente">
+  
+        </div>
+      </div>
+    </div>
+  </div>
   <script>
     var baseURL = '<?= $uri ?>';
   </script>

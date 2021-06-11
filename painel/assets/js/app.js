@@ -22671,6 +22671,8 @@ __webpack_require__(/*! foundation-sites */ "./node_modules/foundation-sites/dis
 
 __webpack_require__(/*! ./jplist-es6.min */ "./src/assets/js/jplist-es6.min.js");
 
+__webpack_require__(/*! ./surftelecom */ "./src/assets/js/surftelecom.js");
+
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).foundation();
 var interval = null,
     xhrContrato,
@@ -22754,6 +22756,94 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("click", function (
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("#resultado-busca").foundation("open");
   }
 });
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#surf-cliente").on("change keyup input", function (e) {
+  var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
+
+  if (busca === $this.val().toUpperCase().replace(/[^a-zA-Z0-9 çÇáÁéÉíÍóÓúÚãÃõÕ]/g, "")) {
+    return;
+  }
+
+  busca = $this.val().toUpperCase().replace(/[^a-zA-Z0-9 çÇáÁéÉíÍóÓúÚãÃõÕ]/g, "");
+
+  if (busca.length > 3) {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
+    var data = {
+      document: busca
+    };
+
+    if (_typeof(xhr) !== undefined) {
+      try {
+        xhr.abort();
+      } catch (e) {
+        xhr = undefined;
+      }
+    }
+  }
+
+  xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+    method: "GET",
+    url: "api/v1/consultar_clientes",
+    data: data,
+    dataType: "json",
+    success: function success(response) {
+      console.log(response);
+
+      try {
+        response = JSON.parse(response);
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()(".surf-dados-cliente").html("");
+        var html = "\n          <h4 class=\"primary-color\">Dados do cliente</h4>\n          <table>\n            <thead>\n              <tr>\n                <th>ID</th>\n                <th>CPF/CNPJ</th>\n                <th>Nome</th>\n                <th>DDD</th>\n              <tr>\n            </thead>\n            <tbody>\n              <tr>\n                <td>".concat(response.payload.customerId, "</td>\n                <td>").concat(response.payload.document, "</td>\n                <td>").concat(response.payload.name, "</td>\n                <td>").concat(response.payload.ddd, "</td>\n              </tr>\n            </tbody>\n          </table>\n          <h4 class=\"primary-color\">Linhas</h4>\n          <table>\n            <thead>\n              <tr>\n                <th>ID</th>\n                <th>Sim Card</th>\n                <th>N\xFAmero</th>\n                <th>CPF/CNPJ</th>\n                <th>DDD</th>\n                <th>Nome</th>\n                <th>Plano</th>\n              <tr>\n            </thead>\n            <tbody>\n        ");
+        /*         for(var i = 0; i < response.payload.subscriptions.length; i++) {
+                  html += `
+                    <tr>
+                      <td>${response.payload.subscriptions[i].id}</td>
+                      <td>${response.payload.subscriptions[i].iccid}</td>
+                      <td>${response.payload.subscriptions[i].msisdn}</td>
+                      <td>${response.payload.subscriptions[i].document}</td>
+                      <td>${response.payload.subscriptions[i].ddd}</td>
+                      <td>${response.payload.subscriptions[i].name}</td>
+                      <td>
+                        <b>Descrição</b>: ${response.payload.subscriptions[i].plan.description}<br>
+                        <b>Duração</b>: ${response.payload.subscriptions[i].plan.durationTime}<br>
+                        <b>ID</b>: ${response.payload.subscriptions[i].plan.id}<br>
+                        <b>Preço</b>: ${formatter.format(response.payload.subscriptions[i].plan.price/100)}<br>
+                        <b>Título</b>: ${response.payload.subscriptions[i].plan.title}<br>
+                        <b>Subtítulo</b>: ${response.payload.subscriptions[i].plan.subtitle}<br>
+                        <b>Tipo</b>: ${response.payload.subscriptions[i].plan.type}<br>
+                      </td>
+                    </tr>
+                  `;
+                } */
+
+        jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+          method: "GET",
+          url: "api/v1/consultar_subscricoes",
+          data: data,
+          dataType: "json",
+          success: function success(response) {
+            try {
+              var formatter = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+              });
+              response = JSON.parse(response);
+
+              for (var i = 0; i < response.payload.length; i++) {
+                html += "\n                  <tr>\n                    <td>".concat(response.payload[i].id, "</td>\n                    <td>").concat(response.payload[i].iccid, "</td>\n                    <td>").concat(response.payload[i].msisdn, "</td>\n                    <td>").concat(response.payload[i].document, "</td>\n                    <td>").concat(response.payload[i].ddd, "</td>\n                    <td>").concat(response.payload[i].name, "</td>\n                    <td>\n                      <!-- <b>Descri\xE7\xE3o</b>: ").concat(response.payload[i].plan.description, "<br> -->\n                      <b>Dura\xE7\xE3o</b>: ").concat(response.payload[i].plan.durationTime, "<br>\n                      <!-- <b>ID</b>: ").concat(response.payload[i].plan.id, "<br> -->\n                      <b>Pre\xE7o</b>: ").concat(formatter.format(response.payload[i].plan.price / 100), "<br>\n                      <b>T\xEDtulo</b>: ").concat(response.payload[i].plan.title, "<br>\n                      <b>Subt\xEDtulo</b>: ").concat(response.payload[i].plan.subtitle, "<br>\n                      <b>Portabilidade</b>: ").concat(response.payload[i].portabilityDescription, "<br>\n                      <b>Status Portabilidade</b>: ").concat(response.payload[i].portabilityStatus, "<br>\n                    </td>\n                  </tr>\n                ");
+              }
+            } catch (e) {}
+
+            html += "</tbody></table>";
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()(".surf-dados-cliente").html(html);
+          }
+        });
+      } catch (e) {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()(".surf-dados-cliente").html("<h4 class=\"alert-color\">Cliente n\xE3o encontrado</h4>");
+      }
+
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
+    }
+  });
+});
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input", function (e) {
   var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
 
@@ -22788,10 +22878,20 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
 
         for (var i = 0; i < response.length; i++) {
           try {
-            var servico_internet = JSON.parse(response[i].servico_internet);
+            if (tecnico) {
+              var servico_internet = JSON.parse(response[i].servico_internet);
 
-            for (var j = 0; j < servico_internet.length; j++) {
-              jquery__WEBPACK_IMPORTED_MODULE_0___default()(".lista-clientes").append("\n                <a class=\"carregar_dados_cliente\" data-contratoid=\"".concat(response[i].cliente_id, "\">\n                  <li class=\"resultado-cliente\" data-status=\"").concat(response[i].contrato_status, "\">\n                    ").concat(response[i].nome, " - ").concat(response[i].cpfcnpj, " - Cliente ID: ").concat(response[i].cliente_id, "\n                    <br>\n                    Contrato: ").concat(response[i].contrato_id, " (").concat(response[i].contrato_status, ") - Login: ").concat(servico_internet[j].login, " - POP: ").concat(response[i].contrato_pop, "\n                    <br>\n                    Endere\xE7o: ").concat(servico_internet[j].logradouro).concat(servico_internet[j].numero ? ", " + servico_internet[j].numero : "", " - ").concat(servico_internet[j].bairro, ", ").concat(servico_internet[j].cidade, " - ").concat(servico_internet[j].uf, "\n                  </li>\n                </a>\n              "));
+              for (var j = 0; j < servico_internet.length; j++) {
+                jquery__WEBPACK_IMPORTED_MODULE_0___default()(".lista-clientes").append("\n                  <a class=\"carregar_dados_cliente\" data-contratoid=\"".concat(response[i].cliente_id, "\">\n                    <li class=\"resultado-cliente\" data-status=\"").concat(response[i].contrato_status, "\">\n                      ").concat(response[i].nome, "<br>\n                      CPF/CNPJ: ").concat(response[i].cpfcnpj, "\n                      <br>\n                      Contrato: ").concat(response[i].contrato_id, " (").concat(response[i].contrato_status, ")\n                      <br>\n                      Endere\xE7o: ").concat(servico_internet[j].logradouro).concat(servico_internet[j].numero ? ", " + servico_internet[j].numero : "", "\n                      <br>\n                      ").concat(servico_internet[j].bairro, "\n                      <br>\n                      ").concat(servico_internet[j].cidade, " - ").concat(servico_internet[j].uf, "\n                    </li>\n                  </a>\n                "));
+              }
+
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()(".resultado-cliente").css("font-size", "10px");
+            } else {
+              var servico_internet = JSON.parse(response[i].servico_internet);
+
+              for (var j = 0; j < servico_internet.length; j++) {
+                jquery__WEBPACK_IMPORTED_MODULE_0___default()(".lista-clientes").append("\n                  <a class=\"carregar_dados_cliente\" data-contratoid=\"".concat(response[i].cliente_id, "\">\n                    <li class=\"resultado-cliente\" data-status=\"").concat(response[i].contrato_status, "\">\n                      ").concat(response[i].nome, " - ").concat(response[i].cpfcnpj, " - Cliente ID: ").concat(response[i].cliente_id, "\n                      <br>\n                      Contrato: ").concat(response[i].contrato_id, " (").concat(response[i].contrato_status, ") - Login: ").concat(servico_internet[j].login, " - POP: ").concat(response[i].contrato_pop, "\n                      <br>\n                      Endere\xE7o: ").concat(servico_internet[j].logradouro).concat(servico_internet[j].numero ? ", " + servico_internet[j].numero : "", " - ").concat(servico_internet[j].bairro, ", ").concat(servico_internet[j].cidade, " - ").concat(servico_internet[j].uf, "\n                    </li>\n                  </a>\n                "));
+              }
             }
           } catch (e) {}
         }
@@ -22799,6 +22899,47 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
         jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").on("click", ".carregar_dados_cliente", function (e) {
           e.preventDefault();
           e.stopPropagation();
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()("#resultado-busca").foundation("close");
+
+          if (tecnico) {
+            var widthDropdownPane = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").css("width");
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()(".dropdown-pane").css("width", widthDropdownPane);
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-input-contrato-hidden").html('');
+            var $this = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this);
+            var data = {
+              busca: $this.data("contratoid"),
+              tipo: "unico"
+            };
+            xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+              method: "POST",
+              url: "api/v1/consultar_cliente",
+              data: data,
+              dataType: "json",
+              success: function success(response) {
+                for (var i = 0; i < response.length; i++) {
+                  try {
+                    var servico_internet = JSON.parse(response[i].servico_internet);
+                    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-input-contrato-hidden").append("\n                      <option value=\"".concat(response[i].contrato_id, "\">").concat(servico_internet[0].plano, " / ").concat(servico_internet[0].valor, " / ").concat(servico_internet[0].logradouro).concat(servico_internet[0].numero ? ", " + servico_internet[0].numero : "", " - ").concat(servico_internet[0].bairro, "</option>\n                    "));
+                  } catch (e) {}
+
+                  try {
+                    var servico_tv = JSON.parse(response[i].servico_tv);
+                  } catch (e) {}
+
+                  try {
+                    var servico_multimidia = JSON.parse(response[i].servico_multimidia);
+                  } catch (e) {}
+
+                  try {
+                    var servico_telefonia = JSON.parse(response[i].servico_telefonia);
+                    var servico_telefonia_linhas = JSON.parse(servico_telefonia[0].linha);
+                  } catch (e) {}
+                }
+              }
+            });
+            return true;
+          }
+
           jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
           jquery__WEBPACK_IMPORTED_MODULE_0___default()("#dados-contrato").hide();
           jquery__WEBPACK_IMPORTED_MODULE_0___default()("#consumo-internet .card .card-divider").hide();
@@ -22834,8 +22975,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
           var data = {
             busca: $this.data("contratoid"),
             tipo: "unico"
-          }; //lastClient = null;
-
+          };
           setCookie('lastClient', $this.data("contratoid"), 1);
           lastClient = $this.data("contratoid");
           xhr = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
@@ -22931,7 +23071,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
                     setCookie("macDhcp", mac_dhcp, 1);
                     jquery__WEBPACK_IMPORTED_MODULE_0___default.a.get("api/v1/consultar_fabricante_mac", "mac=" + mac_dhcp, function (data) {
                       try {
-                        if (data.vendor == null) data.vendor = 'Não informado';
+                        if (data.vendor == 'null') data.vendor = 'Não informado';
                         setCookie("vendor", data.vendor, 1);
                       } catch (e) {
                         setCookie("vendor", "Não informado", 1);
@@ -23627,7 +23767,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-suporte")
   jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").show();
   e.preventDefault();
   var status = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-status").val();
-  var contratoid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-contratoid");
+
+  if (!tecnico) {
+    var contratoid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-contratoid");
+  } else {
+    var contratoid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-input-contrato-hidden").val();
+  }
+
   var dataagendamento = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#data-ag").val();
   var setor = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#setor-ocorrencia").val();
   var userid = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr("data-userid");
@@ -23666,6 +23812,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-suporte")
     statusos: statusos,
     problemaos: problemaos
   };
+  console.log(data);
+
+  if (!contratoid) {
+    alert("Pesquise um cliente antes de tentar criar uma ocorrência");
+    location.href = location.href;
+    return;
+  }
+
   jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
     method: "POST",
     url: "api/v1/criar_ocorrencia",
@@ -23675,6 +23829,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-suporte")
       jquery__WEBPACK_IMPORTED_MODULE_0___default()("#loading").hide();
       data = null;
       alert("Ocorrência criada com sucesso. Protocolo: " + response[0].OcorrenciaNumero);
+
+      if (tecnico) {
+        location.href = location.href;
+      }
     },
     complete: function complete(response) {
       var clienteid = jquery__WEBPACK_IMPORTED_MODULE_0___default()("span#cliente-id").html();
@@ -23682,7 +23840,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#criar-chamado-contrato-suporte")
       jquery__WEBPACK_IMPORTED_MODULE_0___default()(".criar-chamado-input-contrato").val(contratoid + " - " + jquery__WEBPACK_IMPORTED_MODULE_0___default()("#servico-internet-" + contratoid).html());
       jquery__WEBPACK_IMPORTED_MODULE_0___default()(".criar-chamado-input-contrato-hidden").val(contratoid);
       $this.prop('disabled', false);
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#criar-chamado-modal-suporte').foundation('close');
+
+      try {
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()('#criar-chamado-modal-suporte').foundation('close');
+      } catch (e) {}
+
       jquery__WEBPACK_IMPORTED_MODULE_0___default()(".carregar_dados_cliente[data-contratoid=" + clienteid + "]").trigger("click");
     }
   });
@@ -29620,6 +29782,57 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     window.jplist.init = e.init.bind(e), window.jplist.refresh = e.refresh.bind(e), window.jplist.resetControls = e.resetControls.bind(e), window.jplist.resetControl = e.resetControl.bind(e);
   })();
 },, function (e, t) {},,,,, function (e, t) {}]);
+
+/***/ }),
+
+/***/ "./src/assets/js/surftelecom.js":
+/*!**************************************!*\
+  !*** ./src/assets/js/surftelecom.js ***!
+  \**************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#surf-cadastrar-cliente").on("click", function (e) {
+  var data = getFormData(jquery__WEBPACK_IMPORTED_MODULE_0___default()("#surf-form-cadastrar-cliente"));
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+    method: "POST",
+    url: "api/v1/cadastrar_cliente",
+    data: data,
+    dataType: "json",
+    success: function success(response) {
+      alert(response.message);
+    }
+  });
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#surf-cadastrar-subscricao").on("click", function (e) {
+  var data = getFormData(jquery__WEBPACK_IMPORTED_MODULE_0___default()("#surf-form-cadastrar-subscricao"));
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+    method: "POST",
+    url: "api/v1/cadastrar_subscricao",
+    data: data,
+    dataType: "json",
+    success: function success(response) {
+      alert(response.message);
+    }
+  });
+});
+
+function getFormData($form) {
+  var unindexed_array = $form.serializeArray();
+  var indexed_array = {};
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.map(unindexed_array, function (n, i) {
+    indexed_array[n['name']] = n['value'];
+  });
+  return indexed_array;
+} // CONTA TESTE
+// 13347967003 //1
+// 91346000000 //2
+// 38495939088 //3
 
 /***/ }),
 
