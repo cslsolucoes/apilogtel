@@ -101,6 +101,7 @@
   </form>
   <script>
     var baseURL = '<?= $uri ?>';
+    var tecnico;
   </script>
   <script src="<?= $assets ?>/js/app.js"></script>
 </body>

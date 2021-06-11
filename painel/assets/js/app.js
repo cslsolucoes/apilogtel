@@ -22879,6 +22879,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
         for (var i = 0; i < response.length; i++) {
           try {
             if (tecnico) {
+              console.log("teste");
               var servico_internet = JSON.parse(response[i].servico_internet);
 
               for (var j = 0; j < servico_internet.length; j++) {
