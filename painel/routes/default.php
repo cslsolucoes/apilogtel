@@ -29,7 +29,7 @@ $this->post('login', function ($data) {
     $_SESSION['userid'] = getUserId($_SESSION['username']);
     $_SESSION['user'] = $login;
     $_SESSION['pass'] = $password;
-    $_SESSION['tecnico'] = true;
+    $_SESSION['tecnico'] = false;
     if(isSeller($_SESSION['username'])) {
       $_SESSION['tecnico'] = true;
     }
