@@ -23168,7 +23168,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
 
                     var tipo = '';
 
-                    if (servico_telefonia.tipo == 'CELULAR') {
+                    if (servico_telefonia.tipo == 'CELULAR_PESSOAL' || servico_telefonia.tipo == 'CELULAR') {
                       tipo = 'Tel. Móvel';
                     } else {
                       tipo = 'Tel. Fixo';
@@ -29875,8 +29875,8 @@ function getFormData($form) {
   return indexed_array;
 } // CONTA TESTE
 // 13347967003 //1
-// 91346000000 //2
 // 38495939088 //3
+// 91346000000 //3
 
 /***/ }),
 
