@@ -36,15 +36,15 @@ function getUserId($username) {
   return false;
 }
 
-function isTecnico($username) {
+function isSeller($username) {
   $pdo = new PDO('pgsql:host=201.87.240.202;port=5432;dbname=dbsgp;user=postgres;password=postmy');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
   $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-  $sql = "SELECT id FROM auth_user_tecnica WHERE username = '$username'";
+  $sql = "SELECT id FROM auth_user_venda WHERE username = '$username'";
   $res = $pdo->query($sql);
   $res = $res->fetchAll();
-  if(isset($res[0]['id']) && $res[0]['id']) {
+  if(isset($res[0]['id']) && $res[0]['id'] > 0) {
     return true;
   }
   return false;

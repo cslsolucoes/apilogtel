@@ -249,30 +249,37 @@ class Api {
       $numero = $dados['numero'] ?? 0;
     }
     
-    $mensagem = "FORMULÁRIO VIA SITE";
-    $mensagem .= "\nNome: ".$nome;
-    $mensagem .= "\nE-mail: ".$email;
-    $mensagem .= "\nTelefone: ". $telefone;
-    $mensagem .= "\nPlano: ". $planoCombo;
-    $mensagem .= "\nCEP: ". $cep;
-    $mensagem .= "\nLogradouro: ". $logradouro;
-    $mensagem .= "\nBairro: ". $bairro;
-    $mensagem .= "\nCidade: ". $cidade;
-    $mensagem .= "\nUF: ". $uf;
-    $mensagem .= "\nNúmero: ". $numero;
-    //$realIP = @file_get_contents("http://ipecho.net/plain");
-    $realIP = '0.0.0.0';
-    $qry = "SELECT * FROM \"funcaoOcorrenciaAbrir\"(0, 115574, 90212, NULL, 55, 14, 272, 1, '$mensagem', '', '$nome', '$telefone', '$realIP')";
-    $sql = $this->db->query($qry);
-    $resultado = $sql->fetchAll();
-    $qry = "SELECT * FROM \"funcaoVendasPreCadastroCria\"('$nome', '$telefone', '$email', '$logradouro', '$numero', '$bairro', '$cidade', '$uf', '$cep', '$planoCombo', '$realIP')";
-    $sql = $this->db->query($qry);
-    $sql->fetchAll();
-    echo "
+    $realIP = @file_get_contents("http://ipecho.net/plain");
+    $realIP = $realIP ?? '0.0.0.0';
+    if(!isset($_SESSION['user']) || !$_SESSION['user']) {
+      $mensagem = "FORMULÁRIO VIA SITE";
+      $mensagem .= "\nNome: ".$nome;
+      $mensagem .= "\nE-mail: ".$email;
+      $mensagem .= "\nTelefone: ". $telefone;
+      $mensagem .= "\nPlano: ". $planoCombo;
+      $mensagem .= "\nCEP: ". $cep;
+      $mensagem .= "\nLogradouro: ". $logradouro;
+      $mensagem .= "\nBairro: ". $bairro;
+      $mensagem .= "\nCidade: ". $cidade;
+      $mensagem .= "\nUF: ". $uf;
+      $mensagem .= "\nNúmero: ". $numero;
+      $qry = "SELECT * FROM \"funcaoOcorrenciaAbrir\"(0, 115574, 90212, NULL, 55, 14, 272, 1, '$mensagem', '', '$nome', '$telefone', '$realIP')";
+      $sql = $this->db->query($qry);
+      $resultado = $sql->fetchAll();
+      echo "
       <script type='text/javascript'>
         alert('Sua solicitação foi enviada com sucesso! Aqui está seu protocolo: " . $resultado[0]['OcorrenciaNumero'] . "');
         window.location='http://www.logteltelecom.com.br/site';
       </script>
+      ";
+    }
+    $qry = "SELECT * FROM \"funcaoVendasPreCadastroCria\"('$nome', '$telefone', '$email', '$logradouro', '$numero', '$bairro', '$cidade', '$uf', '$cep', '$planoCombo', '$realIP')";
+    $sql = $this->db->query($qry);
+    $sql->fetchAll();
+    echo "
+    <script type='text/javascript'>
+      alert('Sua solicitação foi enviada com sucesso!');
+    </script>
     ";
     return true;
   }

@@ -3,7 +3,7 @@
   $uri = $core->getConfig('httpHost') . '/' . $core->getConfig('sitePath');
   $assets = $uri . $core->getConfig('assetsFolder');
   $isAdmin = isAdmin($_SESSION['user'] ?? NULL);
-  $isTecnico = isTecnico($_SESSION['username'] ?? NULL);
+  $isSeller = isSeller($_SESSION['username'] ?? NULL);
 ?>
 <!doctype html>
 <html class="no-js" lang="pt-br">
@@ -36,6 +36,14 @@
             </ul>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="grid-container">
+    <div class="grid-x grid-padding-x grid-margin-x">
+      <div class="medium-12 cell">
+        <h1 class="primary-color">Abrir ocorrência</h1>
       </div>
     </div>
   </div>
@@ -102,7 +110,9 @@
   </form>
   <script>
     var tecnico = true;
-    document.getElementById("resultado-busca").style = "left: 20; width: " + document.getElementById("cliente").offsetWidth + "px;";
+    try {
+      document.getElementById("resultado-busca").style = "left: 20; width: " + document.getElementById("cliente").offsetWidth + "px;";
+    } catch (e) {}
   </script>
   <script>
     var baseURL = '<?= $uri ?>';

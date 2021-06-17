@@ -29,8 +29,8 @@ $this->post('login', function ($data) {
     $_SESSION['userid'] = getUserId($_SESSION['username']);
     $_SESSION['user'] = $login;
     $_SESSION['pass'] = $password;
-    $_SESSION['tecnico'] = false;
-    if(isTecnico($_SESSION['username'])) {
+    $_SESSION['tecnico'] = true;
+    if(isSeller($_SESSION['username'])) {
       $_SESSION['tecnico'] = true;
     }
     header("Location: ./");
@@ -51,6 +51,7 @@ $this->get('logout', function($data) {
 // Load another router files if you want to separate each route on it's own file
 $this->loadRouteFile('cadastros/pontuacao');
 $this->loadRouteFile('cadastros/penalizacoes');
+$this->loadRouteFile('cadastros/precadastro');
 
 // Logtel Chip
 $this->loadRouteFile('surftelecom/consultar_planos');

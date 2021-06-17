@@ -7,28 +7,20 @@
   <div class="top-bar-left">
     <ul class="dropdown menu" data-dropdown-menu>
       <li class="menu-text"><a id="menu-principal">LogDesk</a></li>
-      <?php if($isTecnico): ?>
+      <?php if($isSeller): ?>
+        <li><a href="<?= $uri ?>">Abrir ocorrência</a></li>
+        <li><a href="<?= $uri ?>precadastro">Pré-cadastro</a></li>
+      <?php endif ?>
+      <?php if(!$isSeller): ?>
       <li>
         <a href="">Cadastro</a>
         <ul class="menu vertical">
           <li><a href="<?= $uri ?>pontuacao">Pontuação</a></li>
-          <!--
-          <li>
-            <a href="">Configurações de OS</a>
-            <ul class="menu third-menu-ul">
-              <li class="third-menu"><a href="<?= $uri ?>tipoequipamento">Tipo de equipamento</a></li>
-              <li class="third-menu"><a href="<?= $uri ?>equipamentos">Equipamentos</a></li>
-              <li class="third-menu"><a href="<?= $uri ?>testes">Testes</a></li>
-              <li class="third-menu"><a href="<?= $uri ?>servicos">Serviços</a></li>
-            </ul>
-          </li>
-          -->
           <li><a href="<?= $uri ?>penalizacoes">Penalizações</a></li>
         </ul>
       </li>
       <li><a href="http://cslsolucoes.com.br/logtel/paineis">Auditoria</a></li>
       <li><a href="http://cslsolucoes.com.br/logtel/paineis">Comissão</a></li>
-      <!-- <li><a href='<?= $uri ?>testar_mumo'>Testar MUMO</a></li> -->
       <?php endif ?>
       <?php
         if($isAdmin) {
@@ -76,9 +68,8 @@
   </div>
   <div class="top-bar-right">
     <ul class="menu">
-      <li><a data-tooltip tabindex="1" title="<?= ($isAdmin ? 'Grupo: administradores' : ($isTecnico ? 'Grupo: área técnica' : 'Grupo: usuários')) ?>" data-position="bottom" data-alignment="center"><?= $_SESSION['userid'] . ' - ' . $_SESSION['user'] ?></a></li>
-      <li><a href="<?= $uri ?>logout" class="no-margin no-padding"><button type="button" class="button alert">Sair</button></a>
-      </li>
+      <li><a data-tooltip tabindex="1" title="<?= ($isAdmin ? 'Grupo: administradores' : ($isSeller ? 'Grupo: vendedores' : 'Grupo: usuários')) ?>" data-position="bottom" data-alignment="center"><?= $_SESSION['userid'] . ' - ' . $_SESSION['user'] ?></a></li>
+      <li><a href="<?= $uri ?>logout" class="no-margin no-padding"><button type="button" class="button alert">Sair</button></a></li>
     </ul>
   </div>
 </div>

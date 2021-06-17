@@ -23241,6 +23241,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
           var cpfcnpj = t.data("cpfcnpj");
           var contratoId = t.data("contrato-id");
           var internetId = t.data("internet-id");
+          var cpfcnpj = t.data("cpfcnpj");
           var data = {
             busca: clienteId,
             tipo: "todos"
