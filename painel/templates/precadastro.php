@@ -60,12 +60,24 @@
           <label>Telefone*:
             <input type="text" name="telefone">
           </label>
-          <input type="hidden" name="cep">
-          <input type="hidden" name="uf">
-          <input type="hidden" name="bairro">
-          <input type="hidden" name="logradouro">
-          <input type="hidden" name="cidade">
-          <input type="hidden" name="numero">
+          <label>CEP:
+            <input type="text" name="cep" id="cep">
+          </label>
+          <label>Bairro:
+            <input type="text" name="bairro" id="bairro">
+          </label>
+          <label>Cidade:
+            <input type="text" name="cidade" id="cidade">
+          </label>
+          <label>Estado:
+            <input type="text" name="uf" id="uf">
+          </label>
+          <label>Logradouro:
+            <input type="text" name="logradouro" id="logradouro">
+          </label>
+          <label>Número:
+            <input type="text" name="numero" id="numero">
+          </label>
           <div class="grid-x">
             <div class="medium-4 cell">
               <button class="button primary" id="criar-precadastro" data-close data-clienteid data-contratoid data-userid="<?= $_SESSION['userid'] ?>">Enviar</button>
@@ -80,7 +92,9 @@
   </form>
   <script>
     var tecnico = true;
-    document.getElementById("resultado-busca").style = "left: 20; width: " + document.getElementById("cliente").offsetWidth + "px;";
+    try {
+      document.getElementById("resultado-busca").style = "left: 20; width: " + document.getElementById("cliente").offsetWidth + "px;";
+    } catch (e) {}
   </script>
   <script>
     var baseURL = '<?= $uri ?>';

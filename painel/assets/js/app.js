@@ -22879,7 +22879,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
         for (var i = 0; i < response.length; i++) {
           try {
             if (tecnico) {
-              console.log("teste");
               var servico_internet = JSON.parse(response[i].servico_internet);
 
               for (var j = 0; j < servico_internet.length; j++) {
@@ -24444,7 +24443,50 @@ function dateDiffInDays(a, b) {
   var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
   var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
   return Math.floor((utc2 - utc1) / _MS_PER_DAY);
-}
+} //Quando o campo cep perde o foco.
+
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()('body').on('blur', '#cep', function () {
+  //Nova variável "cep" somente com dígitos.
+  var cep = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val().replace(/\D/g, ''); //Verifica se campo cep possui valor informado.
+
+  if (cep != "") {
+    //Expressão regular para validar o CEP.
+    var validacep = /^[0-9]{8}$/; //Valida o formato do CEP.
+
+    if (validacep.test(cep)) {
+      //Preenche os campos com "..." enquanto consulta webservice.
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#logradouro").val("...");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#bairro").val("...");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cidade").val("...");
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()("#uf").val("..."); //Consulta o webservice viacep.com.br/
+
+      jquery__WEBPACK_IMPORTED_MODULE_0___default.a.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+        if (!("erro" in dados)) {
+          //Atualiza os campos com os valores da consulta.
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()("#logradouro").val(dados.logradouro);
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()("#bairro").val(dados.bairro);
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cidade").val(dados.localidade);
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()("#uf").val(dados.uf);
+        } //end if.
+        else {
+            //CEP pesquisado não foi encontrado.
+            limpa_formulário_cep();
+            console.log("CEP não encontrado.");
+          }
+      });
+    } //end if.
+    else {
+        //cep é inválido.
+        limpa_formulário_cep();
+        console.log("Formato de CEP inválido.");
+      }
+  } //end if.
+  else {
+      //cep sem valor, limpa formulário.
+      limpa_formulário_cep();
+    }
+});
 
 /***/ }),
 
