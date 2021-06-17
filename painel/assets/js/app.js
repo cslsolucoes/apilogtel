@@ -23168,9 +23168,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
 
                     var tipo = '';
 
-                    if (servico_telefonia.tipo == 'CELULAR_PESSOAL' || servico_telefonia.tipo == 'CELULAR') {
+                    if (servico_telefonia[0].tipo == 'CELULAR_PESSOAL' || servico_telefonia[0].tipo == 'CELULAR' || servico_telefonia[0].tipo == 'UnVoIP') {
                       tipo = 'Tel. Móvel';
                     } else {
+                      console.log(servico_telefonia[0]);
                       tipo = 'Tel. Fixo';
                     }
 
