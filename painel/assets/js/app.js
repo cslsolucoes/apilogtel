@@ -23168,14 +23168,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
 
                     var tipo = '';
 
-                    if (servico_telefonia[0].tipo == 'CELULAR_PESSOAL' || servico_telefonia[0].tipo == 'CELULAR' || servico_telefonia[0].tipo == 'UnVoIP') {
+                    if (servico_telefonia[0].tipo == 'CELULAR_PESSOAL' || servico_telefonia[0].tipo == 'CELULAR') {
                       tipo = 'Tel. Móvel';
                     } else {
-                      console.log(servico_telefonia[0]);
                       tipo = 'Tel. Fixo';
                     }
 
-                    html += "\n                          <tr>\n                            <td>".concat(response[i].contrato_id, "</td>\n                            <td>").concat(tipo, "</td>\n                            <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                            <td>\n                              <b>Plano</b>: ").concat(servico_telefonia[0].descricao, "\n                              <br>\n                              <b>Celular</b>: ").concat(servico_telefonia_linhas[j].numero, " / <b>Simcard</b>: ").concat(servico_telefonia_linhas[j].simcard, "\n                            </td>\n                            <td></td>\n                            <td>").concat(response[i].contrato_status, "</td>\n                            <td>").concat(response[i].logradouro).concat(response[i].numero ? ", " + response[i].numero : "", " ").concat(response[i].complemento ? ", " + response[i].complemento : "", "<br><b>").concat(response[i].bairro, ", ").concat(response[i].cidade, "</b> - ").concat(response[i].uf, "</td>\n                    ");
+                    html += "\n                          <tr>\n                            <td>".concat(response[i].contrato_id, "</td>\n                            <td>").concat(tipo, "</td>\n                            <td>").concat(dateFormat(response[i].contrato_data_inicio), "</td>\n                            <td>\n                              <b>Plano</b>: ").concat(servico_telefonia[0].descricao, "\n                              <br>\n                              <b>N\xFAmero</b>: ").concat(servico_telefonia_linhas[j].numero, " / <b>Simcard</b>: ").concat(servico_telefonia_linhas[j].simcard, "\n                            </td>\n                            <td></td>\n                            <td>").concat(response[i].contrato_status, "</td>\n                            <td>").concat(response[i].logradouro).concat(response[i].numero ? ", " + response[i].numero : "", " ").concat(response[i].complemento ? ", " + response[i].complemento : "", "<br><b>").concat(response[i].bairro, ", ").concat(response[i].cidade, "</b> - ").concat(response[i].uf, "</td>\n                    ");
                     html += "</tr>";
                   }
                 } catch (e) {}

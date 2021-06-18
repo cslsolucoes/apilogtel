@@ -210,13 +210,22 @@ class Api {
       ";
       return true;
     }
-    $telefone = $dados['telefone'] ?? "Não informado";
-    $email = $dados['email'] ?? "Não informado";
     $planoCombo = $dados['plano-combo'] ?? "Não informado";
     if($dados['cep'] == "") {
       $cep = "Não informado";
     } else {
       $cep = $dados['cep'] ?? "Não informado";
+    }
+    if($dados['email'] == "") {
+      $email = "Não informado";
+    } else {
+      $email = $dados['email'] ?? "Não informado";
+      echo "teste2";
+    }
+    if($dados['telefone'] == "") {
+      $telefone = "Não informado";
+    } else {
+      $telefone = $dados['telefone'] ?? "Não informado";
     }
 
     if($dados['logradouro'] == "") {
@@ -248,6 +257,12 @@ class Api {
     } else {
       $numero = $dados['numero'] ?? 0;
     }
+
+    if($dados['complemento'] == "") {
+      $complemento = "";
+    } else {
+      $complemento = $dados['complemento'] ?? 'Não informado';
+    }
     
     $realIP = @file_get_contents("http://ipecho.net/plain");
     $realIP = $realIP ?? '0.0.0.0';
@@ -263,6 +278,7 @@ class Api {
       $mensagem .= "\nCidade: ". $cidade;
       $mensagem .= "\nUF: ". $uf;
       $mensagem .= "\nNúmero: ". $numero;
+      $mensagem .= "\nComplemento: ". $complemento;
       $qry = "SELECT * FROM \"funcaoOcorrenciaAbrir\"(0, 115574, 90212, NULL, 55, 14, 272, 1, '$mensagem', '', '$nome', '$telefone', '$realIP')";
       $sql = $this->db->query($qry);
       $resultado = $sql->fetchAll();
@@ -273,15 +289,29 @@ class Api {
       </script>
       ";
     }
-    $qry = "SELECT * FROM \"funcaoVendasPreCadastroCria\"('$nome', '$telefone', '$email', '$logradouro', '$numero', '$bairro', '$cidade', '$uf', '$cep', '$planoCombo', '$realIP')";
-    $sql = $this->db->query($qry);
-    $sql->fetchAll();
-    echo "
-    <script type='text/javascript'>
-      alert('Sua solicitação foi enviada com sucesso!');
-    </script>
-    ";
-    return true;
+    if(isset($resultado[0]['id']) && $resultado[0]['id']) {
+      $qry = "Select ve.id from auth_user au
+      inner join admcore_vendedor ve on (au.id = ve.login_id)
+      Where au.id=" . $_SESSION['userid'];
+      $sql = $this->db->query($qry);
+      $resultado = $sql->fetchAll();
+      $qry = "SELECT * FROM \"funcaoVendasPreCadastroCria\"('$nome', '$telefone', '$email', '$logradouro', '$numero', '$bairro', '$cidade', '$uf', '$cep', '$complemento', '$planoCombo', '$realIP', {$_SESSION['userid']})";
+      print_r($qry);
+      $sql = $this->db->query($qry);
+      $sql->fetchAll();
+      echo "
+      <script type='text/javascript'>
+        alert('Sua solicitação foi enviada com sucesso!');
+      </script>
+      ";
+    } else {
+      echo "
+      <script type='text/javascript'>
+        alert('Você não está autorizado a realizar um pré-cadastro!');
+      </script>
+      ";
+    }
+    return true; 
   }
 
   public function getOnuUniqueId($ip, $physAddress, $version = SNMP::VERSION_2c, $collection = "adsl", $walk = "1.3.6.1.4.1.5875.800.3.10.1.1.10") {

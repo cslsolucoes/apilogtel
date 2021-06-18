@@ -44,7 +44,7 @@
     </div>
   </div>
   
-  <form action="" method="post" class="criar-chamado-form">
+  <form action="" method="POST" class="criar-chamado-form">
     <div class="grid-container">
       <div class="grid-x grid-padding-x grid-margin-x">
         <div class="medium-12 cell">
@@ -64,19 +64,22 @@
             <input type="text" name="cep" id="cep">
           </label>
           <label>Bairro:
-            <input type="text" name="bairro" id="bairro">
+            <input type="text" name="bairro" id="bairro" readonly="readonly">
           </label>
           <label>Cidade:
-            <input type="text" name="cidade" id="cidade">
+            <input type="text" name="cidade" id="cidade" readonly="readonly">
           </label>
           <label>Estado:
-            <input type="text" name="uf" id="uf">
+            <input type="text" name="uf" id="uf" readonly="readonly">
           </label>
           <label>Logradouro:
-            <input type="text" name="logradouro" id="logradouro">
+            <input type="text" name="logradouro" id="logradouro" readonly="readonly">
           </label>
           <label>Número:
             <input type="text" name="numero" id="numero">
+          </label>
+          <label>Complemento:
+            <input type="text" name="complemento" id="complemento">
           </label>
           <div class="grid-x">
             <div class="medium-4 cell">

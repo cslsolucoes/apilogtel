@@ -10,6 +10,13 @@
       <?php if($isSeller): ?>
         <li><a href="<?= $uri ?>">Abrir ocorrência</a></li>
         <li><a href="<?= $uri ?>precadastro">Pré-cadastro</a></li>
+        <li>
+          <a href="">Consultar</a>
+          <ul>
+            <li><a href="<?= $uri ?>consultar_ocorrencias">Ocorrências</a></li>
+            <li><a href="<?= $uri ?>consultar_precadastro">Pré-cadastros</a></li>
+          </ul>
+        </li>
       <?php endif ?>
       <?php if(!$isSeller): ?>
       <li>
