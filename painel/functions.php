@@ -51,7 +51,7 @@ function isSeller($username) {
 }
 
 function isAdmin($user) {
-  if(!$user || ($user != "ludmila.bernardes@logtel.net.br" && $user != "claiton.linhares@logtel.net.br" && $user != "marcos.santos@logtel.net.br" && $user != "andre.goncalves@logtel.net.br" && $user != "michelle.vieira@logtel.net.br")) return false;
+  if(!$user || ($user != "ludmila.bernardes@logtel.net.br" && $user != "claiton.linhares@logtel.net.br" && $user != "marcos.santos@logtel.net.br" && $user != "andre.goncalves@logtel.net.br" && $user != "michelle.vieira@logtel.net.br" && $user != "wanessa.souza@logtel.net.br")) return false;
   return true;
 }
 
