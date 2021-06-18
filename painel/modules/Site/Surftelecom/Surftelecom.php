@@ -3,7 +3,7 @@
 class Surftelecom {
   private $db;
   private $urlAuthentication = 'https://www.pagtel.com.br/wholesalesprod/api/v1/token';
-  private $urlBase = 'https://www.pagtel.com.br/wholesalesprod';
+  private $urlBase = 'https://www.pagtel.com.br/ispvendas-homologacao/';
   private $login = 'admalogtel@pagtel.com.br';
   private $password = 'logtel@123';
   private $bearerToken;
