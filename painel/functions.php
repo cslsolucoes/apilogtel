@@ -37,6 +37,7 @@ function getUserId($username) {
 }
 
 function isSeller($username) {
+  $username = strtolower($username);
   $pdo = new PDO('pgsql:host=201.87.240.202;port=5432;dbname=dbsgp;user=postgres;password=postmy');
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
