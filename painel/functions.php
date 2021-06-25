@@ -42,9 +42,10 @@ function isSeller($username) {
   $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
   $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
   $sql = "SELECT id FROM auth_user_venda WHERE username = '$username'";
+  
   $res = $pdo->query($sql);
-  $res = $res->fetchAll();
-  if(isset($res[0]['id']) && $res[0]['id'] > 0) {
+  $result = $res->fetchAll();
+  if(isset($result[0]['id']) && $result[0]['id'] > 0) {
     return true;
   }
   return false;

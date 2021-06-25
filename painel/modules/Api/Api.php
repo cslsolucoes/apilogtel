@@ -245,7 +245,7 @@ class Api {
     } else {
       $cidade = $dados['cidade'] ?? "Não informado";
     }
-    
+
     if($dados['uf'] == "") {
       $uf = "Não informado";
     } else {
@@ -263,7 +263,7 @@ class Api {
     } else {
       $complemento = $dados['complemento'] ?? 'Não informado';
     }
-    
+
     $realIP = @file_get_contents("http://ipecho.net/plain");
     $realIP = $realIP ?? '0.0.0.0';
     if(!isset($_SESSION['user']) || !$_SESSION['user']) {
@@ -296,7 +296,6 @@ class Api {
       $sql = $this->db->query($qry);
       $resultado = $sql->fetchAll();
       $qry = "SELECT * FROM \"funcaoVendasPreCadastroCria\"('$nome', '$telefone', '$email', '$logradouro', '$numero', '$bairro', '$cidade', '$uf', '$cep', '$complemento', '$planoCombo', '$realIP', {$_SESSION['userid']})";
-      print_r($qry);
       $sql = $this->db->query($qry);
       $sql->fetchAll();
       echo "
@@ -311,7 +310,21 @@ class Api {
       </script>
       ";
     }
-    return true; 
+    return true;
+  }
+
+  public function obterListaVendedores() {
+    $pdo = new PDO('pgsql:host=201.87.240.202;port=5432;dbname=dbsgp;user=postgres;password=postmy');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    $sql = "SELECT id, username FROM auth_user_venda";
+    $res = $pdo->query($sql);
+    $res = $res->fetchAll();
+    if(isset($res[0]['id']) && $res[0]['id'] > 0) {
+      return $res;
+    }
+    return false;
   }
 
   public function getOnuUniqueId($ip, $physAddress, $version = SNMP::VERSION_2c, $collection = "adsl", $walk = "1.3.6.1.4.1.5875.800.3.10.1.1.10") {

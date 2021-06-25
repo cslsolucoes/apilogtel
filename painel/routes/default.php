@@ -4,7 +4,8 @@ $this->get('', function ($data) {
     $this->core->loadModule('template')->render('login', $data);
     return;
   }
-  $this->core->loadModule('template')->render($_SESSION['tecnico'] ? 'tecnico' : 'home', $data);
+  $this->core->loadModule('template')->render($_SESSION['vendedor'] ? 'tecnico' : 'home', $data);
+  return;
 });
 
 /* $this->get('{clientid}/{contratoid}', function ($data) {
@@ -29,9 +30,9 @@ $this->post('login', function ($data) {
     $_SESSION['userid'] = getUserId($_SESSION['username']);
     $_SESSION['user'] = $login;
     $_SESSION['pass'] = $password;
-    $_SESSION['tecnico'] = false;
+    $_SESSION['vendedor'] = false;
     if(isSeller($_SESSION['username'])) {
-      $_SESSION['tecnico'] = true;
+      $_SESSION['vendedor'] = true;
     }
     header("Location: ./");
     //$this->core->loadModule('template')->render('tecnico', $data);
@@ -73,14 +74,16 @@ $this->loadRouteFile('api/consultar_sinal_onu');
 $this->loadRouteFile('api/consultar_temperatura_onu');
 $this->loadRouteFile('api/consultar_status_internet');
 $this->loadRouteFile('api/consultar_ultima_ocorrencia');
+$this->loadRouteFile('api/consultar_precadastro');
 $this->loadRouteFile('api/consultar_ocorrencia');
 $this->loadRouteFile('api/consultar_faturas');
 $this->loadRouteFile('api/cadastrar_venda');
 $this->loadRouteFile('api/criar_ocorrencia');
 $this->loadRouteFile('api/enviar_fatura');
+$this->loadRouteFile('api/enviar_fatura_sms');
 $this->loadRouteFile('api/promessa_pagamento');
 $this->loadRouteFile('api/verificamanutencao');
-$this->loadRouteFile('api/testar_mumo');
+//$this->loadRouteFile('api/testar_mumo');
 $this->loadRouteFile('api/consultar_fabricante_mac');
 
 // Log de conexão
