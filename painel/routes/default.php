@@ -76,6 +76,7 @@ $this->loadRouteFile('api/consultar_status_internet');
 $this->loadRouteFile('api/consultar_ultima_ocorrencia');
 $this->loadRouteFile('api/consultar_precadastro');
 $this->loadRouteFile('api/consultar_ocorrencia');
+$this->loadRouteFile('api/consultar_ocorrencias_vendedores');
 $this->loadRouteFile('api/consultar_faturas');
 $this->loadRouteFile('api/cadastrar_venda');
 $this->loadRouteFile('api/criar_ocorrencia');

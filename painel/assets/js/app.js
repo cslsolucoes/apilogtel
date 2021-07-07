@@ -23283,7 +23283,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cliente").on("change keyup input
                 var valor = formatter.format(fatura.valor);
                 var valorCorrigido = formatter.format(fatura.valorcorrigido);
                 var diffDays = dateDiffInDays(vencimento_calculo, data_atual);
-                if (diffDays <= 1) return 0;
+                if (diffDays <= 1) diffDays = 0;
                 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#titulos").append("\n                  <tr>\n                    <td>".concat(fatura.numero_documento, "</td>\n                    <td>").concat(vencimento, "</td>\n                    <td>").concat(vencimento_atualizado, "</td>\n                    <td").concat(diffDays ? ' class="alert-color"' : '', ">").concat(diffDays, "</td>\n                    <td>").concat(valor, "</td>\n                    <td>").concat(valorCorrigido, "</td>\n                  </tr>\n                "));
               });
             }

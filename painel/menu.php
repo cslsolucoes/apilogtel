@@ -13,7 +13,7 @@
         <li>
           <a href="">Consultar</a>
           <ul>
-            <li><a href="<?= $uri ?>consultar_ocorrencias">Ocorrências</a></li>
+            <li><a href="<?= $uri ?>consultar_ocorrencias_vendedores">Ocorrências</a></li>
             <li><a href="<?= $uri ?>consultar_precadastro">Pré-cadastros</a></li>
           </ul>
         </li>

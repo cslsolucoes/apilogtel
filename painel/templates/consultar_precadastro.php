@@ -21,6 +21,13 @@
 <body>
   <?php
   include('menu.php');
+  $core = Core::getInstance();
+  $api = $core->loadModule('api');
+  if(isset($_POST['vendedor']) && $_POST['vendedor'] && isset($_POST['dt-inicial']) && $_POST['dt-inicial'] && isset($_POST['dt-final']) && $_POST['dt-final']) {
+    $precadastros = $api->consultarPrecadastro(array('vendedor' => $_POST['vendedor'], 'dt-inicial' => $_POST['dt-inicial'], 'dt-final' => $_POST['dt-final']));
+  }
+  
+  
   ?>
   
   <div class="grid-container">
@@ -35,15 +42,13 @@
     <div class="grid-x grid-padding-x grid-margin-x">
       <div class="medium-3 cell">
         <div class="pesquisa-cliente">
-          <form action="" method="post" onsubmit="return false;" id="search-form" data-toggle="resultado-busca">
+          <form action="" method="post" id="search-form" data-toggle="resultado-busca">
             <label>Vendedor responsável:
-              <select class="select-vendedor" id="vendedor">
-                <option value=""></option>
+              <select class="select-vendedor" name="vendedor" id="vendedor">
                 <?php
-                  $core = Core::getInstance();
-                  $api = $core->loadModule('api');
                   $vendedores = $api->obterListavendedores();
                   for ($i = 0; $i < count($vendedores); $i++) {
+                    if($vendedores[$i]['id'] == $_SESSION['userid'])
                     echo '
                       <option value="' . $vendedores[$i]['id'] . '">' . $vendedores[$i]['username'] . '</option>
                     ';
@@ -51,10 +56,10 @@
                 ?>
               </select>
               <label>Data inicial:
-                <input type="datetime-local" name="data-inicial">
+                <input type="datetime-local" name="dt-inicial">
               </label>
               <label>Data final:
-                <input type="datetime-local" name="data-final">
+                <input type="datetime-local" name="dt-final">
               </label>
             </label>
             <button class="button primary" id="search_precadastros">Buscar</button>
@@ -63,6 +68,39 @@
       </div>
     </div>
   </div>
+  
+  <?php if(isset($precadastros) && count($precadastros) > 0): ?>
+  <table>
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Data Cadastro</th>
+        <th>Login</th>
+        <th>Motivo</th>
+      </tr>
+    </thead>
+    <tbody>
+  <?php foreach ($precadastros as $row): ?>
+      <tr>
+      <td><?= $row['nome'] ?></td>
+        <?php
+          switch ($row['status']) {
+                case 1: echo '<td>Em análise</td>'; break;
+                case 2: echo '<td>Aprovado</td>'; break;
+                case 3: echo '<td>Reprovado</td>'; break;
+                case 4: echo '<td>Aguardando Contato</td>'; break;
+                case 5: echo '<td>Tentando Contato</td>'; break;
+                case 6: echo '<td>Contrato realizado no SGP</td>'; break;
+                case 7: echo '<td>Inviabilidade Técnica</td>'; break;
+              }
+        ?>
+        <td><?= date('d/m/Y', strtotime($row['data_cadastro'])) ?></td>
+        <td><?= $row['motivo'] ?></td>
+      </tr>
+  <?php endforeach; ?>
+    </tbody>
+  </table>
+  <?php endif; ?>
   <script>
     var baseURL = '<?= $uri ?>';
     var tecnico;

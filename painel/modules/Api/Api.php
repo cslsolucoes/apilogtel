@@ -110,6 +110,35 @@ class Api {
     return $sql->fetchAll();
   }
 
+  public function consultarOcorrenciaVendedor($data) {
+    $data['vendedor'] = $data['vendedor'] ?? $_SESSION['userid'];
+    if(isset($data['vendedor']) && $data['vendedor'] && isset($data['dt-inicial']) && $data['dt-inicial'] && isset($data['dt-final']) && $data['dt-final']) {
+      $data_inicial = date('d-m-Y H:i:s', strtotime($data['dt-inicial']));
+      $data_final = date('d-m-Y H:i:s', strtotime($data['dt-final']));
+      $qry = "
+        SELECT * FROM \"dbsgp\".\"public\".\"SuporteOcorrencias\"
+        WHERE responsavel_id = '{$data['vendedor']}' AND data_cadastro BETWEEN '{$data_inicial}' AND '{$data_final}'
+      ";
+      $sql = $this->db->query($qry);
+      return $sql->fetchAll();
+    }
+    return null;
+  }
+
+  public function consultarPrecadastro($data) {
+    $data['vendedor'] = $data['vendedor'] ?? $_SESSION['userid'];
+    if(isset($data['vendedor']) && $data['vendedor'] && isset($data['dt-inicial']) && $data['dt-inicial'] && isset($data['dt-final']) && $data['dt-final']) {
+      $data_inicial = date('d-m-Y H:i:s', strtotime($data['dt-inicial']));
+      $data_final = date('d-m-Y H:i:s', strtotime($data['dt-final']));
+      $qry = "
+        SELECT * FROM \"dbsgp\".\"public\".\"ViewConsultaPreCadastro\" WHERE usuariocad_id = {$data['vendedor']} AND data_cadastro BETWEEN '{$data_inicial}' AND '{$data_final}';
+      ";
+      $sql = $this->db->query($qry);
+      return $sql->fetchAll();
+    }
+    return null;
+  }
+
   public function consultarFaturas($data) {
     $url = "http://201.87.240.202:8000/api/central/titulos";
 
@@ -289,12 +318,13 @@ class Api {
       </script>
       ";
     }
+    $qry = "Select ve.id from auth_user au
+    inner join admcore_vendedor ve on (au.id = ve.login_id)
+    Where au.id=" . $_SESSION['userid'];
+    print_r($qry);
+    $sql = $this->db->query($qry);
+    $resultado = $sql->fetchAll();
     if(isset($resultado[0]['id']) && $resultado[0]['id']) {
-      $qry = "Select ve.id from auth_user au
-      inner join admcore_vendedor ve on (au.id = ve.login_id)
-      Where au.id=" . $_SESSION['userid'];
-      $sql = $this->db->query($qry);
-      $resultado = $sql->fetchAll();
       $qry = "SELECT * FROM \"funcaoVendasPreCadastroCria\"('$nome', '$telefone', '$email', '$logradouro', '$numero', '$bairro', '$cidade', '$uf', '$cep', '$complemento', '$planoCombo', '$realIP', {$_SESSION['userid']})";
       $sql = $this->db->query($qry);
       $sql->fetchAll();
